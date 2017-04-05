@@ -1,0 +1,6 @@
+{
+  "presets": [
+    "es2015"
+  ]
+  //"plugins": ["ret-hot-loader/babel"]
+}
