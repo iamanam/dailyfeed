@@ -5,7 +5,12 @@ import through2 from 'through2'
 import feedSource from './feedSource'
 const rootPath = process.env.rootPath || path.join(__dirname, '..')
 
-// format data for each single feed
+/**
+ * This will exculde only the required information form stream source for each feed
+ * and return a formated version of feed
+ * @param {object} item
+ * @returns object
+ */
 const formatItem = function (item) {
   if (item && typeof item === 'object') {
     return {
@@ -17,6 +22,13 @@ const formatItem = function (item) {
   }
   console.log('item feeds cant be formatted')
 }
+/**
+ * This function will collect all feeds for each source then add the source
+ * as id and add fetch time
+ * @param {any} source string
+ * @param {any} items object
+ * @returns object
+ */
 const collectItem = function (source, items) {
   return {
     id: source,
@@ -35,6 +47,11 @@ const pipeFeed = function (fn) {
     }))
 }
 
+/**
+ * This will collect all single feeds and push it in one array
+ * @param {any} fn
+ * @returns object
+ */
 const collectFeed = function (fn) {
   var self = this
   return fn.on('data', function (data) {
@@ -43,6 +60,13 @@ const collectFeed = function (fn) {
       .push(data)
   })
 }
+
+/**
+ * It will get the all the feeds from any single source of feed and save it
+ * as a json file after stream is finish
+ * @param {function} fn
+ * @returns stream
+ */
 const saveJson = function (fn) {
   var self = this
   return fn.on('end', function () {
@@ -59,6 +83,11 @@ const saveJson = function (fn) {
     }
   })
 }
+
+/**
+ * This function construct the base of feed parser
+ * It collects all independen function and glue it together for use in feedparser
+ */
 const SetParser = function () {
   this.collectFeed = collectFeed
   this.saveJson = saveJson
@@ -67,6 +96,14 @@ const SetParser = function () {
   this.formatItem = formatItem
   this.allFeeds = []
 }
+
+/**
+ * This is main function which will instantiate the SetParser
+ * Also it will return the make every function work to done the work
+ * @param {string} feedTitle - Title of the souce
+ * @param {string} feedUrl - Url of the sources
+ * @returns
+ */
 const feedParser = (feedTitle, feedUrl) => {
   let parser = new SetParser()
   parser.feedTitle = feedTitle
@@ -102,6 +139,11 @@ const readFeed = (feedTitle, feedUrl, FeedParser) => {
         })
 }
 */
+
+/**
+* It will read the source file object
+* Then will parse each sources using function feedParser
+*/
 export const parseAll = () => {
   for (let key in feedSource) {
     let file = path.join(rootPath, 'feeds', key + '.xml')
@@ -115,5 +157,5 @@ export const parseAll = () => {
     )
   }
 }
-parseAll()
+
 export default feedParser
