@@ -10,6 +10,7 @@ const rootPath = process.env.rootPath
 // setting files of static to server easily
 app.use(express.static(path.join(rootPath, 'client')))
 app.use(express.static(path.join(rootPath, 'server')))
+app.use(express.static(path.join(rootPath, 'store')))
 
 // -------------import routing
 // Include server routes as a middleware
