@@ -1,7 +1,7 @@
 import path from 'path'
 import fs from 'fs'
 import feedSource from './feedSource'
-import collectFeed from './collectFeed_v_2'
+import collectFeed from './collectFeed'
 
 const rootPath = process.env.rootPath || path.join(__dirname, '..', '..')
 

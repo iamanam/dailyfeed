@@ -12,7 +12,7 @@ module.exports = {
       path.join(base, 'client', 'index')
     ]
   },
-  devtool: 'inline',
+  devtool: 'eval-source-map',
   // this is a default value; just be aware of it context: path.resolve(__dirname,
   // 'app'),
   output: {
@@ -47,7 +47,7 @@ module.exports = {
       },
       {
         test: /\.(less|css)$/,
-        use: ['style-loader', 'css-loader', 'less-loader']
+        use: ['style-loader', 'css-loader']
       },
       {
         test: /\.(png|jpg|gif|svg|eot|ttf|woff|woff2)$/,
@@ -55,6 +55,10 @@ module.exports = {
         options: {
           limit: 10000
         }
+      },
+      {
+        test: /\.json$/,
+        loader: 'json-loader'
       }
     ]
   },
