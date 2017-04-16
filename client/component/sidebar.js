@@ -1,38 +1,51 @@
-import React, { Component } from 'react'
-import { ListGroup, ListGroupItem, Badge } from 'reactstrap'
-import feedSource from '../../server/src/feedSource'
-import '../css/sidebar.less'
+import React, { Component } from "react";
+import propTypes from "prop-types";
+import { ListGroup, ListGroupItem, Badge } from "reactstrap";
+import feedSource from "../../server/src/feedSource";
+import "../css/sidebar.less";
 
 class SideBar extends Component {
-  constructor (props) {
-    super(props)
-  }
-  sideItem (clickCtrl) {
-    var sourceListView = []
-    Object.keys(feedSource).forEach(function (key) {
+  sideItem(clickCtrl, handleUpdateClick) {
+    var sourceListView = [];
+    for (var i in feedSource) {
+      let key = feedSource[i];
       sourceListView.push(
-        <ListGroupItem key={key} className='justify-content-between'>
-          <a onClick={clickCtrl} href='#' data-href={key}>
-            {key}
+        <ListGroupItem key={i} className="justify-content-between">
+          <a onClick={clickCtrl} href="#" data-href={i}>
+            {i} - <Badge pill>
+              {key.feedLength}
+            </Badge>
           </a>
-          <Badge pill>
-            14
-          </Badge>
+          <span>
+            <a href="#">
+              <i
+                data-href={i}
+                onClick={handleUpdateClick}
+                className="icon-arrows-cw"
+              />
+            </a>
+          </span>
         </ListGroupItem>
-      )
-    })
-    return sourceListView
+      );
+    }
+    return sourceListView;
   }
 
-  render () {
+  render() {
     return (
-      <div className='soucelist col-sm-12 col-md-3 col-lg-2'>
+      <div className="soucelist col-sm-12 col-md-3 col-lg-2">
         <ListGroup>
-          {this.sideItem(this.props.handleSourceClick)}
+          {this.sideItem(
+            this.props.handleSourceClick,
+            this.props.handleUpdateClick
+          )}
         </ListGroup>
       </div>
-    )
+    );
   }
 }
-
-export default SideBar
+SideBar.propTypes = {
+  handleSourceClick: propTypes.func,
+  handleUpdateClick: propTypes.func
+};
+export default SideBar;

@@ -12,7 +12,7 @@ module.exports = {
       path.join(base, 'client', 'index')
     ]
   },
-  devtool: 'eval-source-map',
+  devtool: 'eval',
   // this is a default value; just be aware of it context: path.resolve(__dirname,
   // 'app'),
   output: {
