@@ -23,16 +23,10 @@ class ModalExample extends React.Component {
         </a>
         <Modal isOpen={this.state.modal} toggle={this.toggle}>
           <ModalBody>
-            <iframe
-              width="98%"
-              height="80%"
-              className="embed-responsive-item"
-              src={this.props.src}
-            />
+            <p>{this.props.details}</p>
           </ModalBody>
           <ModalFooter>
             <Button color="primary" onClick={this.toggle}>Do Something</Button>
-            {" "}
             <Button color="secondary" onClick={this.toggle}>Cancel</Button>
           </ModalFooter>
         </Modal>

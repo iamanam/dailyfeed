@@ -50,15 +50,11 @@ class ListFeeds extends Component {
               <ListGroupItem key={index}>
                 <ListGroupItemHeading>
                   <span className="icon-right-open" />
-                  <ModalExample
-                    title={feed.title}
-                    src={feed.link}
-                    style={{ width: window.innerWidth - 100 + "px" }}
-                  />
+                  <ModalExample title={feed.title} details={feed.description} />
                 </ListGroupItemHeading>
                 <ListGroupItemText>
-                  {feed.description.slice(0, 150)}
-                  <small className="offset-1">
+                  {feed.description.toString().slice(0, 200)} --&gt;
+                  <small className="">
                     <a href={feed.link}>...বিস্তারিত</a>
                   </small>
                 </ListGroupItemText>

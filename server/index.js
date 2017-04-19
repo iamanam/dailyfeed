@@ -3,7 +3,7 @@ const path = require("path");
 const express = require("express");
 const app = express();
 const reload = require("reload");
-
+//require("../config/runDyno");
 // var router = express.Router() const path = require("path")
 const rootPath = process.env.rootPath;
 // const serveFeed = require(path.join(rootPath, 'server/src', 'serveFeed.js'))

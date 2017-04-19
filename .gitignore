@@ -7,6 +7,9 @@ yarn-error.log*
 .vs-code
 .vscode
 store
+old
+config
+server/db.js
 inspiration
 # Runtime data
 pids

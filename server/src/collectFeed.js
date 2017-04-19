@@ -4,17 +4,49 @@ import through2 from "through2";
 import Feedparser from "feedparser";
 import htmlToText from "html-to-text";
 import { _fetch } from "./util";
-
+import { getSource } from "../../store/index";
 const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
+const cheerioReq = require("cheerio-req");
 
+const scrapDescription = (itemUrl, scrapeIdentity) => {
+  return new Promise(resolve => {
+    cheerioReq(itemUrl, (err, $) => {
+      var totalNews = [];
+      if (err) console.log(err);
+      let $links = $(scrapeIdentity);
+      for (let i = 0; i < $links.length; ++i) {
+        totalNews.push($links.eq(i).text());
+      }
+      resolve(totalNews);
+    });
+  });
+};
+
+const altDes = item => {
+  return htmlToText.fromString(
+    item.description ||
+      item["content:encoded"][1] ||
+      "no description available",
+    {
+      hideLinkHrefIfSameAsText: true,
+      ignoreHref: true,
+      ignoreImage: true
+    }
+  );
+};
 /**
  * This will exculde only the required information form stream source for each feed
  * and return a formated version of feed
  * @param {object} item
  * @returns object
  */
-const formatItem = function(item) {
+const formatItem = async function(item, scrapeIdentity) {
   if (item && typeof item === "object") {
+    let altDescription = altDes(item); // this is the short descriptin comes from feed after normalize html signs
+    let mainDescription = await scrapDescription(item.link, scrapeIdentity); // this is the main description fetched from main site
+    let description = altDescription.length > (await mainDescription.toString()) // if main description fetching failed then use alternative description as main
+      ? altDescription
+      : mainDescription;
     // finding an image from feed is bit of problem, so needed to go through some
     // extra mechanism
     let img = item["rss:image"];
@@ -23,22 +55,19 @@ const formatItem = function(item) {
         ? img["url"] ? img["url"]["#"] : "none"
         : img["#"];
     }
-    return {
+
+    let result = await {
       title: item.title,
-      description: htmlToText.fromString(
-        item.description ||
-          item["content:encoded"][1] ||
-          "no description available",
-        {
-          hideLinkHrefIfSameAsText: true,
-          ignoreHref: true,
-          ignoreImage: true
-        }
-      ),
+      description: description,
+      /*
+      description: ,
+      */
       pubDate: item.pubDate,
       image: tag,
       link: item.link
     };
+    console.log(result);
+    return result;
   }
   throw Error("item feeds cant be formatted");
 };
@@ -46,6 +75,7 @@ const formatItem = function(item) {
 const CollectFeed = function(sourceTitle, sourceUrl) {
   this.sourceUrl = sourceUrl;
   this.sourceTitle = sourceTitle;
+  this.scrapTag = getSource(sourceTitle).jsonFile;
   this.feedCollection = [];
   this.fetch = _fetch;
   this.arrangeCollection = feedCollection => {
@@ -64,14 +94,19 @@ const CollectFeed = function(sourceTitle, sourceUrl) {
       }
     );
   };
+  var self = this;
   this.formatXml = Response => {
     return new Promise((resolve, reject) => {
       var feedCollection = [];
       return Response.pipe(new Feedparser())
         .pipe(
           through2.obj(function(chunk, enc, callback) {
-            this.push(formatItem(chunk));
-            callback();
+            new Promise((resolve, reject) => {
+              resolve(formatItem(chunk, self.scrapTag));
+            }).then(v => {
+              this.push(v);
+              callback();
+            });
           })
         )
         .on("error", e => {
@@ -86,7 +121,6 @@ const CollectFeed = function(sourceTitle, sourceUrl) {
         });
     });
   };
-  var self = this;
   return new Promise((resolve, reject) => {
     self.fetch(sourceUrl).then(response => {
       if (response.status === 200) {

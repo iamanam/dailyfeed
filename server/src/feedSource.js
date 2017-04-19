@@ -1,7 +1,7 @@
-let feeds = require('../../feedSource.json')
-let newFeed = require('../../feedNew.json')
-var y = Object.assign(feeds, newFeed)
-export default y
+let feeds = require("../../feedSource.json");
+let newFeed = require("../../feedNew.json");
+var y = Object.assign(feeds, newFeed);
+export default y;
 
 /*
 const feedSource = {
