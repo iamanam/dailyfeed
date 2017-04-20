@@ -32,6 +32,7 @@ class app extends Component {
     this.setState({ feedUrl: getUrl });
     this.fetchType(getUrl, true);
   }
+
   handleSourceClick(event) {
     let getUrl = event.target.attributes.getNamedItem("data-href").value;
     // this will reduce unnecssery render if the both user request feed and feed

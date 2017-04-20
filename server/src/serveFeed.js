@@ -1,5 +1,5 @@
 import CollectFeed from "./collectFeed";
-import source from "./feedSource";
+import source from "../../store/source.json";
 import { updateItem } from "../db/helper.js";
 let feedSource = JSON.parse(JSON.stringify(source));
 
@@ -18,7 +18,7 @@ const saveFetchInfo = (sourceTitle, feedLength) => {
   };
   return updateItem(params);
   /*
-  feedSource[sourceTitle]["lastfetch"] = Date.now();
+  feedSource[sourceT&itle]["lastfetch"] = Date.now();
   feedSource[sourceTitle]["feedLength"] = feedLength;
   return new Promise((resolve, reject) => {
     fs.writeFile(
@@ -41,7 +41,8 @@ const saveFetchInfo = (sourceTitle, feedLength) => {
 const serveFeed = (sourceTitle, isUpdate) => {
   try {
     let getFeedSource = feedSource[sourceTitle];
-    var feedManage = new CollectFeed(sourceTitle, getFeedSource.feedUrl);
+    console.log("feed source in serveFeed is " + getFeedSource.SourceUrl);
+    var feedManage = new CollectFeed(sourceTitle, getFeedSource.SourceUrl);
     // data for saveFetch info
     feedManage.then(r => {
       saveFetchInfo(sourceTitle, JSON.parse(r)["items"].length).then(e =>

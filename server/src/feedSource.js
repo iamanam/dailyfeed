@@ -1,9 +1,10 @@
+/*
 let feeds = require("../../feedSource.json");
 let newFeed = require("../../feedNew.json");
 var y = Object.assign(feeds, newFeed);
 export default y;
 
-/*
+
 const feedSource = {
   'bd-new24': {
     'feedUrl': 'http://bangla.bdnews24.com/?widgetName=rssfeed&widgetId=1151&getXmlFeed=true',

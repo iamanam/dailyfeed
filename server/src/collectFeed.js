@@ -2,13 +2,13 @@ import fs from "fs";
 import path from "path";
 import through2 from "through2";
 import Feedparser from "feedparser";
-import htmlToText from "html-to-text";
 import { _fetch } from "./util";
 import { getSource } from "../../store/index";
+import config from "../../config/config.json";
 const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
-const cheerioReq = require("cheerio-req");
 
 const scrapDescription = (itemUrl, scrapeIdentity) => {
+  const cheerioReq = require("cheerio-req");
   return new Promise(resolve => {
     cheerioReq(itemUrl, (err, $) => {
       var totalNews = [];
@@ -23,6 +23,7 @@ const scrapDescription = (itemUrl, scrapeIdentity) => {
 };
 
 const altDes = item => {
+  const htmlToText = require("html-to-text");
   return htmlToText.fromString(
     item.description ||
       item["content:encoded"][1] ||
@@ -42,11 +43,11 @@ const altDes = item => {
  */
 const formatItem = async function(item, scrapeIdentity) {
   if (item && typeof item === "object") {
-    let altDescription = altDes(item); // this is the short descriptin comes from feed after normalize html signs
-    let mainDescription = await scrapDescription(item.link, scrapeIdentity); // this is the main description fetched from main site
-    let description = altDescription.length > (await mainDescription.toString()) // if main description fetching failed then use alternative description as main
-      ? altDescription
-      : mainDescription;
+    let descriptin;
+    if (config.local.newsSetting.scrapping) {
+      descriptin = await scrapDescription(item.link, scrapeIdentity); // this is the main description fetched from main site
+    } else descriptin = altDes(item); // this is the short descriptin comes from feed after normalize html signs
+
     // finding an image from feed is bit of problem, so needed to go through some
     // extra mechanism
     let img = item["rss:image"];
@@ -58,15 +59,11 @@ const formatItem = async function(item, scrapeIdentity) {
 
     let result = await {
       title: item.title,
-      description: description,
-      /*
-      description: ,
-      */
+      description: descriptin,
       pubDate: item.pubDate,
       image: tag,
       link: item.link
     };
-    console.log(result);
     return result;
   }
   throw Error("item feeds cant be formatted");

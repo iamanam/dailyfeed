@@ -8,7 +8,7 @@ import {
 import ModalExample from "./Modal";
 import moment from "moment";
 import "../css/listFeed.less";
-import feedSource from "../../server/src/feedSource";
+import feedSource from "../../store/source";
 import propTypes from "prop-types";
 
 class ListFeeds extends Component {
@@ -50,7 +50,11 @@ class ListFeeds extends Component {
               <ListGroupItem key={index}>
                 <ListGroupItemHeading>
                   <span className="icon-right-open" />
-                  <ModalExample title={feed.title} details={feed.description} />
+                  <ModalExample
+                    title={feed.title}
+                    src={feed.link}
+                    details={feed.description}
+                  />
                 </ListGroupItemHeading>
                 <ListGroupItemText>
                   {feed.description.toString().slice(0, 200)} --&gt;

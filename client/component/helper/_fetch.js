@@ -10,6 +10,7 @@ var _fetch = {
   * @memberOf FeedContainer
   */
   fetchType(sourceTitle, isUpdate) {
+    console.log(sourceTitle, isUpdate);
     // let splitInfo = fetchInfo.split('&') // spilt to separate information let
     // sourceTitle = splitInfo[0] // source name
     if (this.cachedFeed[sourceTitle] && !isUpdate) {
@@ -32,6 +33,7 @@ var _fetch = {
    * @memberOf FeedContainer
    */
   fetch(fetchUrl) {
+    console.log(fetchUrl);
     let self = this;
     try {
       // if contents are not cached then fetch and cache it

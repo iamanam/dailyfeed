@@ -1,8 +1,10 @@
 import serveFeed from "../server/src/serveFeed";
+//import AutoUpdateService from "../server/src/service";
 const path = require("path");
 const express = require("express");
 const app = express();
 const reload = require("reload");
+//const triggerAutoUpdate = new AutoUpdateService();
 //require("../config/runDyno");
 // var router = express.Router() const path = require("path")
 const rootPath = process.env.rootPath;
@@ -18,6 +20,11 @@ app.get("/", function(req, res, next) {
   res.sendFile("./index.html", { root: rootPath });
 });
 
+/*
+app.get("/next_update", function(req, res, next) {
+  res.send({ next: triggerAutoUpdate.remaining });
+});
+*/
 // this will serve updated json after fetching & saving it
 app.get("/serveJson/:feedSource/:isUpdate", function(req, res, next) {
   new Promise((resolve, reject) => {
@@ -32,6 +39,7 @@ app.get("/serveJson/:feedSource/:isUpdate", function(req, res, next) {
       res.status(200).send(result);
     });
 });
+
 var server = require("http").createServer(app);
 
 if (process.env.isDevelopment) {
