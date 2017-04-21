@@ -1,14 +1,15 @@
 import serveFeed from "../server/src/serveFeed";
-//import AutoUpdateService from "../server/src/service";
+import AutoUpdateService from "../server/src/service";
 const path = require("path");
 const express = require("express");
 const app = express();
 const reload = require("reload");
-//const triggerAutoUpdate = new AutoUpdateService();
-//require("../config/runDyno");
+const config = require("../config/config.json");
+// require("../config/runDyno");
 // var router = express.Router() const path = require("path")
 const rootPath = process.env.rootPath;
 // const serveFeed = require(path.join(rootPath, 'server/src', 'serveFeed.js'))
+require("pretty-error").start();
 
 // setting files of static to server easily
 app.use(express.static(path.join(rootPath, "client")));
@@ -20,11 +21,16 @@ app.get("/", function(req, res, next) {
   res.sendFile("./index.html", { root: rootPath });
 });
 
-/*
-app.get("/next_update", function(req, res, next) {
-  res.send({ next: triggerAutoUpdate.remaining });
-});
-*/
+if (config.updating.autoUpdateFeed) {
+  const triggerAutoUpdate = new AutoUpdateService({
+    autoUpdateTime: config.updating.autoUpdateTime
+  });
+
+  app.get("/next_update", function(req, res, next) {
+    res.send({ remain: triggerAutoUpdate.minCount });
+  });
+}
+
 // this will serve updated json after fetching & saving it
 app.get("/serveJson/:feedSource/:isUpdate", function(req, res, next) {
   new Promise((resolve, reject) => {

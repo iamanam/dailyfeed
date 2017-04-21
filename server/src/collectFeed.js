@@ -1,4 +1,4 @@
-import fs from "fs";
+import fs from "fs-extra";
 import path from "path";
 import through2 from "through2";
 import Feedparser from "feedparser";
@@ -78,18 +78,25 @@ const CollectFeed = function(sourceTitle, sourceUrl) {
   this.arrangeCollection = feedCollection => {
     return JSON.stringify(Object.assign({}, { items: feedCollection }));
   };
-  this.writeFile = fileToWrite => {
-    fs.writeFile(
-      path.join(rootPath, "store", this.sourceTitle + ".json"),
-      fileToWrite,
-      e => {
-        if (e) {
-          throw Error(e);
-        }
-        // save meta info after successful writing
+  this.writeFile = (fileName, fileToWrite) => {
+    try {
+      if (typeof fileToWrite !== "undefined") {
+        fs.writeJsonSync(
+          path.join(rootPath, "store", this.sourceTitle, fileName + ".json"),
+          fileToWrite
+        );
         console.log("Feed parsed from %s", this.sourceTitle);
       }
-    );
+    } catch (e) {
+      console.log(e);
+    }
+  };
+  this.processWrite = (fileName, dataToWrite) => {
+    let self = this;
+    let fileFolder = path.join(rootPath, "store", this.sourceTitle);
+    fs.ensureDir(fileFolder, e => {
+      self.writeFile(fileName, dataToWrite);
+    });
   };
   var self = this;
   this.formatXml = Response => {
@@ -113,8 +120,14 @@ const CollectFeed = function(sourceTitle, sourceUrl) {
           feedCollection.push(data);
         })
         .on("end", () => {
-          this.writeFile(this.arrangeCollection(feedCollection));
-          resolve(this.arrangeCollection(feedCollection));
+          var timeNow = Date.now(); // this time will use as a refrence into file name
+
+          this.processWrite(timeNow, this.arrangeCollection(feedCollection));
+          resolve({
+            feedsLength: feedCollection.length,
+            fileName: timeNow + ".json",
+            feeds: this.arrangeCollection(feedCollection)
+          });
         });
     });
   };

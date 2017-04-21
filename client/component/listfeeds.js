@@ -8,7 +8,7 @@ import {
 import ModalExample from "./Modal";
 import moment from "moment";
 import "../css/listFeed.less";
-import feedSource from "../../store/source";
+import feedSource from "../../config/source";
 import propTypes from "prop-types";
 
 class ListFeeds extends Component {

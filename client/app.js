@@ -44,7 +44,7 @@ class app extends Component {
   }
 
   render() {
-    console.log(this.state.feedUrl, this.renderCount++);
+    //console.log(this.state.feedUrl, this.renderCount++);
     return (
       <div>
         <Header />

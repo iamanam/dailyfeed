@@ -1,18 +1,19 @@
 import CollectFeed from "./collectFeed";
-import source from "../../store/source.json";
+import source from "../../config/source.json";
 import { updateItem } from "../db/helper.js";
 let feedSource = JSON.parse(JSON.stringify(source));
 
-const saveFetchInfo = (sourceTitle, feedLength) => {
+const saveFetchInfo = (sourceTitle, feedLength, fileName) => {
   var params = {
     TableName: "FeedSourceInfo",
     Key: {
       sourceTitle: sourceTitle
     },
-    UpdateExpression: "set lastFetched =:dt, feedItem = :item",
+    UpdateExpression: "set lastFetched =:dt, feedItem = :item , fileName=:fileName",
     ExpressionAttributeValues: {
       ":dt": Date.now(),
-      ":item": feedLength
+      ":item": feedLength,
+      ":fileName": fileName
     },
     ReturnValues: "UPDATED_NEW"
   };
@@ -38,16 +39,13 @@ const saveFetchInfo = (sourceTitle, feedLength) => {
  * Souce can be user specific souce or all souce which saved by defualt
  * @param {object} source
  */
-const serveFeed = (sourceTitle, isUpdate) => {
+const serveFeed = sourceTitle => {
   try {
     let getFeedSource = feedSource[sourceTitle];
-    console.log("feed source in serveFeed is " + getFeedSource.SourceUrl);
-    var feedManage = new CollectFeed(sourceTitle, getFeedSource.SourceUrl);
+    var feedManage = new CollectFeed(sourceTitle, getFeedSource.sourceUrl);
     // data for saveFetch info
-    feedManage.then(r => {
-      saveFetchInfo(sourceTitle, JSON.parse(r)["items"].length).then(e =>
-        console.log(e)
-      );
+    feedManage.then(latestFeed => {
+      saveFetchInfo(sourceTitle, latestFeed.feedsLength, latestFeed.fileName);
     });
   } catch (e) {
     throw Error(e);

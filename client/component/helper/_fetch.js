@@ -10,9 +10,6 @@ var _fetch = {
   * @memberOf FeedContainer
   */
   fetchType(sourceTitle, isUpdate) {
-    console.log(sourceTitle, isUpdate);
-    // let splitInfo = fetchInfo.split('&') // spilt to separate information let
-    // sourceTitle = splitInfo[0] // source name
     if (this.cachedFeed[sourceTitle] && !isUpdate) {
       let feedCache = this.cachedFeed[sourceTitle];
       // if feeds are in cache and update feed not requested
@@ -23,7 +20,7 @@ var _fetch = {
       let serveFreshJsonUrl = "serveJson/" + sourceTitle + "/update"; // set the server route url ready /servejson/title/update
       return this.fetch(serveFreshJsonUrl);
     }
-    return this.fetch(sourceTitle + ".json"); // search from local source by defualt
+    return this.fetch(sourceTitle + "/index" + ".json"); // search from local source by defualt
   },
 
   /**
@@ -33,7 +30,7 @@ var _fetch = {
    * @memberOf FeedContainer
    */
   fetch(fetchUrl) {
-    console.log(fetchUrl);
+    //console.log(fetchUrl);
     let self = this;
     try {
       // if contents are not cached then fetch and cache it

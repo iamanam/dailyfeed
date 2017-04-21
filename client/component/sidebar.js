@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import propTypes from "prop-types";
 import { ListGroup, ListGroupItem, Badge } from "reactstrap";
-import feedSource from "../../store/source.json";
+import feedSource from "../../config/source.json";
 import "../css/sidebar.less";
 import { docClient } from "../../server/db/initDb";
 
