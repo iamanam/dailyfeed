@@ -18,7 +18,40 @@ const saveFetchInfo = (sourceTitle, feedLength, fileName) => {
     ReturnValues: "UPDATED_NEW"
   };
   return updateItem(params);
-  /*
+};
+
+/**
+ * It will fetch the feeds and parse it & save it as json
+ * Souce can be user specific souce or all souce which saved by defualt
+ * @param {object} source
+ */
+const serveFeed = (sourceTitle, lastUpdate) => {
+  if (lastUpdate[sourceTitle]) {
+    var lastFeeds = lastUpdate[sourceTitle]["feeds"];
+    var lastFirstFeedTitle = Object.keys(lastFeeds)[0];
+  }
+  let getFeedSource = feedSource[sourceTitle];
+  var feedManage = new CollectFeed(
+    sourceTitle,
+    getFeedSource.sourceUrl,
+    lastFirstFeedTitle
+  );
+  // data for saveFetch info
+  feedManage
+    .then(latestFeed => {
+      // if there are new updates available then is isUpdateAvailable will be true
+      if (latestFeed.isUpdateAvailable)
+        saveFetchInfo(sourceTitle, latestFeed.feedsLength, latestFeed.fileName);
+    })
+    .catch(e => {
+      throw Error(e);
+    });
+  return feedManage;
+};
+
+export default serveFeed;
+
+/*
   feedSource[sourceT&itle]["lastfetch"] = Date.now();
   feedSource[sourceTitle]["feedLength"] = feedLength;
   return new Promise((resolve, reject) => {
@@ -32,25 +65,3 @@ const saveFetchInfo = (sourceTitle, feedLength, fileName) => {
     );
   });
   */
-};
-
-/**
- * It will fetch the feeds and parse it & save it as json
- * Souce can be user specific souce or all souce which saved by defualt
- * @param {object} source
- */
-const serveFeed = sourceTitle => {
-  try {
-    let getFeedSource = feedSource[sourceTitle];
-    var feedManage = new CollectFeed(sourceTitle, getFeedSource.sourceUrl);
-    // data for saveFetch info
-    feedManage.then(latestFeed => {
-      saveFetchInfo(sourceTitle, latestFeed.feedsLength, latestFeed.fileName);
-    });
-  } catch (e) {
-    throw Error(e);
-  }
-  return feedManage;
-};
-
-export default serveFeed;

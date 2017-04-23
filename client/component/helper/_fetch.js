@@ -15,11 +15,11 @@ var _fetch = {
       // if feeds are in cache and update feed not requested
       this.setState({ feeds: feedCache, totalItems: feedCache.items.length }); // as this is served from cache need to reset state
       return this.cachedFeed[sourceTitle];
-    } else if (isUpdate) {
+    } /*else if (isUpdate) {
       // if update requested then splitfetch info should be update
       let serveFreshJsonUrl = "serveJson/" + sourceTitle + "/update"; // set the server route url ready /servejson/title/update
       return this.fetch(serveFreshJsonUrl);
-    }
+    }*/
     return this.fetch(sourceTitle + "/index" + ".json"); // search from local source by defualt
   },
 

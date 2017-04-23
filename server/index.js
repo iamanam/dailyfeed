@@ -1,10 +1,11 @@
 import serveFeed from "../server/src/serveFeed";
-import AutoUpdateService from "../server/src/service";
+import AutoService from "../server/src/service";
 const path = require("path");
 const express = require("express");
 const app = express();
 const reload = require("reload");
 const config = require("../config/config.json");
+const moment = require("moment");
 // require("../config/runDyno");
 // var router = express.Router() const path = require("path")
 const rootPath = process.env.rootPath;
@@ -22,12 +23,25 @@ app.get("/", function(req, res, next) {
 });
 
 if (config.updating.autoUpdateFeed) {
-  const triggerAutoUpdate = new AutoUpdateService({
-    autoUpdateTime: config.updating.autoUpdateTime
-  });
-
+  const updateService = new AutoService(config.updating.autoUpdateTime); // intilize the service
+  setTimeout(() => updateService.runService(), 10000); // run the servie at initial startup
+  setInterval(
+    () => updateService.runService(),
+    config.updating.autoUpdateTime * 60000
+  ); // run service at specific intercal set in config
   app.get("/next_update", function(req, res, next) {
-    res.send({ remain: triggerAutoUpdate.minCount });
+    res.json({
+      serviceRunning: updateService.serviceRunnng,
+      nextUpdate: moment(updateService.nextUpdate).fromNow(),
+      latestUpdates: updateService.latestUpdates
+    });
+  });
+  app.get("/next_update/:feedSource", function(req, res, next) {
+    res.json({
+      serviceRunning: updateService.serviceRunnng,
+      nextUpdate: moment(updateService.nextUpdate).fromNow(),
+      latestUpdates: updateService.latestUpdates[req.params.feedSource]
+    });
   });
 }
 

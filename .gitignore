@@ -6,6 +6,7 @@ yarn-debug.log*
 yarn-error.log*
 .vs-code
 .vscode
+test*
 store
 old
 config

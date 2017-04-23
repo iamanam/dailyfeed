@@ -45,7 +45,8 @@ class ListFeeds extends Component {
           </div>
         </nav>
         <ListGroup>
-          {this.state.feeds.map((feed, index) => {
+          {Object.keys(this.state.feeds).map((key, index) => {
+            var feed = this.state.feeds[key];
             return (
               <ListGroupItem key={index}>
                 <ListGroupItemHeading>
@@ -74,7 +75,7 @@ class ListFeeds extends Component {
   }
 }
 ListFeeds.propTypes = {
-  feeds: propTypes.array,
+  feeds: propTypes.object,
   sourceTitle: propTypes.string
 };
 export default ListFeeds;

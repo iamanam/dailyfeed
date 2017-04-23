@@ -7,6 +7,13 @@ import { getSource } from "../../store/index";
 import config from "../../config/config.json";
 const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
 
+/**
+ * This function scrap details text of each news feed while autoupdating
+ * Scarping is done by a custom node modules by cherrioreq.
+ * @param {string} itemUrl - Url of the news sources for specific news feed
+ * @param {any} scrapeIdentity - The tag contains the details of the new we interested.
+ * @returns promise
+ */
 const scrapDescription = (itemUrl, scrapeIdentity) => {
   const cheerioReq = require("cheerio-req");
   return new Promise(resolve => {
@@ -56,7 +63,6 @@ const formatItem = async function(item, scrapeIdentity) {
         ? img["url"] ? img["url"]["#"] : "none"
         : img["#"];
     }
-
     let result = await {
       title: item.title,
       description: descriptin,
@@ -69,19 +75,16 @@ const formatItem = async function(item, scrapeIdentity) {
   throw Error("item feeds cant be formatted");
 };
 
-const CollectFeed = function(sourceTitle, sourceUrl) {
+const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
   this.sourceUrl = sourceUrl;
   this.sourceTitle = sourceTitle;
   this.scrapTag = getSource(sourceTitle).jsonFile;
   this.feedCollection = [];
   this.fetch = _fetch;
-  this.arrangeCollection = feedCollection => {
-    return JSON.stringify(Object.assign({}, { items: feedCollection }));
-  };
   this.writeFile = (fileName, fileToWrite) => {
     try {
       if (typeof fileToWrite !== "undefined") {
-        fs.writeJsonSync(
+        fs.writeJson(
           path.join(rootPath, "store", this.sourceTitle, fileName + ".json"),
           fileToWrite
         );
@@ -101,10 +104,17 @@ const CollectFeed = function(sourceTitle, sourceUrl) {
   var self = this;
   this.formatXml = Response => {
     return new Promise((resolve, reject) => {
-      var feedCollection = [];
+      var feedCollection = {};
       return Response.pipe(new Feedparser())
         .pipe(
           through2.obj(function(chunk, enc, callback) {
+            // here it will cross check with old feed first item with newly chunked from stream
+            // if old feed first item title is equal with new first source item then we will cancel
+            // fetching as there is nothing new to update
+            if (chunk.title === lastFirstFeedTitle) {
+              return resolve({ isUpdateAvailable: false });
+            }
+            // if new items available then process will be continued
             new Promise((resolve, reject) => {
               resolve(formatItem(chunk, self.scrapTag));
             }).then(v => {
@@ -117,16 +127,17 @@ const CollectFeed = function(sourceTitle, sourceUrl) {
           throw Error(e);
         })
         .on("data", data => {
-          feedCollection.push(data);
+          feedCollection[data.title] = data;
         })
         .on("end", () => {
           var timeNow = Date.now(); // this time will use as a refrence into file name
 
-          this.processWrite(timeNow, this.arrangeCollection(feedCollection));
+          this.processWrite(timeNow, feedCollection);
           resolve({
-            feedsLength: feedCollection.length,
+            feedsLength: Object.keys(feedCollection).length,
             fileName: timeNow + ".json",
-            feeds: this.arrangeCollection(feedCollection)
+            feeds: feedCollection,
+            isUpdateAvailable: true
           });
         });
     });
