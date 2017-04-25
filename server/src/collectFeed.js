@@ -6,6 +6,7 @@ import { _fetch } from "./util";
 import { getSource } from "../../store/index";
 import config from "../../config/config.json";
 const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
+var Promise = require("bluebird");
 
 /**
  * This function scrap details text of each news feed while autoupdating

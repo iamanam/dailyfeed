@@ -2,6 +2,7 @@ import CollectFeed from "./collectFeed";
 import source from "../../config/source.json";
 import { updateItem } from "../db/helper.js";
 let feedSource = JSON.parse(JSON.stringify(source));
+var Promise = require("bluebird");
 
 const saveFetchInfo = (sourceTitle, feedLength, fileName) => {
   var params = {

@@ -1,4 +1,6 @@
 import fetchIso from "isomorphic-fetch";
+var Promise = require("bluebird");
+
 var _fetch = {
   /**
   * This function will fetch feed from different source depends on request

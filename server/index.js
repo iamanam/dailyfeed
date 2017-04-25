@@ -6,6 +6,8 @@ const app = express();
 const reload = require("reload");
 const config = require("../config/config.json");
 const moment = require("moment");
+var Promise = require("bluebird");
+
 // require("../config/runDyno");
 // var router = express.Router() const path = require("path")
 const rootPath = process.env.rootPath;

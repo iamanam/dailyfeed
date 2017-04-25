@@ -4,7 +4,7 @@ import findRemoveSync from "find-remove";
 import fs from "fs-extra";
 import path from "path";
 const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
-
+var Promise = require("bluebird");
 const AutoService = class {
   constructor(updateInterval) {
     this.updateInterval = updateInterval; // this is config setting for update interval
