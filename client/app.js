@@ -15,7 +15,6 @@ class app extends Component {
     this.cachedFeed = {};
     this.state = {
       feedUrl: "prothom-alo",
-      totalItems: "",
       feeds: ""
     };
     this.fetch = _fetch.fetch.bind(this);
@@ -44,14 +43,12 @@ class app extends Component {
   }
 
   render() {
-    //console.log(this.state.feedUrl, this.renderCount++);
     return (
       <div>
         <Header />
         <div className="container-fluid">
           <div className="row">
             <SideBar
-              totalItems={this.state.totalItems}
               handleSourceClick={this.handleSourceClick}
               handleUpdateClick={this.handleUpdateClick}
             />

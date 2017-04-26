@@ -143,16 +143,28 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
         });
     });
   };
-  return new Promise((resolve, reject) => {
-    self.fetch(sourceUrl).then(response => {
-      if (response.status === 200) {
-        return resolve(response.body);
-      }
-      reject(response.status);
-    });
-  }).then(response => {
-    return Promise.resolve(self.formatXml(response));
-  });
+
+  this.initCollect = async function() {
+    try {
+      let getXml = await self.fetch(sourceUrl);
+      let processXml = await self.formatXml(getXml.body);
+      return processXml;
+    } catch (error) {
+      throw Error(error);
+    }
+  };
 };
+/*
+    return new Promise((resolve, reject) => {
+      self.fetch(sourceUrl).then(response => {
+        if (response.status === 200) {
+          return resolve(response.body);
+        }
+        reject(response.status);
+      });
+    }).then(response => {
+      return Promise.resolve(self.formatXml(response));
+    });
+    */
 
 export default CollectFeed;

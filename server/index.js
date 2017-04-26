@@ -15,6 +15,7 @@ const rootPath = process.env.rootPath;
 require("pretty-error").start();
 
 // setting files of static to server easily
+app.use(express.static(path.join(rootPath, "www")));
 app.use(express.static(path.join(rootPath, "client")));
 app.use(express.static(path.join(rootPath, "server")));
 app.use(express.static(path.join(rootPath, "store")));
@@ -27,6 +28,7 @@ app.get("/", function(req, res, next) {
 if (config.updating.autoUpdateFeed) {
   const updateService = new AutoService(config.updating.autoUpdateTime); // intilize the service
   setTimeout(() => updateService.runService(), 10000); // run the servie at initial startup
+  setTimeout(() => updateService.deleteOldSource(), 20000);
   setInterval(
     () => updateService.runService(),
     config.updating.autoUpdateTime * 60000
@@ -35,14 +37,14 @@ if (config.updating.autoUpdateFeed) {
     res.json({
       serviceRunning: updateService.serviceRunnng,
       nextUpdate: moment(updateService.nextUpdate).fromNow(),
-      latestUpdates: updateService.latestUpdates
+      feeds: updateService.latestUpdates
     });
   });
-  app.get("/next_update/:feedSource", function(req, res, next) {
+  app.get("/latest/:feedSource", function(req, res, next) {
     res.json({
       serviceRunning: updateService.serviceRunnng,
       nextUpdate: moment(updateService.nextUpdate).fromNow(),
-      latestUpdates: updateService.latestUpdates[req.params.feedSource]
+      items: updateService.latestUpdates[req.params.feedSource]
     });
   });
 }
@@ -66,7 +68,7 @@ var server = require("http").createServer(app);
 
 if (process.env.isDevelopment) {
   reload(server, app);
-  require(path.join(path.join(rootPath, "./dev-server")))(app);
+  //require(path.join(path.join(rootPath, "./dev-server")))(app);
 }
 
 app.set("port", process.env.PORT || 3000);

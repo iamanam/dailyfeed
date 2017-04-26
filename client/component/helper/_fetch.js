@@ -9,44 +9,53 @@ var _fetch = {
   * collect latest json, save it in disk and will serve feeds from buffer
   * @param {String} fetchInfo Information of fetch source and fetch type
   * @returns json object
-  * @memberOf FeedContainer
+  * @memberOf _fetch.js
   */
   fetchType(sourceTitle, isUpdate) {
-    if (this.cachedFeed[sourceTitle] && !isUpdate) {
-      let feedCache = this.cachedFeed[sourceTitle];
-      // if feeds are in cache and update feed not requested
-      this.setState({ feeds: feedCache, totalItems: feedCache.items.length }); // as this is served from cache need to reset state
-      return this.cachedFeed[sourceTitle];
-    } /*else if (isUpdate) {
+    console.log(sourceTitle, this.cachedFeed);
+    if (isUpdate) {
       // if update requested then splitfetch info should be update
-      let serveFreshJsonUrl = "serveJson/" + sourceTitle + "/update"; // set the server route url ready /servejson/title/update
-      return this.fetch(serveFreshJsonUrl);
-    }*/
-    return this.fetch(sourceTitle + "/index" + ".json"); // search from local source by defualt
+      let serveFreshJsonUrl = "latest/" + sourceTitle; // set the server route url ready /servejson/title/update
+      return this.fetch(sourceTitle, serveFreshJsonUrl, isUpdate);
+    } else {
+      if (this.cachedFeed[sourceTitle])
+        return this.setState({ feeds: this.cachedFeed[sourceTitle] });
+      else return this.fetch(sourceTitle, sourceTitle + "/index" + ".json"); // search from local source by defualt
+    }
   },
 
   /**
    * This will only fetch depending on fetchtype url
    * @param {String} fetchUrl
    * @returns object
-   * @memberOf FeedContainer
+   * @memberOf _fetch.js
    */
-  fetch(fetchUrl) {
-    //console.log(fetchUrl);
+  fetch(sourceTitle, fetchUrl, isUpdate) {
     let self = this;
     try {
       // if contents are not cached then fetch and cache it
       return new Promise((resolve, reject) => {
-        fetchIso(fetchUrl).then(response => {
-          if (response.status >= 400) {
-            return reject(response);
-          }
-          resolve(response.json());
-        });
+        fetchIso(fetchUrl)
+          .catch(e => {
+            throw Error("error at fetching in fetch.js lin 43");
+          })
+          .then(response => {
+            if (response.status >= 400) {
+              return reject(response);
+            }
+            resolve(response.json());
+          });
       }).then(feeds => {
-        self.setState({ feeds: feeds, totalItems: feeds.items.length }); // as this is served from cache need to reset state
+        if (isUpdate) {
+          feeds["items"] = feeds["items"]["feeds"];
+        }
+        let mergeFeedsWithOld = Object.assign({}, self.state.feeds, feeds);
+        self.setState({
+          feeds: mergeFeedsWithOld,
+          totalItems: Object.keys(mergeFeedsWithOld["items"]).length
+        }); // as this is served from cache need to reset state
         // save this for caching purpose
-        self.cachedFeed[fetchUrl] = feeds;
+        self.cachedFeed[sourceTitle] = mergeFeedsWithOld;
       });
     } catch (e) {
       throw Error(e);

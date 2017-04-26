@@ -2,7 +2,6 @@ import CollectFeed from "./collectFeed";
 import source from "../../config/source.json";
 import { updateItem } from "../db/helper.js";
 let feedSource = JSON.parse(JSON.stringify(source));
-var Promise = require("bluebird");
 
 const saveFetchInfo = (sourceTitle, feedLength, fileName) => {
   var params = {
@@ -37,17 +36,10 @@ const serveFeed = (sourceTitle, lastUpdate) => {
     getFeedSource.sourceUrl,
     lastFirstFeedTitle
   );
-  // data for saveFetch info
-  feedManage
-    .then(latestFeed => {
-      // if there are new updates available then is isUpdateAvailable will be true
-      if (latestFeed.isUpdateAvailable)
-        saveFetchInfo(sourceTitle, latestFeed.feedsLength, latestFeed.fileName);
-    })
-    .catch(e => {
-      throw Error(e);
-    });
-  return feedManage;
+  let initCollect = feedManage.initCollect().catch(e => {
+    throw Error(e);
+  });
+  return initCollect;
 };
 
 export default serveFeed;

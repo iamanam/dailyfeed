@@ -1,6 +1,7 @@
 import serveFeed from "./serveFeed";
 import source from "../../config/source.json";
 import findRemoveSync from "find-remove";
+import { updateItem } from "../db/helper.js";
 import fs from "fs-extra";
 import path from "path";
 const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
@@ -12,23 +13,49 @@ const AutoService = class {
     this.minCounter = 0; // this will use to track passed min between instance
     this.nextUpdate = ""; // this will return the remaining time
     this.latestUpdates = {};
-    this.serviceRunnng = 0;
-    this.firstFeed = {};
+    this.serviceRunnng = "false";
   }
   getPath(...arg) {
     return path.join(rootPath, "store", ...arg);
   }
-  writeIndex(sourceTitle, dataToWrite) {
-    // add the lastest merged source for use later
-    // now write the file in index.json
-    return fs.writeJson(
-      this.getPath(sourceTitle, "index.json"),
-      { items: dataToWrite },
-      err => {
-        if (err) return console.error(err);
-        console.log("merging success!");
-      }
-    );
+  saveFetchInfo(sourceTitle, feedLength, fileName) {
+    var params = {
+      TableName: "FeedSourceInfo",
+      Key: {
+        sourceTitle: sourceTitle
+      },
+      UpdateExpression: "set lastFetched =:dt, feedItem = :item , fileName=:fileName",
+      ExpressionAttributeValues: {
+        ":dt": Date.now(),
+        ":item": feedLength,
+        ":fileName": fileName
+      },
+      ReturnValues: "UPDATED_NEW"
+    };
+    return updateItem(params);
+  }
+  writeIndex(sourceTitle, dataToWrite, lastSavedFileName) {
+    try {
+      // now save the fetching info in db
+      this.saveFetchInfo(
+        sourceTitle,
+        Object.keys(dataToWrite).length,
+        lastSavedFileName // its trick to find the latest file saved after index.json
+      );
+    } catch (e) {
+      console.log(e);
+    } finally {
+      // add the lastest merged source for use later
+      // now write the file in index.json
+      fs.writeJson(
+        this.getPath(sourceTitle, "index.json"),
+        { items: dataToWrite },
+        err => {
+          if (err) return console.error(err);
+          console.log("merging success!");
+        }
+      );
+    }
   }
   mergeEach(sourceTitle, latestFeedFetched) {
     // find store folder for each source feed
@@ -52,12 +79,18 @@ const AutoService = class {
               );
             }
           });
-          return this.writeIndex(sourceTitle, fileMergeTotal[sourceTitle]);
+
+          // write data to index.json
+          return this.writeIndex(
+            sourceTitle,
+            fileMergeTotal[sourceTitle],
+            res[1] // its a trick to get the latest saved json with random number
+          );
         }
       } catch (e) {
         // if any occur at file system or in merging then at least write latestFeed in index.json
         console.error("Error on Merging \n", e);
-        return this.writeIndex(sourceTitle, latestFeedFetched);
+        return this.writeIndex(sourceTitle, latestFeedFetched, res[1]);
       }
     });
   }
@@ -77,7 +110,6 @@ const AutoService = class {
           return serveFeed(sourceTitle, self.latestUpdates || {})
             .catch(e => console.log(e))
             .then(function(res) {
-              self.firstFeed[sourceTitle] = res["feeds"];
               // new update availble then add it on object
               if (res.isUpdateAvailable) {
                 self.mergeEach(sourceTitle, res["feeds"]);
@@ -108,7 +140,7 @@ const AutoService = class {
 
   runService(param) {
     let self = this;
-    self.serviceRunnng = 0;
+    self.serviceRunnng = "true";
     Promise.resolve(this.fetchUpdateAuto())
       .catch(e => console.log(e))
       .then(getAllUpdate => {
@@ -121,7 +153,7 @@ const AutoService = class {
           self.nextUpdate = Date.now() + 60000 * self.updateInterval;
         } else console.log("something wrong in runService");
       });
-    self.serviceRunnng = 0;
+    self.serviceRunnng = "false";
   }
 };
 

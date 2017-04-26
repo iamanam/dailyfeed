@@ -21,7 +21,7 @@ putItem(docClient, "FeedSourceInfo", feedSourceInfoSchama("bdnews24", 20));
 // console.log(dyn.listTables(t => console.log(t)));
 // put(null, dyn);
 
-getItem(docClient, "FeedSource", { sourceTitle: "prothom-alo" });
+getItem("FeedSourceInfo", { sourceTitle: "prothom-alo" });
 
 /*
 const userData = query(docClient, "FeedSource", "sourceTitle", {

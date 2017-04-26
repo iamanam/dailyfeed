@@ -5,10 +5,10 @@ import {
   ListGroupItem,
   ListGroupItemText
 } from "reactstrap";
+import { getItem } from "../../server/db/helper";
 import ModalExample from "./Modal";
 import moment from "moment";
 import "../css/listFeed.less";
-import feedSource from "../../config/source";
 import propTypes from "prop-types";
 
 class ListFeeds extends Component {
@@ -16,8 +16,16 @@ class ListFeeds extends Component {
     super(props);
     this.state = {
       feeds: this.props.feeds,
-      sourceTitle: this.props.sourceTitle
+      sourceTitle: this.props.sourceTitle,
+      lastFetched: ""
     };
+  }
+  componentDidMount() {
+    getItem("FeedSourceInfo", { sourceTitle: this.state.sourceTitle })
+      .promise()
+      .then(d => {
+        this.setState({ lastFetched: d.Item.lastFetched });
+      });
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.feeds !== this.state.feeds) {
@@ -28,8 +36,7 @@ class ListFeeds extends Component {
     }
   }
   render() {
-    let sourceInfo = feedSource[this.state.sourceTitle];
-    let fetchTime = moment(sourceInfo.lastfetch);
+    let fetchTime = moment(this.state.lastFetched).calendar();
     return (
       <div className="feed-container">
         <nav className="navbar navbar-inverse bg-primary">
@@ -40,15 +47,15 @@ class ListFeeds extends Component {
             </p>
             <p className="col-8 flex-last timeShow">
               Updated:
-              {fetchTime.calendar()}
+              {fetchTime}
             </p>
           </div>
         </nav>
-        <ListGroup>
+        <ListGroup id={this.state.sourceTitle} className="list-feeds">
           {Object.keys(this.state.feeds).map((key, index) => {
             var feed = this.state.feeds[key];
             return (
-              <ListGroupItem key={index}>
+              <ListGroupItem className="feed-item" key={index}>
                 <ListGroupItemHeading>
                   <span className="icon-right-open" />
                   <ModalExample

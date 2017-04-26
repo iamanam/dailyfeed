@@ -19,6 +19,7 @@ class SideBar extends Component {
           })
           .promise()
           .then(v => {
+            console.log(v);
             var obj = {};
             obj[i] = v.Item;
             self.setState(obj);
@@ -67,6 +68,7 @@ class SideBar extends Component {
   }
 }
 SideBar.propTypes = {
+  totalItems: propTypes.any,
   handleSourceClick: propTypes.func,
   handleUpdateClick: propTypes.func
 };
