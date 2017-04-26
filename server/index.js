@@ -74,7 +74,7 @@ if (process.env.isDevelopment) {
 app.set("port", process.env.PORT || 3000);
 app.set("host", process.env.HOST || "localhost");
 
-server.listen(3000, function() {
+server.listen(process.env.PORT, function() {
   console.log(
     "%s server listening at http://%s:%s",
     process.env.env,
