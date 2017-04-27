@@ -1,8 +1,9 @@
 import CollectFeed from "./collectFeed";
 import source from "../../config/source.json";
-import { updateItem } from "../db/helper.js";
+// import { updateItem } from "../db/helper.js";
 let feedSource = JSON.parse(JSON.stringify(source));
 
+/*
 const saveFetchInfo = (sourceTitle, feedLength, fileName) => {
   var params = {
     TableName: "FeedSourceInfo",
@@ -19,6 +20,7 @@ const saveFetchInfo = (sourceTitle, feedLength, fileName) => {
   };
   return updateItem(params);
 };
+*/
 
 /**
  * It will fetch the feeds and parse it & save it as json
@@ -27,13 +29,11 @@ const saveFetchInfo = (sourceTitle, feedLength, fileName) => {
  */
 const serveFeed = (sourceTitle, lastUpdate) => {
   if (lastUpdate[sourceTitle]) {
-    var lastFeeds = lastUpdate[sourceTitle]["feeds"];
-    var lastFirstFeedTitle = Object.keys(lastFeeds)[0];
+    var lastFirstFeedTitle = Object.keys(lastUpdate[sourceTitle]["feeds"])[0]; // title of first item of last fetched feed item
   }
-  let getFeedSource = feedSource[sourceTitle];
-  var feedManage = new CollectFeed(
+  let feedManage = new CollectFeed(
     sourceTitle,
-    getFeedSource.sourceUrl,
+    feedSource[sourceTitle].sourceUrl, // get sourceinfo from saved json file
     lastFirstFeedTitle
   );
   let initCollect = feedManage.initCollect().catch(e => {

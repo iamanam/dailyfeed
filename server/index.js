@@ -68,7 +68,7 @@ var server = require("http").createServer(app);
 
 if (process.env.isDevelopment) {
   reload(server, app);
-  //require(path.join(path.join(rootPath, "./dev-server")))(app);
+  require(path.join(path.join(rootPath, "./dev-server")))(app);
 }
 
 app.set("port", process.env.PORT || 3000);
