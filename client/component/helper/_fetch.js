@@ -12,7 +12,6 @@ var _fetch = {
   * @memberOf _fetch.js
   */
   fetchType(sourceTitle, isUpdate) {
-    console.log(sourceTitle, this.cachedFeed);
     if (isUpdate) {
       // if update requested then splitfetch info should be update
       let serveFreshJsonUrl = "latest/" + sourceTitle; // set the server route url ready /servejson/title/update
@@ -46,16 +45,8 @@ var _fetch = {
             resolve(response.json());
           });
       }).then(feeds => {
-        if (isUpdate) {
-          feeds["items"] = feeds["items"]["feeds"];
-        }
-        let mergeFeedsWithOld = Object.assign({}, self.state.feeds, feeds);
-        self.setState({
-          feeds: mergeFeedsWithOld,
-          totalItems: Object.keys(mergeFeedsWithOld["items"]).length
-        }); // as this is served from cache need to reset state
-        // save this for caching purpose
-        self.cachedFeed[sourceTitle] = mergeFeedsWithOld;
+        if (isUpdate) return self.setState({ feeds: feeds["items"] });
+        self.setState({ feeds: feeds });
       });
     } catch (e) {
       throw Error(e);
@@ -63,3 +54,15 @@ var _fetch = {
   }
 };
 export default _fetch;
+
+/*
+       console.log(feeds["feeds"]);
+        //let mergeFeedsWithOld = Object.assign({}, self.state.feeds, feeds);
+        //console.log(mergeFeedsWithOld);
+        self.setState({
+          feeds: feeds["feeds"],
+          totalItems: feeds.feedsLength
+        }); // as this is served from cache need to reset state
+        // save this for caching purpose
+        //self.cachedFeed[sourceTitle] = mergeFeedsWithOld;
+        */

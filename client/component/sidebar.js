@@ -19,7 +19,6 @@ class SideBar extends Component {
           })
           .promise()
           .then(v => {
-            console.log(v);
             var obj = {};
             obj[i] = v.Item;
             self.setState(obj);
@@ -32,10 +31,13 @@ class SideBar extends Component {
   sideItem(clickCtrl, handleUpdateClick) {
     var sourceListView = [];
     for (var i in feedSource) {
+      var className = i === this.props.feedUrl
+        ? "justify-content-between active"
+        : "justify-content-between";
       sourceListView.push(
-        <ListGroupItem key={i} className="justify-content-between">
+        <ListGroupItem key={i} className={className}>
           <a onClick={clickCtrl} href="#" data-href={i}>
-            {i} - <Badge pill>
+            {i} # <Badge pill>
               {this.state[i].feedItem}
             </Badge>
           </a>
@@ -68,7 +70,7 @@ class SideBar extends Component {
   }
 }
 SideBar.propTypes = {
-  totalItems: propTypes.any,
+  feedUrl: propTypes.string,
   handleSourceClick: propTypes.func,
   handleUpdateClick: propTypes.func
 };

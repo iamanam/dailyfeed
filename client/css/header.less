@@ -53,19 +53,34 @@ a {
     width: 100%;
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.16), 0 2px 10px rgba(0, 0, 0, 0.12);
+    border-bottom: 3px solid dimgray
 }
 
 .navbar-component>.navbar {
     -webkit-box-pack: justify;
     -ms-flex-pack: justify;
     justify-content: space-between;
+    a{
+        text-decoration: none
+    }
 }
 
 .navbar>.brand {
-    display: block;
-    font-size: 16px;
+    display: flex;
+    font-size: 18px;
     color: #777;
-    margin: 22px;
+    align-items: center;
+    text-transform: uppercase;
+    &:before{
+        content: "|";
+        margin-right:3px;
+        text-shadow: -5px 5px #827777
+    }
+       &:after{
+        content: "|";
+        margin-left: 3px;
+        text-shadow: 5px 5px #827777
+    }
 }
 
 .navbar>.toggle {

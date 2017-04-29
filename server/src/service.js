@@ -115,6 +115,15 @@ const AutoService = class {
       feed[key] = await serveFeed(key, self.latestUpdates || {});
       return Promise.resolve(feed);
     }
+    /*
+          fs.stat(this.getPath(key, "index.json"), (e, c) => {
+        if (e) return console.error(e);
+        let updateInterval = config.updating.autoUpdateTime * 60000;
+        if (Date.parse(c.mtime) + updateInterval >= Date.now())
+          console.log("Updating ignored.");
+        else ;
+      });
+      */
     var allPromises = [];
     for (var key in source) {
       allPromises.push(promiseBind(key));
@@ -123,7 +132,6 @@ const AutoService = class {
   }
 
   // after fetching files delete json files which is older than 12 hrs
-  // setInterval(deleteOldSource, 60000 * 60 * 8); //
   deleteOldSource() {
     let result = findRemoveSync(path.join(rootPath, "store"), {
       age: { seconds: 3600 * 12 }, // 12 hr
@@ -138,7 +146,7 @@ const AutoService = class {
     try {
       self.serviceRunnng = "true";
       // at first delete outdated json files before merging occur
-      self.deleteOldSource();
+      // self.deleteOldSource();
       // now fetch latest updates
       let fetchUpdateAll = await this.fetchUpdateForAll();
       // after update finish then merge latest feeds with old feeds for each different source
@@ -155,7 +163,7 @@ const AutoService = class {
         return self.writeData(keyName, feedUpdate[keyName]);
       });
     } catch (e) {
-      console.error("problem at runservice. Error is => \n", e);
+      console.log(e);
     } finally {
       self.serviceRunnng = "false";
       self.nextUpdate = Date.now() + 60000 * config.updateInterval;

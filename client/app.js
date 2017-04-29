@@ -3,6 +3,7 @@ import SideBar from "./component/sidebar";
 import Header from "./component/header";
 import FeedContainer from "./component/feedContainer";
 import _fetch from "./component/helper/_fetch";
+import "./css/app.less";
 import "./css/fontello.css";
 require("es6-promise").polyfill();
 
@@ -27,6 +28,7 @@ class app extends Component {
     this.fetchType(this.state.feedUrl);
   }
   handleUpdateClick(event) {
+    console.log("event");
     let getUrl = event.target.attributes.getNamedItem("data-href").value;
     this.setState({ feedUrl: getUrl });
     this.fetchType(getUrl, true);
@@ -41,7 +43,13 @@ class app extends Component {
       this.fetchType(getUrl, false);
     }
   }
-
+  loading() {
+    return (
+      <div className="loading col-sm-12 col-md-9 col-lg-10">
+        <i className="icon-spin6">....loading </i>
+      </div>
+    );
+  }
   render() {
     return (
       <div>
@@ -51,7 +59,9 @@ class app extends Component {
             <SideBar
               handleSourceClick={this.handleSourceClick}
               handleUpdateClick={this.handleUpdateClick}
+              feedUrl={this.state.feedUrl}
             />
+            {!this.state.feeds && this.loading()}
             <FeedContainer
               feeds={this.state.feeds}
               sourceTitle={this.state.feedUrl}
