@@ -8,14 +8,14 @@ export default class FeedContainer extends Component {
     super(props);
     this.cachedFeed = {};
     this.state = {
-      feeds: this.props.feeds,
+      feeds: this.props.feeds["feeds"],
       sourceTitle: this.props.sourceTitle || "prothom-alo"
     };
   }
   // After props change setstate and fetch
   componentWillReceiveProps(nextProps) {
     this.setState({
-      feeds: nextProps.feeds,
+      feeds: nextProps.feeds["feeds"],
       sourceTitle: nextProps.sourceTitle
     });
   }
@@ -25,7 +25,7 @@ export default class FeedContainer extends Component {
         {this.state.feeds &&
           <ListFeed
             sourceTitle={this.state.sourceTitle}
-            feeds={this.state.feeds.items}
+            feeds={this.state.feeds}
           />}
       </div>
     );

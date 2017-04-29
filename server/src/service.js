@@ -1,5 +1,6 @@
 import serveFeed from "./serveFeed";
 import source from "../../config/source.json";
+import config from "../../config/config.json";
 import findRemoveSync from "find-remove";
 import { updateItem } from "../db/helper.js";
 import fs from "fs-extra";
@@ -34,13 +35,16 @@ const AutoService = class {
     };
     return updateItem(params);
   }
-  writeIndex(sourceTitle, dataToWrite, lastSavedFileName) {
+
+  writeData(sourceTitle, dataToWrite) {
+    // after merging happen feed length will change, so update the length
+    dataToWrite.feedsLength = Object.keys(dataToWrite["feeds"]).length;
     try {
       // now save the fetching info in db
       this.saveFetchInfo(
         sourceTitle,
-        Object.keys(dataToWrite).length,
-        lastSavedFileName // its trick to find the latest file saved after index.json
+        dataToWrite.feedsLength,
+        dataToWrite.fileName // its trick to find the latest file saved after index.json
       );
     } catch (e) {
       console.log(e);
@@ -49,51 +53,54 @@ const AutoService = class {
       // now write the file in index.json
       fs.writeJson(
         this.getPath(sourceTitle, "index.json"),
-        { items: dataToWrite },
+        dataToWrite,
         err => {
-          if (err) return console.error(err);
-          console.log("merging success!");
+          if (err)
+            return console.error(
+              "Index.json couldn't be saved. Reason :=> \n" + err
+            );
+          console.log("Index.json for %s saved!", sourceTitle);
         }
       );
     }
   }
   mergeEach(sourceTitle, latestFeedFetched) {
-    // find store folder for each source feed
-    fs.readdir(this.getPath(sourceTitle), (err, res) => {
-      // if err or file in dir is less than one then write latest latestFeedFetched as index.json
-      if (err || res.length === 0) {
-        return this.writeIndex(sourceTitle, latestFeedFetched);
-      }
-      // if there are more files then merge and write it in index.json
-      try {
-        if (typeof res === "object" && res.length >= 1) {
-          let fileMergeTotal = {};
-          res.reverse().map(file => {
-            if (file === "index.json") return; // need to ignore index file as its our destination writie
-            let getFile = this.getPath(sourceTitle, file);
-            if (getFile || getFile !== "" || typeof getFile !== "undefined") {
-              fileMergeTotal[sourceTitle] = Object.assign(
-                {},
-                latestFeedFetched,
-                fs.readJsonSync(getFile)
-              );
-            }
-          });
-
-          // write data to index.json
-          return this.writeIndex(
-            sourceTitle,
-            fileMergeTotal[sourceTitle],
-            res[1] // its a trick to get the latest saved json with random number
-          );
+    let self = this;
+    return new Promise(resolve => {
+      // find store folder for each source feed
+      fs.readdir(this.getPath(sourceTitle), (err, res) => {
+        // if err or file in dir is less than one then write latest latestFeedFetched as index.json
+        if (err || res.length === 0) {
+          return this.writeData(sourceTitle, latestFeedFetched);
         }
-      } catch (e) {
-        // if any occur at file system or in merging then at least write latestFeed in index.json
-        console.error("Error on Merging \n", e);
-        return this.writeIndex(sourceTitle, latestFeedFetched, res[1]);
-      }
+        // if there are more files then merge and write it in index.json
+        try {
+          if (typeof res === "object" && res.length >= 1) {
+            // let fileMergeTotal = {};
+            res.reverse().map(file => {
+              if (file === "index.json") return; // need to ignore index file as its our destination writie
+              let getFile = this.getPath(sourceTitle, file);
+              if (getFile || getFile !== "" || typeof getFile !== "undefined") {
+                // merge only feeds, so we keeping intact other properties of lastfetched while merging feeds only
+                latestFeedFetched["feeds"] = Object.assign(
+                  {},
+                  latestFeedFetched["feeds"],
+                  fs.readJsonSync(getFile)
+                );
+              }
+            });
+            // save updated latestfetched after merged saved as backup
+            self.updatedMerge[sourceTitle] = latestFeedFetched;
+            resolve(latestFeedFetched);
+          }
+        } catch (e) {
+          // if any occur at file system or in merging then at least write latestFeed in index.json
+          console.error("Error on Merging \n", e);
+        }
+      });
     });
   }
+
   /**
  * This function fetch update by calling the serveFeed method
  * It calls out all the source titles included and call the mergeEachSourceFile to merge lates feeds
@@ -101,34 +108,30 @@ const AutoService = class {
  * @param {object} lastUpdate - The last successful update to compare it with latest update
  * @returns Promise
  */
-  async fetchUpdateAuto() {
-    var self = this;
-    let updateStore = {};
-    try {
-      return await Object.keys(source).reduce(function(promise, sourceTitle) {
-        return promise.then(function() {
-          return serveFeed(sourceTitle, self.latestUpdates || {})
-            .catch(e => console.log(e))
-            .then(function(res) {
-              // new update availble then add it on object
-              if (res.isUpdateAvailable) {
-                self.mergeEach(sourceTitle, res["feeds"]);
-                // save update object of each feed source so that it could be returned after loop
-                updateStore[sourceTitle] = res;
-                updateStore[sourceTitle]["lastFetch"] = Date.now();
-              } else console.log("No new update available for %s", sourceTitle);
-              // now merge all timely json file which was saved at regular instance
-              return updateStore;
-            })
-            .catch(e => console.log(e));
-        });
-      }, Promise.resolve());
-    } catch (e) {
-      console.log(e);
+  async fetchUpdateForAll() {
+    let self = this;
+    async function promiseBind(key) {
+      var feed = {};
+      feed[key] = await serveFeed(key, self.latestUpdates || {});
+      return Promise.resolve(feed);
     }
+    /*
+          fs.stat(this.getPath(key, "index.json"), (e, c) => {
+        if (e) return console.error(e);
+        let updateInterval = config.updating.autoUpdateTime * 60000;
+        if (Date.parse(c.mtime) + updateInterval >= Date.now())
+          console.log("Updating ignored.");
+        else ;
+      });
+      */
+    var allPromises = [];
+    for (var key in source) {
+      allPromises.push(promiseBind(key));
+    }
+    return Promise.all(allPromises);
   }
+
   // after fetching files delete json files which is older than 12 hrs
-  // setInterval(deleteOldSource, 60000 * 60 * 8); //
   deleteOldSource() {
     let result = findRemoveSync(path.join(rootPath, "store"), {
       age: { seconds: 3600 * 12 }, // 12 hr
@@ -138,22 +141,33 @@ const AutoService = class {
     console.log("Old json source file which were deleted :", result);
   }
 
-  runService(param) {
+  async runService(param) {
     let self = this;
-    self.serviceRunnng = "true";
-    Promise.resolve(this.fetchUpdateAuto())
-      .catch(e => console.log(e))
-      .then(getAllUpdate => {
-        if (typeof getAllUpdate !== "undefined" && getAllUpdate !== {}) {
-          self.latestUpdates = Object.assign(
-            {},
-            getAllUpdate,
-            self.latestUpdates
-          );
-          self.nextUpdate = Date.now() + 60000 * self.updateInterval;
-        } else console.log("something wrong in runService");
+    try {
+      self.serviceRunnng = "true";
+      // at first delete outdated json files before merging occur
+      // self.deleteOldSource();
+      // now fetch latest updates
+      let fetchUpdateAll = await this.fetchUpdateForAll();
+      // after update finish then merge latest feeds with old feeds for each different source
+      fetchUpdateAll.map(async function(feedUpdate) {
+        let keyName = Object.keys(feedUpdate)[0];
+        // start merging
+        let mergedFeeds = await self.mergeEach(
+          keyName, // source title
+          feedUpdate[keyName] // source values as feeds
+        );
+        // after successful merging write in db and updated feeds in index.json
+        if (mergedFeeds) return self.writeData(keyName, mergedFeeds);
+        // if mergefeeds failed, then as alternative write latest updates ignore old feeds
+        return self.writeData(keyName, feedUpdate[keyName]);
       });
-    self.serviceRunnng = "false";
+    } catch (e) {
+      console.log(e);
+    } finally {
+      self.serviceRunnng = "false";
+      self.nextUpdate = Date.now() + 60000 * config.updateInterval;
+    }
   }
 };
 
