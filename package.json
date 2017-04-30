@@ -58,7 +58,7 @@
     "webpack-dev-server": "^2.4.2"
   },
   "scripts": {
-    "start": "babel-node ./init",
+    "start": "node init.js",
     "dev": "node_modules/nodemon/bin/nodemon.js ./init.js --watch package.json --watch index.js --watch ./store/serveJson --watch server --dev",
     "build": "webpack --env production",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check"
