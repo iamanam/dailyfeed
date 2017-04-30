@@ -5,9 +5,7 @@ import {
   ListGroupItem,
   ListGroupItemText
 } from "reactstrap";
-import { getItem } from "../../server/db/helper";
 import ModalExample from "./Modal";
-import moment from "moment";
 import "../css/listFeed.less";
 import propTypes from "prop-types";
 
@@ -38,7 +36,6 @@ class ListFeeds extends Component {
     }
   }
   render() {
-    let fetchTime = moment(this.state.lastFetched).calendar();
     return (
       <div className="feed-container">
         <nav className="navbar navbar-inverse bg-primary">
@@ -49,7 +46,7 @@ class ListFeeds extends Component {
             </p>
             <p className="col-8 flex-last timeShow">
               Updated:
-              {fetchTime}
+              {this.state.lastFetched}
             </p>
           </div>
         </nav>
@@ -73,7 +70,7 @@ class ListFeeds extends Component {
                   </small>
                 </ListGroupItemText>
                 <small className="text-muted">
-                  {moment(feed.pubDate).calendar()}
+                  {new Date(feed.pubDate).toISOString()}
                 </small>
               </ListGroupItem>
             );

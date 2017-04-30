@@ -6,7 +6,7 @@
   "author": "iamanam",
   "license": "MIT",
   "dependencies": {
-    "aws-sdk": "^2.41.0",
+    "aws-sdk": "^2.48.0",
     "babel-cli": "^6.24.1",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-polyfill": "^6.23.0",
@@ -36,7 +36,8 @@
     "react-dom": "^15.5.3",
     "reactstrap": "^4.5.0",
     "through2": "^2.0.3",
-    "tinyreq": "^3.2.2"
+    "tinyreq": "^3.2.2",
+    "webpack-bundle-size-analyzer": "^2.6.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.0",
@@ -63,6 +64,7 @@
     "style-loader": "^0.16.1",
     "url-loader": "^0.5.8",
     "webpack": "^2.3.3",
+    "webpack-bundle-analyzer": "^2.4.0",
     "webpack-dev-server": "^2.4.2"
   },
   "scripts": {

@@ -20,7 +20,11 @@ app.use(express.static(path.join(rootPath, "store")));
 app.get("/", function(req, res, next) {
   res.sendFile("./index.html", { root: rootPath });
 });
-
+app.get("/*.js", function(req, res, next) {
+  req.url = req.url + ".gz";
+  res.header("Content-Encoding", "gzip");
+  next();
+});
 if (config.updating.autoUpdateFeed) {
   const updateService = new AutoService(config.updating.autoUpdateTime); // intilize the service
   //setTimeout(() => updateService.runService(), 10000); // run the servie at initial startup
@@ -39,6 +43,10 @@ if (config.updating.autoUpdateFeed) {
   });
   app.get("/source_info", async function(req, res, next) {
     let info = await getFeedSourceInfo();
+    info.map(item => {
+      let old = item["Item"]["lastFetched"];
+      item["Item"]["lastFetched"] = moment(old).calendar();
+    });
     if (info) res.json(info);
   });
   app.get("/latest/:feedSource", function(req, res, next) {

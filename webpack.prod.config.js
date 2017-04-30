@@ -1,5 +1,7 @@
 const path = require("path");
 var CompressionPlugin = require("compression-webpack-plugin");
+var WebpackBundleSizeAnalyzerPlugin = require("webpack-bundle-size-analyzer")
+  .WebpackBundleSizeAnalyzerPlugin;
 var base = process.env.PWD;
 const webpack = require("webpack");
 // var HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -44,7 +46,8 @@ module.exports = {
       test: /\.js$|\.css$|\.html$/,
       threshold: 10240,
       minRatio: 0
-    })
+    }),
+    new WebpackBundleSizeAnalyzerPlugin("./reports/plain-report.txt")
   ],
   resolve: {
     extensions: [".js", ".jsx", ".json", ",", ".map"]
