@@ -32,6 +32,8 @@ var _config2 = _interopRequireDefault(_config);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 var rootPath = process.env.rootPath || _path2.default.join(__dirname, "..", "..");
 var Promise = require("bluebird");
 
@@ -71,30 +73,74 @@ var altDes = function altDes(item) {
  * @param {object} item
  * @returns object
  */
-var formatItem = async function formatItem(item, scrapeIdentity) {
-  if (item && (typeof item === "undefined" ? "undefined" : _typeof(item)) === "object") {
-    var descriptin = void 0;
-    if (_config2.default.local.newsSetting.scrapping) {
-      descriptin = await scrapDescription(item.link, scrapeIdentity); // this is the main description fetched from main site
-    } else descriptin = altDes(item); // this is the short descriptin comes from feed after normalize html signs
+var formatItem = function () {
+  var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(item, scrapeIdentity) {
+    var descriptin, img, tag, result;
+    return regeneratorRuntime.wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            if (!(item && (typeof item === "undefined" ? "undefined" : _typeof(item)) === "object")) {
+              _context.next = 15;
+              break;
+            }
 
-    // finding an image from feed is bit of problem, so needed to go through some
-    // extra mechanism
-    var img = item["rss:image"];
-    if (img) {
-      var tag = img["#"] === undefined ? img["url"] ? img["url"]["#"] : "none" : img["#"];
-    }
-    var result = await {
-      title: item.title,
-      description: descriptin,
-      pubDate: item.pubDate,
-      image: tag,
-      link: item.link
-    };
-    return result;
-  }
-  throw Error("item feeds cant be formatted");
-};
+            descriptin = void 0;
+
+            if (!_config2.default.local.newsSetting.scrapping) {
+              _context.next = 8;
+              break;
+            }
+
+            _context.next = 5;
+            return scrapDescription(item.link, scrapeIdentity);
+
+          case 5:
+            descriptin = _context.sent;
+            _context.next = 9;
+            break;
+
+          case 8:
+            descriptin = altDes(item);
+
+          case 9:
+            // this is the short descriptin comes from feed after normalize html signs
+
+            // finding an image from feed is bit of problem, so needed to go through some
+            // extra mechanism
+            img = item["rss:image"];
+
+            if (img) {
+              tag = img["#"] === undefined ? img["url"] ? img["url"]["#"] : "none" : img["#"];
+            }
+            _context.next = 13;
+            return {
+              title: item.title,
+              description: descriptin,
+              pubDate: item.pubDate,
+              image: tag,
+              link: item.link
+            };
+
+          case 13:
+            result = _context.sent;
+            return _context.abrupt("return", result);
+
+          case 15:
+            throw Error("item feeds cant be formatted");
+
+          case 16:
+          case "end":
+            return _context.stop();
+        }
+      }
+    }, _callee, this);
+  }));
+
+  return function formatItem(_x, _x2) {
+    return _ref.apply(this, arguments);
+  };
+}();
 
 var CollectFeed = function CollectFeed(sourceTitle, sourceUrl, lastFirstFeedTitle) {
   var _this = this;
@@ -159,15 +205,37 @@ var CollectFeed = function CollectFeed(sourceTitle, sourceUrl, lastFirstFeedTitl
     });
   };
 
-  this.initCollect = async function () {
-    try {
-      var getXml = await self.fetch(sourceUrl);
-      var processXml = await self.formatXml(getXml.body);
-      return processXml;
-    } catch (error) {
-      throw Error(error);
-    }
-  };
+  this.initCollect = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+    var getXml, processXml;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.prev = 0;
+            _context2.next = 3;
+            return self.fetch(sourceUrl);
+
+          case 3:
+            getXml = _context2.sent;
+            _context2.next = 6;
+            return self.formatXml(getXml.body);
+
+          case 6:
+            processXml = _context2.sent;
+            return _context2.abrupt("return", processXml);
+
+          case 10:
+            _context2.prev = 10;
+            _context2.t0 = _context2["catch"](0);
+            throw Error(_context2.t0);
+
+          case 13:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this, [[0, 10]]);
+  }));
 };
 /*
     return new Promise((resolve, reject) => {

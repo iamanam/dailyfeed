@@ -36,6 +36,8 @@ var _path2 = _interopRequireDefault(_path);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var rootPath = process.env.rootPath || _path2.default.join(__dirname, "..", "..");
@@ -146,28 +148,73 @@ var AutoService = function () {
 
   }, {
     key: "fetchUpdateForAll",
-    value: async function fetchUpdateForAll() {
-      var self = this;
-      async function promiseBind(key) {
-        var feed = {};
-        feed[key] = await (0, _serveFeed2.default)(key, self.latestUpdates || {});
-        return Promise.resolve(feed);
+    value: function () {
+      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+        var promiseBind = function () {
+          var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee(key) {
+            var feed;
+            return regeneratorRuntime.wrap(function _callee$(_context) {
+              while (1) {
+                switch (_context.prev = _context.next) {
+                  case 0:
+                    feed = {};
+                    _context.next = 3;
+                    return (0, _serveFeed2.default)(key, self.latestUpdates || {});
+
+                  case 3:
+                    feed[key] = _context.sent;
+                    return _context.abrupt("return", Promise.resolve(feed));
+
+                  case 5:
+                  case "end":
+                    return _context.stop();
+                }
+              }
+            }, _callee, this);
+          }));
+
+          return function promiseBind(_x) {
+            return _ref2.apply(this, arguments);
+          };
+        }();
+        /*
+              fs.stat(this.getPath(key, "index.json"), (e, c) => {
+            if (e) return console.error(e);
+            let updateInterval = config.updating.autoUpdateTime * 60000;
+            if (Date.parse(c.mtime) + updateInterval >= Date.now())
+              console.log("Updating ignored.");
+            else ;
+          });
+          */
+
+
+        var self, allPromises, key;
+        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                self = this;
+                allPromises = [];
+
+                for (key in _source2.default) {
+                  allPromises.push(promiseBind(key));
+                }
+                return _context2.abrupt("return", Promise.all(allPromises));
+
+              case 4:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function fetchUpdateForAll() {
+        return _ref.apply(this, arguments);
       }
-      /*
-            fs.stat(this.getPath(key, "index.json"), (e, c) => {
-          if (e) return console.error(e);
-          let updateInterval = config.updating.autoUpdateTime * 60000;
-          if (Date.parse(c.mtime) + updateInterval >= Date.now())
-            console.log("Updating ignored.");
-          else ;
-        });
-        */
-      var allPromises = [];
-      for (var key in _source2.default) {
-        allPromises.push(promiseBind(key));
-      }
-      return Promise.all(allPromises);
-    }
+
+      return fetchUpdateForAll;
+    }()
 
     // after fetching files delete json files which is older than 12 hrs
 
@@ -183,33 +230,97 @@ var AutoService = function () {
     }
   }, {
     key: "runService",
-    value: async function runService(param) {
-      var self = this;
-      try {
-        self.serviceRunnng = "true";
-        // at first delete outdated json files before merging occur
-        // self.deleteOldSource();
-        // now fetch latest updates
-        var fetchUpdateAll = await this.fetchUpdateForAll();
-        // after update finish then merge latest feeds with old feeds for each different source
-        fetchUpdateAll.map(async function (feedUpdate) {
-          var keyName = Object.keys(feedUpdate)[0];
-          // start merging
-          var mergedFeeds = await self.mergeEach(keyName, // source title
-          feedUpdate[keyName] // source values as feeds
-          );
-          // after successful merging write in db and updated feeds in index.json
-          if (mergedFeeds) return self.writeData(keyName, mergedFeeds);
-          // if mergefeeds failed, then as alternative write latest updates ignore old feeds
-          return self.writeData(keyName, feedUpdate[keyName]);
-        });
-      } catch (e) {
-        console.log(e);
-      } finally {
-        self.serviceRunnng = "false";
-        self.nextUpdate = Date.now() + 60000 * _config2.default.updateInterval;
+    value: function () {
+      var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(param) {
+        var self, fetchUpdateAll;
+        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+          while (1) {
+            switch (_context4.prev = _context4.next) {
+              case 0:
+                self = this;
+                _context4.prev = 1;
+
+                self.serviceRunnng = "true";
+                // at first delete outdated json files before merging occur
+                // self.deleteOldSource();
+                // now fetch latest updates
+                _context4.next = 5;
+                return this.fetchUpdateForAll();
+
+              case 5:
+                fetchUpdateAll = _context4.sent;
+
+                // after update finish then merge latest feeds with old feeds for each different source
+                fetchUpdateAll.map(function () {
+                  var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(feedUpdate) {
+                    var keyName, mergedFeeds;
+                    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                      while (1) {
+                        switch (_context3.prev = _context3.next) {
+                          case 0:
+                            keyName = Object.keys(feedUpdate)[0];
+                            // start merging
+
+                            _context3.next = 3;
+                            return self.mergeEach(keyName, // source title
+                            feedUpdate[keyName] // source values as feeds
+                            );
+
+                          case 3:
+                            mergedFeeds = _context3.sent;
+
+                            if (!mergedFeeds) {
+                              _context3.next = 6;
+                              break;
+                            }
+
+                            return _context3.abrupt("return", self.writeData(keyName, mergedFeeds));
+
+                          case 6:
+                            return _context3.abrupt("return", self.writeData(keyName, feedUpdate[keyName]));
+
+                          case 7:
+                          case "end":
+                            return _context3.stop();
+                        }
+                      }
+                    }, _callee3, this);
+                  }));
+
+                  return function (_x3) {
+                    return _ref4.apply(this, arguments);
+                  };
+                }());
+                _context4.next = 12;
+                break;
+
+              case 9:
+                _context4.prev = 9;
+                _context4.t0 = _context4["catch"](1);
+
+                console.log(_context4.t0);
+
+              case 12:
+                _context4.prev = 12;
+
+                self.serviceRunnng = "false";
+                self.nextUpdate = Date.now() + 60000 * _config2.default.updateInterval;
+                return _context4.finish(12);
+
+              case 16:
+              case "end":
+                return _context4.stop();
+            }
+          }
+        }, _callee4, this, [[1, 9, 12, 16]]);
+      }));
+
+      function runService(_x2) {
+        return _ref3.apply(this, arguments);
       }
-    }
+
+      return runService;
+    }()
   }]);
 
   return AutoService;

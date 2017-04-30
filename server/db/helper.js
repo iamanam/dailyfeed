@@ -15,6 +15,8 @@ var _source2 = _interopRequireDefault(_source);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+
 var deletTable = exports.deletTable = function deletTable(dyn, tableName) {
   dyn.deleteTable({
     TableName: tableName
@@ -91,22 +93,70 @@ var updateItem = exports.updateItem = function updateItem(params) {
   });
 };
 
-var getFeedSourceInfo = exports.getFeedSourceInfo = async function getFeedSourceInfo() {
-  var data = [];
-  try {
-    var f = function f(i) {
-      return _initDb.docClient.get({
-        TableName: "FeedSourceInfo",
-        Key: { sourceTitle: i }
-      }).promise();
-    };
-    Object.keys(_source2.default).map(async function (i) {
-      data.push(f(i));
-    });
-    var result = await Promise.all(data);
-  } catch (e) {
-    console.log(e);
-    return e;
-  }
-  return result;
-};
+var getFeedSourceInfo = exports.getFeedSourceInfo = function () {
+  var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+    var data, f, result;
+    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            data = [];
+            _context2.prev = 1;
+
+            f = function f(i) {
+              return _initDb.docClient.get({
+                TableName: "FeedSourceInfo",
+                Key: { sourceTitle: i }
+              }).promise();
+            };
+
+            Object.keys(_source2.default).map(function () {
+              var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee(i) {
+                return regeneratorRuntime.wrap(function _callee$(_context) {
+                  while (1) {
+                    switch (_context.prev = _context.next) {
+                      case 0:
+                        data.push(f(i));
+
+                      case 1:
+                      case "end":
+                        return _context.stop();
+                    }
+                  }
+                }, _callee, this);
+              }));
+
+              return function (_x) {
+                return _ref2.apply(this, arguments);
+              };
+            }());
+            _context2.next = 6;
+            return Promise.all(data);
+
+          case 6:
+            result = _context2.sent;
+            _context2.next = 13;
+            break;
+
+          case 9:
+            _context2.prev = 9;
+            _context2.t0 = _context2["catch"](1);
+
+            console.log(_context2.t0);
+            return _context2.abrupt("return", _context2.t0);
+
+          case 13:
+            return _context2.abrupt("return", result);
+
+          case 14:
+          case "end":
+            return _context2.stop();
+        }
+      }
+    }, _callee2, this, [[1, 9]]);
+  }));
+
+  return function getFeedSourceInfo() {
+    return _ref.apply(this, arguments);
+  };
+}();
