@@ -25,7 +25,9 @@
     "reactstrap": "^4.5.0",
     "through2": "^2.0.3",
     "tinyreq": "^3.2.2",
-    "webpack-hot-middleware": "^2.18.0"
+    "webpack-hot-middleware": "^2.18.0",
+    "babel-loader": "^6.4.1",
+    "babel-preset-react": "^6.23.0"
   },
   "devDependencies": {
     "css-loader": "^0.28.0",
