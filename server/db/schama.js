@@ -1,8 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 /**
  * Schama to save feedSource
  * @param {any} sourceTitle 
@@ -12,7 +7,7 @@ Object.defineProperty(exports, "__esModule", {
  * @returns 
  */
 
-var feedSourceSchama = exports.feedSourceSchama = function feedSourceSchama(sourceTitle, sourceUrl, scrapeIdentity) {
+export const feedSourceSchama = (sourceTitle, sourceUrl, scrapeIdentity) => {
   return {
     sources: {
       sourceTitle: sourceTitle,
@@ -22,7 +17,7 @@ var feedSourceSchama = exports.feedSourceSchama = function feedSourceSchama(sour
   };
 };
 
-var feedSourceInfoSchama = exports.feedSourceInfoSchama = function feedSourceInfoSchama(sourceTitle, feedItem) {
+export const feedSourceInfoSchama = (sourceTitle, feedItem) => {
   return {
     sourceTitle: sourceTitle,
     lastFetched: Date.now(),
@@ -30,8 +25,8 @@ var feedSourceInfoSchama = exports.feedSourceInfoSchama = function feedSourceInf
   };
 };
 
-var feedSourceSchamaKeys = exports.feedSourceSchamaKeys = function feedSourceSchamaKeys() {
+export const feedSourceSchamaKeys = () => {
   return Object.keys(feedSourceSchama);
 };
 
-exports.default = feedSourceSchama;
+export default feedSourceSchama;

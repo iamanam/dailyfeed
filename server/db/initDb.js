@@ -1,8 +1,3 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
 var AWS = require("aws-sdk");
 AWS.config.update({
   accessKeyId: process.env.key_id,
@@ -11,5 +6,5 @@ AWS.config.update({
   region: "ap-south-1"
 });
 
-var dyn = exports.dyn = new AWS.DynamoDB();
-var docClient = exports.docClient = new AWS.DynamoDB.DocumentClient();
+export var dyn = new AWS.DynamoDB();
+export var docClient = new AWS.DynamoDB.DocumentClient();

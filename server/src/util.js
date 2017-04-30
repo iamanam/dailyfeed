@@ -1,16 +1,5 @@
-"use strict";
-
-Object.defineProperty(exports, "__esModule", {
-  value: true
-});
-exports._fetch = undefined;
-
-var _isomorphicFetch = require("isomorphic-fetch");
-
-var _isomorphicFetch2 = _interopRequireDefault(_isomorphicFetch);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+// import path from 'path' import fs from 'fs'
+import fetch from "isomorphic-fetch";
 require("es6-promise").polyfill();
 // const rootPath = process.env.rootPath || path.join(__dirname, '..', '..')
 
@@ -19,9 +8,8 @@ require("es6-promise").polyfill();
  * @param {string} sourceUrl
  * @returns stream
  */
-// import path from 'path' import fs from 'fs'
-var _fetch = function _fetch(sourceUrl) {
-  return (0, _isomorphicFetch2.default)(sourceUrl).then(function (res, err) {
+const _fetch = sourceUrl => {
+  return fetch(sourceUrl).then((res, err) => {
     /*
     if (res.status === 200) {
       return res
@@ -31,4 +19,4 @@ var _fetch = function _fetch(sourceUrl) {
   });
 };
 
-exports._fetch = _fetch;
+export { _fetch };
