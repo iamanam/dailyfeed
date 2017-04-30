@@ -1,4 +1,5 @@
 const path = require("path");
+var CompressionPlugin = require("compression-webpack-plugin");
 var base = process.env.PWD;
 const webpack = require("webpack");
 // var HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -7,7 +8,7 @@ module.exports = {
   entry: {
     app: [path.join(base, "client", "index")]
   },
-  devtool: "devtool",
+  devtool: "cheap-module-source-map",
   // this is a default value; just be aware of it context: path.resolve(__dirname,
   // 'app'),
   output: {
@@ -16,18 +17,34 @@ module.exports = {
     publicPath: "/assets/"
   },
   plugins: [
-    // added this thing!
-    new (webpack.optimize.OccurenceOrderPlugin ||
-      webpack.optimize.OccurrenceOrderPlugin)(),
-    new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.NamedModulesPlugin(),
     new webpack.DefinePlugin({
-      "process.env": {
-        NODE_ENV: JSON.stringify("production")
-      }
+      "process.env.NODE_ENV": '"production"'
+    }),
+    new webpack.optimize.OccurrenceOrderPlugin(),
+    new webpack.NoErrorsPlugin(),
+    new webpack.optimize.UglifyJsPlugin({
+      mangle: true,
+      compress: {
+        warnings: false, // Suppress uglification warnings
+        pure_getters: true,
+        unsafe: true,
+        unsafe_comps: true,
+        screw_ie8: true
+      },
+      output: {
+        comments: false
+      },
+      exclude: [/\.min\.js$/gi] // skip pre-minified libs
+    }),
+    // new webpack.IgnorePlugin(/^\.\/locale$/),
+    new webpack.NoErrorsPlugin(),
+    new CompressionPlugin({
+      asset: "[path].gz[query]",
+      algorithm: "gzip",
+      test: /\.js$|\.css$|\.html$/,
+      threshold: 10240,
+      minRatio: 0
     })
-    // new AssetsPlugin()
-    // new HtmlWebpackPlugin({title: "React express", template: "public/template.ejs"})
   ],
   resolve: {
     extensions: [".js", ".jsx", ".json", ",", ".map"]
@@ -56,14 +73,5 @@ module.exports = {
         loader: "json-loader"
       }
     ]
-  },
-  devServer: {
-    filename: "bundle.js",
-    // It's a required option.
-    publicPath: "http://localhost:9000/assets/",
-    port: 9000,
-    hot: true,
-    stats: "errors-only",
-    inline: true
   }
 };

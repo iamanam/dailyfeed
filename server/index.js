@@ -1,8 +1,10 @@
 import { getFeedSourceInfo } from "./db/helper";
 import AutoService from "../server/src/service";
+var compression = require("compression");
 const path = require("path");
 const express = require("express");
 const app = express();
+app.use(compression());
 const config = require("../config/config.json");
 const moment = require("moment");
 // require("../config/runDyno");
@@ -14,14 +16,16 @@ app.use(express.static(path.join(rootPath, "client")));
 app.use(express.static(path.join(rootPath, "store")));
 
 // -------------import routing Include server routes as a middleware
+
 app.get("/", function(req, res, next) {
   res.sendFile("./index.html", { root: rootPath });
+  next();
 });
 
 if (config.updating.autoUpdateFeed) {
   const updateService = new AutoService(config.updating.autoUpdateTime); // intilize the service
-  setTimeout(() => updateService.runService(), 10000); // run the servie at initial startup
-  //setTimeout(() => updateService.deleteOldSource(), 20000);
+  //setTimeout(() => updateService.runService(), 10000); // run the servie at initial startup
+  setInterval(() => updateService.deleteOldSource(), 60000 * 60 * 6);
   setInterval(
     () => updateService.runService(),
     config.updating.autoUpdateTime * 60000
