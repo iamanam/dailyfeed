@@ -8,6 +8,7 @@ yarn-error.log*
 .vscode
 test*
 store
+webpack.config.js
 config/runDyno.js
 old
 inspiration

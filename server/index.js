@@ -52,14 +52,6 @@ if (config.updating.autoUpdateFeed) {
 }
 
 var server = require("http").createServer(app);
-
-if (process.env.isDevelopment) {
-  require("pretty-error").start();
-  const reload = require("reload");
-  reload(server, app);
-  require(path.join(path.join(rootPath, "./dev-server")))(app);
-}
-
 app.set("port", process.env.PORT || 3000);
 app.set("host", process.env.HOST || "localhost");
 
