@@ -26,6 +26,7 @@ export default class FeedContainer extends Component {
           <ListFeed
             sourceTitle={this.state.sourceTitle}
             feeds={this.state.feeds}
+            lastFetched={this.props.lastFetched}
           />}
       </div>
     );
@@ -34,5 +35,6 @@ export default class FeedContainer extends Component {
 
 FeedContainer.propTypes = {
   feeds: propTypes.any,
-  sourceTitle: propTypes.string
+  sourceTitle: propTypes.string,
+  lastFetched: propTypes.lastFetched
 };

@@ -1,10 +1,10 @@
+import { getFeedSourceInfo } from "./db/helper";
 import AutoService from "../server/src/service";
 const path = require("path");
 const express = require("express");
 const app = express();
 const config = require("../config/config.json");
 const moment = require("moment");
-
 // require("../config/runDyno");
 const rootPath = process.env.rootPath;
 
@@ -33,6 +33,10 @@ if (config.updating.autoUpdateFeed) {
       nextUpdate: moment(updateService.nextUpdate).fromNow(),
       feeds: updateService.updatedMerge
     });
+  });
+  app.get("/source_info", async function(req, res, next) {
+    let info = await getFeedSourceInfo();
+    if (info) res.json(info);
   });
   app.get("/latest/:feedSource", function(req, res, next) {
     let sourceName = req.params.feedSource;

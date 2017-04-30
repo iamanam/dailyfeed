@@ -17,15 +17,17 @@ class ListFeeds extends Component {
     this.state = {
       feeds: this.props.feeds,
       sourceTitle: this.props.sourceTitle,
-      lastFetched: ""
+      lastFetched: this.props.lastFetched
     };
   }
   componentDidMount() {
+    /*
     getItem("FeedSourceInfo", { sourceTitle: this.state.sourceTitle })
       .promise()
       .then(d => {
         this.setState({ lastFetched: d.Item.lastFetched });
       });
+      */
   }
   componentWillReceiveProps(nextProps) {
     if (nextProps.feeds !== this.state.feeds) {
@@ -83,6 +85,7 @@ class ListFeeds extends Component {
 }
 ListFeeds.propTypes = {
   feeds: propTypes.object,
-  sourceTitle: propTypes.string
+  sourceTitle: propTypes.string,
+  lastFetched: propTypes.string
 };
 export default ListFeeds;

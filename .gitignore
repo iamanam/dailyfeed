@@ -8,9 +8,8 @@ yarn-error.log*
 .vscode
 test*
 store
+config/runDyno.js
 old
-config
-server/db.js
 inspiration
 # Runtime data
 pids

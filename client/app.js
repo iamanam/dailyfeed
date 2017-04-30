@@ -3,6 +3,7 @@ import SideBar from "./component/sidebar";
 import Header from "./component/header";
 import FeedContainer from "./component/feedContainer";
 import _fetch from "./component/helper/_fetch";
+import fetch from "isomorphic-fetch";
 import "./css/app.less";
 import "./css/fontello.css";
 require("es6-promise").polyfill();
@@ -16,12 +17,25 @@ class app extends Component {
     this.cachedFeed = {};
     this.state = {
       feedUrl: "prothom-alo",
-      feeds: ""
+      feeds: "",
+      sourceInfo: ""
     };
     this.fetch = _fetch.fetch.bind(this);
     this.fetchType = _fetch.fetchType.bind(this);
   }
-
+  componentWillMount() {
+    var self = this;
+    (async function getInfo() {
+      var res = await fetch("/source_info");
+      var jsonData = await res.json();
+      var stateObj = {};
+      jsonData.map(item => {
+        let i = item["Item"];
+        stateObj[i["sourceTitle"]] = i;
+      });
+      self.setState({ sourceInfo: stateObj });
+    })();
+  }
   // start fetching after initial load, this should be defualt feed source user
   // want
   componentDidMount() {
@@ -50,21 +64,31 @@ class app extends Component {
       </div>
     );
   }
+  sideBar() {
+    return (
+      <SideBar
+        handleSourceClick={this.handleSourceClick}
+        handleUpdateClick={this.handleUpdateClick}
+        feedUrl={this.state.feedUrl}
+        sourceInfo={this.state.sourceInfo}
+      />
+    );
+  }
   render() {
+    if (this.state.sourceInfo[this.state.feedUrl]) {
+      var lastFetched = this.state.sourceInfo[this.state.feedUrl].lastFetched;
+    }
     return (
       <div>
         <Header />
         <div className="container-fluid">
           <div className="row">
-            <SideBar
-              handleSourceClick={this.handleSourceClick}
-              handleUpdateClick={this.handleUpdateClick}
-              feedUrl={this.state.feedUrl}
-            />
+            {this.state.sourceInfo && this.sideBar()}
             {!this.state.feeds && this.loading()}
             <FeedContainer
               feeds={this.state.feeds}
               sourceTitle={this.state.feedUrl}
+              lastFetched={lastFetched}
             />
           </div>
         </div>

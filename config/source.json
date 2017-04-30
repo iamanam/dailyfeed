@@ -1,0 +1,12 @@
+{
+    "prothom-alo": {
+        "sourceUrl": "http://www.prothom-alo.com/feed/",
+        "feedLength": 20059,
+        "lastfetch": 1492083903303
+    },
+    "bdnews24": {
+        "sourceUrl": "http://bangla.bdnews24.com/?widgetName=rssfeed&widgetId=1151&getXmlFeed=true",
+        "feedLength": 15,
+        "lastfetch": 1492087048112
+    }
+}

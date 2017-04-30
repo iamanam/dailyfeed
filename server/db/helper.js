@@ -1,6 +1,6 @@
 import { dyn, docClient } from "./initDb";
 import { indexName } from "./table";
-
+import source from "../../config/source.json";
 export const deletTable = (dyn, tableName) => {
   dyn.deleteTable(
     {
@@ -86,4 +86,26 @@ export const updateItem = params => {
       );
     }
   });
+};
+
+export const getFeedSourceInfo = async function() {
+  var data = [];
+  try {
+    var f = i => {
+      return docClient
+        .get({
+          TableName: "FeedSourceInfo",
+          Key: { sourceTitle: i }
+        })
+        .promise();
+    };
+    Object.keys(source).map(async function(i) {
+      data.push(f(i));
+    });
+    var result = await Promise.all(data);
+  } catch (e) {
+    console.log(e);
+    return e;
+  }
+  return result;
 };

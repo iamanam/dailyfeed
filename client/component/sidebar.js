@@ -3,29 +3,11 @@ import propTypes from "prop-types";
 import { ListGroup, ListGroupItem, Badge } from "reactstrap";
 import feedSource from "../../config/source.json";
 import "../css/sidebar.less";
-import { docClient } from "../../server/db/initDb";
 
 class SideBar extends Component {
-  componentWillMount() {
-    var self = this;
-    self.state = {};
-    (async function getInfo(sourceTitle) {
-      await Object.keys(feedSource).map(i => {
-        self.state[i] = "";
-        return docClient
-          .get({
-            TableName: "FeedSourceInfo",
-            Key: { sourceTitle: i }
-          })
-          .promise()
-          .then(v => {
-            var obj = {};
-            obj[i] = v.Item;
-            self.setState(obj);
-          });
-      });
-      return self.state;
-    })();
+  constructor(props) {
+    super(props);
+    this.state = { info: props.sourceInfo };
   }
 
   sideItem(clickCtrl, handleUpdateClick) {
@@ -38,7 +20,7 @@ class SideBar extends Component {
         <ListGroupItem key={i} className={className}>
           <a onClick={clickCtrl} href="#" data-href={i}>
             {i} # <Badge pill>
-              {this.state[i].feedItem}
+              {this.state.info[i].feedItem}
             </Badge>
           </a>
           <span>
@@ -55,16 +37,20 @@ class SideBar extends Component {
     }
     return sourceListView;
   }
-
+  listRender() {
+    return (
+      <ListGroup>
+        {this.sideItem(
+          this.props.handleSourceClick,
+          this.props.handleUpdateClick
+        )}
+      </ListGroup>
+    );
+  }
   render() {
     return (
       <div className="soucelist col-sm-12 col-md-3 col-lg-2">
-        <ListGroup>
-          {this.sideItem(
-            this.props.handleSourceClick,
-            this.props.handleUpdateClick
-          )}
-        </ListGroup>
+        {this.props.sourceInfo && this.listRender()}
       </div>
     );
   }
@@ -72,6 +58,24 @@ class SideBar extends Component {
 SideBar.propTypes = {
   feedUrl: propTypes.string,
   handleSourceClick: propTypes.func,
-  handleUpdateClick: propTypes.func
+  handleUpdateClick: propTypes.func,
+  sourceInfo: propTypes.any
 };
 export default SideBar;
+
+/* 
+     await Object.keys(feedSource).map(i => {
+        self.state[i] = "";
+        return docClient
+          .get({
+            TableName: "FeedSourceInfo",
+            Key: { sourceTitle: i }
+          })
+          .promise()
+          .then(v => {
+            var obj = {};
+            obj[i] = v.Item;
+            self.setState(obj);
+          });
+      });
+      */
