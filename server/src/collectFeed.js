@@ -1,11 +1,38 @@
-import fs from "fs-extra";
-import path from "path";
-import through2 from "through2";
-import Feedparser from "feedparser";
-import { _fetch } from "./util";
-import { getSource } from "../../store/index";
-import config from "../../config/config.json";
-const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+var _fsExtra = require("fs-extra");
+
+var _fsExtra2 = _interopRequireDefault(_fsExtra);
+
+var _path = require("path");
+
+var _path2 = _interopRequireDefault(_path);
+
+var _through = require("through2");
+
+var _through2 = _interopRequireDefault(_through);
+
+var _feedparser = require("feedparser");
+
+var _feedparser2 = _interopRequireDefault(_feedparser);
+
+var _util = require("./util");
+
+var _index = require("../../store/index");
+
+var _config = require("../../config/config.json");
+
+var _config2 = _interopRequireDefault(_config);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var rootPath = process.env.rootPath || _path2.default.join(__dirname, "..", "..");
 var Promise = require("bluebird");
 
 /**
@@ -15,14 +42,14 @@ var Promise = require("bluebird");
  * @param {any} scrapeIdentity - The tag contains the details of the new we interested.
  * @returns promise
  */
-const scrapDescription = (itemUrl, scrapeIdentity) => {
-  const cheerioReq = require("cheerio-req");
-  return new Promise(resolve => {
-    cheerioReq(itemUrl, (err, $) => {
+var scrapDescription = function scrapDescription(itemUrl, scrapeIdentity) {
+  var cheerioReq = require("cheerio-req");
+  return new Promise(function (resolve) {
+    cheerioReq(itemUrl, function (err, $) {
       var totalNews = [];
       if (err) console.log(err);
-      let $links = $(scrapeIdentity);
-      for (let i = 0; i < $links.length; ++i) {
+      var $links = $(scrapeIdentity);
+      for (var i = 0; i < $links.length; ++i) {
         totalNews.push($links.eq(i).text());
       }
       resolve(totalNews);
@@ -30,18 +57,13 @@ const scrapDescription = (itemUrl, scrapeIdentity) => {
   });
 };
 
-const altDes = item => {
-  const htmlToText = require("html-to-text");
-  return htmlToText.fromString(
-    item.description ||
-      item["content:encoded"][1] ||
-      "no description available",
-    {
-      hideLinkHrefIfSameAsText: true,
-      ignoreHref: true,
-      ignoreImage: true
-    }
-  );
+var altDes = function altDes(item) {
+  var htmlToText = require("html-to-text");
+  return htmlToText.fromString(item.description || item["content:encoded"][1] || "no description available", {
+    hideLinkHrefIfSameAsText: true,
+    ignoreHref: true,
+    ignoreImage: true
+  });
 };
 /**
  * This will exculde only the required information form stream source for each feed
@@ -49,22 +71,20 @@ const altDes = item => {
  * @param {object} item
  * @returns object
  */
-const formatItem = async function(item, scrapeIdentity) {
-  if (item && typeof item === "object") {
-    let descriptin;
-    if (config.local.newsSetting.scrapping) {
+var formatItem = async function formatItem(item, scrapeIdentity) {
+  if (item && (typeof item === "undefined" ? "undefined" : _typeof(item)) === "object") {
+    var descriptin = void 0;
+    if (_config2.default.local.newsSetting.scrapping) {
       descriptin = await scrapDescription(item.link, scrapeIdentity); // this is the main description fetched from main site
     } else descriptin = altDes(item); // this is the short descriptin comes from feed after normalize html signs
 
     // finding an image from feed is bit of problem, so needed to go through some
     // extra mechanism
-    let img = item["rss:image"];
+    var img = item["rss:image"];
     if (img) {
-      var tag = img["#"] === undefined
-        ? img["url"] ? img["url"]["#"] : "none"
-        : img["#"];
+      var tag = img["#"] === undefined ? img["url"] ? img["url"]["#"] : "none" : img["#"];
     }
-    let result = await {
+    var result = await {
       title: item.title,
       description: descriptin,
       pubDate: item.pubDate,
@@ -76,78 +96,73 @@ const formatItem = async function(item, scrapeIdentity) {
   throw Error("item feeds cant be formatted");
 };
 
-const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
+var CollectFeed = function CollectFeed(sourceTitle, sourceUrl, lastFirstFeedTitle) {
+  var _this = this;
+
   this.sourceUrl = sourceUrl;
   this.sourceTitle = sourceTitle;
-  this.scrapTag = getSource(sourceTitle).jsonFile;
+  this.scrapTag = (0, _index.getSource)(sourceTitle).jsonFile;
   this.feedCollection = [];
-  this.fetch = _fetch;
-  this.writeFile = (fileName, fileToWrite) => {
+  this.fetch = _util._fetch;
+  this.writeFile = function (fileName, fileToWrite) {
     try {
       if (typeof fileToWrite !== "undefined") {
-        fs.writeJson(
-          path.join(rootPath, "store", this.sourceTitle, fileName + ".json"),
-          fileToWrite
-        );
-        console.log("Feed parsed from %s", this.sourceTitle);
+        _fsExtra2.default.writeJson(_path2.default.join(rootPath, "store", _this.sourceTitle, fileName + ".json"), fileToWrite);
+        console.log("Feed parsed from %s", _this.sourceTitle);
       }
     } catch (e) {
       console.log(e);
     }
   };
-  this.processWrite = (fileName, dataToWrite) => {
-    let self = this;
-    let fileFolder = path.join(rootPath, "store", this.sourceTitle);
-    fs.ensureDir(fileFolder, e => {
+  this.processWrite = function (fileName, dataToWrite) {
+    var self = _this;
+    var fileFolder = _path2.default.join(rootPath, "store", _this.sourceTitle);
+    _fsExtra2.default.ensureDir(fileFolder, function (e) {
       self.writeFile(fileName, dataToWrite);
     });
   };
   var self = this;
-  this.formatXml = Response => {
-    return new Promise((resolve, reject) => {
+  this.formatXml = function (Response) {
+    return new Promise(function (resolve, reject) {
       var feedCollection = {};
-      return Response.pipe(new Feedparser())
-        .pipe(
-          through2.obj(function(chunk, enc, callback) {
-            // here it will cross check with old feed first item with newly chunked from stream
-            // if old feed first item title is equal with new first source item then we will cancel
-            // fetching as there is nothing new to update
-            if (chunk.title === lastFirstFeedTitle) {
-              return resolve({ isUpdateAvailable: false });
-            }
-            // if new items available then process will be continued
-            new Promise((resolve, reject) => {
-              resolve(formatItem(chunk, self.scrapTag));
-            }).then(v => {
-              this.push(v);
-              callback();
-            });
-          })
-        )
-        .on("error", e => {
-          throw Error(e);
-        })
-        .on("data", data => {
-          feedCollection[data.title] = data;
-        })
-        .on("end", () => {
-          var timeNow = Date.now(); // this time will use as a refrence into file name
+      return Response.pipe(new _feedparser2.default()).pipe(_through2.default.obj(function (chunk, enc, callback) {
+        var _this2 = this;
 
-          this.processWrite(timeNow, feedCollection);
-          resolve({
-            feedsLength: Object.keys(feedCollection).length,
-            fileName: timeNow + ".json",
-            feeds: feedCollection,
-            isUpdateAvailable: true
-          });
+        // here it will cross check with old feed first item with newly chunked from stream
+        // if old feed first item title is equal with new first source item then we will cancel
+        // fetching as there is nothing new to update
+        if (chunk.title === lastFirstFeedTitle) {
+          return resolve({ isUpdateAvailable: false });
+        }
+        // if new items available then process will be continued
+        new Promise(function (resolve, reject) {
+          resolve(formatItem(chunk, self.scrapTag));
+        }).then(function (v) {
+          _this2.push(v);
+          callback();
         });
+      })).on("error", function (e) {
+        throw Error(e);
+      }).on("data", function (data) {
+        feedCollection[data.title] = data;
+      }).on("end", function () {
+        var timeNow = Date.now(); // this time will use as a refrence into file name
+
+        _this.processWrite(timeNow, feedCollection);
+        resolve({
+          feedsLength: Object.keys(feedCollection).length,
+          fileName: timeNow + ".json",
+          feeds: feedCollection,
+          isUpdateAvailable: true
+        });
+      });
     });
   };
 
-  this.initCollect = async function() {
+  this.initCollect = async function () {
     try {
-      let getXml = await self.fetch(sourceUrl);
-      let processXml = await self.formatXml(getXml.body);
+      var getXml = await self.fetch(sourceUrl);
+      var processXml = await self.formatXml(getXml.body);
       return processXml;
     } catch (error) {
       throw Error(error);
@@ -167,4 +182,4 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
     });
     */
 
-export default CollectFeed;
+exports.default = CollectFeed;

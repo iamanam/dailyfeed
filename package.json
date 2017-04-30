@@ -7,7 +7,6 @@
   "license": "MIT",
   "dependencies": {
     "aws-sdk": "^2.41.0",
-    "babel-cli": "^6.24.1",
     "bluebird": "^3.5.0",
     "bootstrap": "4.0.0-alpha.6",
     "cheerio-req": "^1.1.4",
@@ -58,7 +57,7 @@
     "webpack-dev-server": "^2.4.2"
   },
   "scripts": {
-    "start": "./node_modules/babel-cli/bin/babel-node.js ./init.js",
+    "start": "node ./init.js",
     "dev": "node_modules/nodemon/bin/nodemon.js ./init.js --watch package.json --watch index.js --watch ./store/serveJson --watch server --dev",
     "build": "NODE_ENV=production webpack --config ./webpack.prod.config.js --progress --colors",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check"

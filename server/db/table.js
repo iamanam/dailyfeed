@@ -1,82 +1,72 @@
-export const FeedSourceInfo = {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var FeedSourceInfo = exports.FeedSourceInfo = {
   TableName: "FeedSourceInfo",
   AttributeDefinitions: [{ AttributeName: "sourceTitle", AttributeType: "S" }],
   KeySchema: [{ AttributeName: "sourceTitle", KeyType: "HASH" }],
-  GlobalSecondaryIndexes: [
-    {
-      IndexName: "findBySourceInfoByTitle",
-      KeySchema: [{ AttributeName: "sourceTitle", KeyType: "HASH" }],
-      Projection: {
-        ProjectionType: "ALL"
-      },
-      ProvisionedThroughput: {
-        ReadCapacityUnits: 2,
-        WriteCapacityUnits: 2
-      }
+  GlobalSecondaryIndexes: [{
+    IndexName: "findBySourceInfoByTitle",
+    KeySchema: [{ AttributeName: "sourceTitle", KeyType: "HASH" }],
+    Projection: {
+      ProjectionType: "ALL"
+    },
+    ProvisionedThroughput: {
+      ReadCapacityUnits: 2,
+      WriteCapacityUnits: 2
     }
-  ],
+  }],
   ProvisionedThroughput: {
     ReadCapacityUnits: 5,
     WriteCapacityUnits: 5
   }
 };
 
-export const FeedSource = {
+var FeedSource = exports.FeedSource = {
   TableName: "FeedSource",
   AttributeDefinitions: [{ AttributeName: "sourceTitle", AttributeType: "S" }],
   KeySchema: [{ AttributeName: "sourceTitle", KeyType: "HASH" }],
-  GlobalSecondaryIndexes: [
-    {
-      IndexName: "findBySourceTitle",
-      KeySchema: [{ AttributeName: "sourceTitle", KeyType: "HASH" }],
-      Projection: {
-        ProjectionType: "ALL"
-      },
-      ProvisionedThroughput: {
-        ReadCapacityUnits: 5,
-        WriteCapacityUnits: 5
-      }
+  GlobalSecondaryIndexes: [{
+    IndexName: "findBySourceTitle",
+    KeySchema: [{ AttributeName: "sourceTitle", KeyType: "HASH" }],
+    Projection: {
+      ProjectionType: "ALL"
+    },
+    ProvisionedThroughput: {
+      ReadCapacityUnits: 5,
+      WriteCapacityUnits: 5
     }
-  ],
+  }],
   ProvisionedThroughput: {
     ReadCapacityUnits: 5,
     WriteCapacityUnits: 5
   }
 };
 
-export const FeedReadMain = {
+var FeedReadMain = exports.FeedReadMain = {
   TableName: "FeedReadMain",
-  AttributeDefinitions: [
-    { AttributeName: "userName", AttributeType: "S" },
-    { AttributeName: "deviceId", AttributeType: "S" }
-  ],
-  KeySchema: [
-    { AttributeName: "userName", KeyType: "HASH" },
-    { AttributeName: "deviceId", KeyType: "RANGE" }
-  ],
-  GlobalSecondaryIndexes: [
-    {
-      IndexName: "findByUserName",
-      KeySchema: [
-        { AttributeName: "userName", KeyType: "HASH" },
-        { AttributeName: "deviceId", KeyType: "RANGE" }
-      ],
-      Projection: {
-        ProjectionType: "ALL"
-      },
-      ProvisionedThroughput: {
-        ReadCapacityUnits: 5,
-        WriteCapacityUnits: 5
-      }
+  AttributeDefinitions: [{ AttributeName: "userName", AttributeType: "S" }, { AttributeName: "deviceId", AttributeType: "S" }],
+  KeySchema: [{ AttributeName: "userName", KeyType: "HASH" }, { AttributeName: "deviceId", KeyType: "RANGE" }],
+  GlobalSecondaryIndexes: [{
+    IndexName: "findByUserName",
+    KeySchema: [{ AttributeName: "userName", KeyType: "HASH" }, { AttributeName: "deviceId", KeyType: "RANGE" }],
+    Projection: {
+      ProjectionType: "ALL"
+    },
+    ProvisionedThroughput: {
+      ReadCapacityUnits: 5,
+      WriteCapacityUnits: 5
     }
-  ],
+  }],
   ProvisionedThroughput: {
     ReadCapacityUnits: 5,
     WriteCapacityUnits: 5
   }
 };
 
-export const indexName = tableName => {
+var indexName = exports.indexName = function indexName(tableName) {
   var indexInfo = {
     FeedReadMain: "findByUserName",
     FeedSource: "findBySourceTitle",
@@ -86,12 +76,11 @@ export const indexName = tableName => {
 };
 
 function createTable(dyn, tableName) {
-  dyn.createTable(tableName, (error, data) => {
-    if (error) console.log(error);
-    else {
+  dyn.createTable(tableName, function (error, data) {
+    if (error) console.log(error);else {
       console.log(data);
     }
   });
 }
 
-export default createTable;
+exports.default = createTable;

@@ -1,7 +1,16 @@
-import { dyn, docClient } from "./initDb";
-import { query, deletTable, putItem, getItem } from "./helper";
-import createTable, { FeedSourceInfo } from "./table";
-import { feedSourceSchama, feedSourceInfoSchama } from "./schama";
+"use strict";
+
+var _initDb = require("./initDb");
+
+var _helper = require("./helper");
+
+var _table = require("./table");
+
+var _table2 = _interopRequireDefault(_table);
+
+var _schama = require("./schama");
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 //console.log(update);
 //createTable(dyn, FeedSourceInfo);
@@ -21,7 +30,7 @@ putItem(docClient, "FeedSourceInfo", feedSourceInfoSchama("bdnews24", 20));
 // console.log(dyn.listTables(t => console.log(t)));
 // put(null, dyn);
 
-getItem("FeedSourceInfo", { sourceTitle: "prothom-alo" });
+(0, _helper.getItem)("FeedSourceInfo", { sourceTitle: "prothom-alo" });
 
 /*
 const userData = query(docClient, "FeedSource", "sourceTitle", {

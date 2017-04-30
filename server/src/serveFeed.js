@@ -1,7 +1,21 @@
-import CollectFeed from "./collectFeed";
-import source from "../../config/source.json";
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _collectFeed = require("./collectFeed");
+
+var _collectFeed2 = _interopRequireDefault(_collectFeed);
+
+var _source = require("../../config/source.json");
+
+var _source2 = _interopRequireDefault(_source);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 // import { updateItem } from "../db/helper.js";
-let feedSource = JSON.parse(JSON.stringify(source));
+var feedSource = JSON.parse(JSON.stringify(_source2.default));
 
 /*
 const saveFetchInfo = (sourceTitle, feedLength, fileName) => {
@@ -27,22 +41,19 @@ const saveFetchInfo = (sourceTitle, feedLength, fileName) => {
  * Souce can be user specific souce or all souce which saved by defualt
  * @param {object} source
  */
-const serveFeed = (sourceTitle, lastUpdate) => {
+var serveFeed = function serveFeed(sourceTitle, lastUpdate) {
   if (lastUpdate[sourceTitle]) {
     var lastFirstFeedTitle = Object.keys(lastUpdate[sourceTitle]["feeds"])[0]; // title of first item of last fetched feed item
   }
-  let feedManage = new CollectFeed(
-    sourceTitle,
-    feedSource[sourceTitle].sourceUrl, // get sourceinfo from saved json file
-    lastFirstFeedTitle
-  );
-  let initCollect = feedManage.initCollect().catch(e => {
+  var feedManage = new _collectFeed2.default(sourceTitle, feedSource[sourceTitle].sourceUrl, // get sourceinfo from saved json file
+  lastFirstFeedTitle);
+  var initCollect = feedManage.initCollect().catch(function (e) {
     throw Error(e);
   });
   return initCollect;
 };
 
-export default serveFeed;
+exports.default = serveFeed;
 
 /*
   feedSource[sourceT&itle]["lastfetch"] = Date.now();

@@ -10,6 +10,7 @@ test*
 store
 webpack.config.js
 config/runDyno.js
+server_es6
 old
 inspiration
 # Runtime data
