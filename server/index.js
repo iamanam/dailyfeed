@@ -19,7 +19,6 @@ app.use(express.static(path.join(rootPath, "store")));
 
 app.get("/", function(req, res, next) {
   res.sendFile("./index.html", { root: rootPath });
-  next();
 });
 
 if (config.updating.autoUpdateFeed) {
