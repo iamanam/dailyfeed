@@ -27,7 +27,7 @@ app.get("/*.js", function(req, res, next) {
 });
 if (config.updating.autoUpdateFeed) {
   const updateService = new AutoService(config.updating.autoUpdateTime); // intilize the service
-  //setTimeout(() => updateService.runService(), 10000); // run the servie at initial startup
+  setTimeout(() => updateService.runService(), 10000); // run the servie at initial startup
   setInterval(() => updateService.deleteOldSource(), 60000 * 60 * 6);
   setInterval(
     () => updateService.runService(),

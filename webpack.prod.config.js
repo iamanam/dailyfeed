@@ -4,7 +4,7 @@ var WebpackBundleSizeAnalyzerPlugin = require("webpack-bundle-size-analyzer")
   .WebpackBundleSizeAnalyzerPlugin;
 var base = process.env.PWD;
 const webpack = require("webpack");
-// var HtmlWebpackPlugin = require('html-webpack-plugin')
+var HtmlWebpackPlugin = require("html-webpack-plugin");
 // var AssetsPlugin = require('assets-webpack-plugin')
 module.exports = {
   entry: {
@@ -16,14 +16,14 @@ module.exports = {
   output: {
     filename: "bundle.js",
     path: path.join(__dirname, "www"),
-    publicPath: "/assets/"
+    publicPath: "./"
   },
   plugins: [
     new webpack.DefinePlugin({
       "process.env.NODE_ENV": '"production"'
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new webpack.optimize.UglifyJsPlugin({
       mangle: true,
       compress: {
@@ -47,7 +47,12 @@ module.exports = {
       threshold: 10240,
       minRatio: 0
     }),
-    new WebpackBundleSizeAnalyzerPlugin("./reports/plain-report.txt")
+    new WebpackBundleSizeAnalyzerPlugin("../plain-report.txt"),
+    new HtmlWebpackPlugin({
+      // Also generate a test.html
+      filename: path.join(__dirname, "/index.html"),
+      template: path.join(__dirname, "client", "/main.html")
+    })
   ],
   resolve: {
     extensions: [".js", ".jsx", ".json", ",", ".map"]
@@ -60,8 +65,9 @@ module.exports = {
         loader: ["babel-loader"],
         include: path.join(__dirname)
       },
+
       {
-        test: /\.(less|css)$/,
+        test: /\.(css|less)$/,
         use: ["style-loader", "css-loader", "less-loader"]
       },
       {
