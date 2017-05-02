@@ -1,3 +1,4 @@
+import "babel-polyfill";
 const AutoService = require("./src/service");
 const config = require("../config/config.json");
 const updateService = new AutoService(config.updating.autoUpdateTime); // intilize the service

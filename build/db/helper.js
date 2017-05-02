@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getFeedSourceInfo = exports.updateItem = exports.getItem = exports.query = exports.putItem = exports.deletTable = undefined;
 
+require("babel-polyfill");
+
 var _initDb = require("./initDb");
 
 var _table = require("./table");
