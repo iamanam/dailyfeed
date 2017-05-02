@@ -1,7 +1,441 @@
 {
-  "feedsLength": 57,
-  "fileName": "1493729410498.json",
+  "feedsLength": 119,
+  "fileName": "1493747390693.json",
   "feeds": {
+    "এমপি লতিফের বিরুদ্ধে মামলা: রিভিশনে আদেশ ৮ মে": {
+      "title": "এমপি লতিফের বিরুদ্ধে মামলা: রিভিশনে আদেশ ৮ মে",
+      "description": "বঙ্গবন্ধুর ছবি বিকৃতির অভিযোগে আওয়ামী লীগ সংসদ সদস্য এম এ লতিফের বিরুদ্ধে করা\nদুটি মামলা খারিজের পর বাদীর করা রিভিশন আবেদনের বিষয়ে ৮ মে আদেশ দেবে আদালত।",
+      "pubDate": "2017-05-02T17:39:42.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2016/02/02/bb-ctg.jpg1/ALTERNATES/w140/BB-Ctg.jpg",
+      "link": "http://bangla.bdnews24.com/adsbooking/article1328974.bdnews"
+    },
+    "বরিশালে বাস চাপায় স্কুলছাত্র নিহত": {
+      "title": "বরিশালে বাস চাপায় স্কুলছাত্র নিহত",
+      "description": "বরিশালের বাবুগঞ্জ উপজেলায় চলন্ত বাসের চাপায় এক স্কুলছাত্র নিহত হয়েছেন।",
+      "pubDate": "2017-05-02T17:31:12.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/bangla-media/2016/07/20/barisal-map.jpg/ALTERNATES/w140/Barisal-map.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328973.bdnews"
+    },
+    "তদন্তে গিয়ে আইএস জঙ্গিকে বিয়ে এফবিআই কর্মীর!": {
+      "title": "তদন্তে গিয়ে আইএস জঙ্গিকে বিয়ে এফবিআই কর্মীর!",
+      "description": "ইসলামিক স্টেট (আইএস) সম্পর্কে তথ্য সংগ্রহের জন্য ২০১৪ সালে গোপন মিশনে সিরিয়ায়\nযাওয়া এফবিআইয়ের এক কর্মী (অনুবাদক) সেখানে গিয়ে এক আইএস জঙ্গিকেই বিয়ে করে বসেন।",
+      "pubDate": "2017-05-02T17:29:24.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/fbi-women.jpg/ALTERNATES/w140/FBI-Women.jpg",
+      "link": "http://bangla.bdnews24.com/world/article1328972.bdnews"
+    },
+    "সোনাগাজীতে কৃষি কর্মকর্তার লাশ উদ্ধার": {
+      "title": "সোনাগাজীতে কৃষি কর্মকর্তার লাশ উদ্ধার",
+      "description": "ফেনীর সোনাগাজী উপজেলায় এক উপ-সহকারী কৃষি কর্মকর্তার ঝুলন্ত লাশ উদ্ধার করেছে\nপুলিশ।",
+      "pubDate": "2017-05-02T17:11:33.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/bangla-media/2017/03/06/feni_map.jpg/ALTERNATES/w140/Feni_map.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328970.bdnews"
+    },
+    "ঢাবিতে সনদ জালিয়াতিতে এক কর্মকর্তা বরখাস্ত": {
+      "title": "ঢাবিতে সনদ জালিয়াতিতে এক কর্মকর্তা বরখাস্ত",
+      "description": "ঢাকা বিশ্ববিদ্যালয়ে সনদ জালিয়াতিতে জড়িত অভিযোগে পরীক্ষা নিয়ন্ত্রক অফিসের এক\nকর্মকর্তাকে সাময়িক বরখাস্ত করা হয়েছে।",
+      "pubDate": "2017-05-02T17:07:36.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/du.jpg/ALTERNATES/w140/DU.jpg",
+      "link": "http://bangla.bdnews24.com/bangladesh/article1328969.bdnews"
+    },
+    "টাঙ্গাইলে বাস খাদে, নিহত অন্তত ৭": {
+      "title": "টাঙ্গাইলে বাস খাদে, নিহত অন্তত ৭",
+      "description": "টাঙ্গাইলে বাস খাদে পড়ে সাতজন নিহত হয়েছেন।",
+      "pubDate": "2017-05-02T17:05:33.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2015/01/26/tangail_map.jpg/ALTERNATES/w140/Tangail_Map.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328966.bdnews"
+    },
+    "‘বিষক্রিয়ায়’ চিকিৎসক-সেবিকার মৃত্যু: তদন্ত প্রতিবেদন দাখিল": {
+      "title": "‘বিষক্রিয়ায়’ চিকিৎসক-সেবিকার মৃত্যু: তদন্ত প্রতিবেদন দাখিল",
+      "description": "সহকর্মীর বাড়ির খাবার খাওয়ার পর সিরাজগঞ্জের কাজিপুর উপজেলা স্বাস্থ্য কমপ্লেক্সের\nচিকিৎসক ও সেবিকার মৃত্যুর ঘটনার তদন্ত প্রতিবেদন দেওয়া হয়েছে।",
+      "pubDate": "2017-05-02T16:37:13.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/siraj-.jpg/ALTERNATES/w140/siraj-.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328964.bdnews"
+    },
+    "নারী আইনজীবীকে মারধরকারীর দ্রুত বিচার দাবি": {
+      "title": "নারী আইনজীবীকে মারধরকারীর দ্রুত বিচার দাবি",
+      "description": "চট্টগ্রাম আদালত ভবন এলাকায় এক শিক্ষানবিশ নারী আইনজীবীকে মারধরের ঘটনায় গ্রেপ্তার\nব্যক্তির দ্রুত বিচার দাবিতে মানববন্ধন ও সমাবেশ করেছেন আইনজীবীরা।",
+      "pubDate": "2017-05-02T16:28:17.000Z",
+      "image": "none",
+      "link": "http://bangla.bdnews24.com/ctg/article1328961.bdnews"
+    },
+    "খোন্দকার দেলোয়ারের স্ত্রী সাহেরা লাইফ সাপোর্টে": {
+      "title": "খোন্দকার দেলোয়ারের স্ত্রী সাহেরা লাইফ সাপোর্টে",
+      "description": "বিএনপির প্রয়াত মহাসচিব খোন্দকার দেলোয়ার হোসেনের স্ত্রী সাহেরা হোসেনের অবস্থা\nসংকটাপন্ন বলে স্বজনরা জানিয়েছে।",
+      "pubDate": "2017-05-02T16:13:40.000Z",
+      "image": "none",
+      "link": "http://bangla.bdnews24.com/politics/article1328956.bdnews"
+    },
+    "শিশু সুমাইয়া অপহরণ মামলায় বিল্লাল রিমান্ডে": {
+      "title": "শিশু সুমাইয়া অপহরণ মামলায় বিল্লাল রিমান্ডে",
+      "description": "রাজধানীর কামরাঙ্গীরচরের শিশু সুমাইয়া অপহরণ মামলায় মো. বিল্লাল নামে এক আসামিকে\nজিজ্ঞাসাবাদের জন্য তিন দিনের পুলিশ হেফাজতে পাঠিয়েছে আদালত।",
+      "pubDate": "2017-05-02T16:09:40.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/04/27/sumaiyaphoto--2-.jpg/ALTERNATES/w140/sumaiyaphoto-%282%29.jpg",
+      "link": "http://bangla.bdnews24.com/bangladesh/article1328955.bdnews"
+    },
+    "প্রভাসের মোমের ভাস্কর্য এবার মাদাম তুসোয়": {
+      "title": "প্রভাসের মোমের ভাস্কর্য এবার মাদাম তুসোয়",
+      "description": "‘বাহুবলী’র সুবাদে আঞ্চলিক তারকা থেকে আন্তর্জাতিক অঙ্গনে মহাতারকা বনে যাওয়া\nতেলুগু অভিনেতা প্রভাস-এর মোমের ভাস্কর্য এবার স্থাপন করা হচ্ছে ব্যাংকক-এর মাদাম\nতুসো জাদুঘরে। প্রথম দক্ষিণ ভারতীয় তারকা হিসেবে মাদাম তুসোয় স্থান পেতে যাচ্ছেন\nতিনি।",
+      "pubDate": "2017-05-02T16:05:25.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/prabhas-759.jpg/ALTERNATES/w140/prabhas-759.jpg",
+      "link": "http://bangla.bdnews24.com/glitz/article1328953.bdnews"
+    },
+    "মাহমুদউল্লাহর অবনমন, চুক্তি থেকে বাদ নাসির-আল আমিন-সানি": {
+      "title": "মাহমুদউল্লাহর অবনমন, চুক্তি থেকে বাদ নাসির-আল আমিন-সানি",
+      "description": "টেস্ট দলে জায়গা হারিয়েছেন, ওয়ানডে থেকে বাদ পড়েও টিকে গেছেন নানা নাটকের পর।\nমাহমুদউল্লাহর জন্য এবার আরেকটি ধাক্কা। বিসিবির কেন্দ্রীয় চুক্তিতে শীর্ষ গ্রেড\nথেকে নেমে গেছেন এক ধাপ।",
+      "pubDate": "2017-05-02T16:00:25.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/nasir-mahmudullah.jpg/ALTERNATES/w140/Nasir-Mahmudullah.jpg",
+      "link": "http://bangla.bdnews24.com/cricket/article1328950.bdnews"
+    },
+    "ব্র্যাকের দুই কর্মীকে গুলি করে সাড়ে ৩ লাখ টাকা ছিনতাই": {
+      "title": "ব্র্যাকের দুই কর্মীকে গুলি করে সাড়ে ৩ লাখ টাকা ছিনতাই",
+      "description": "চট্টগ্রামের রাঙ্গুনিয়া উপজেলার পদুয়া এলাকায় বেসরকারি উন্নয়ন সংস্থা ব্র্যাকের দুই\nকর্মীকে গুলি করে সাড়ে তিন লাখ টাকা ছিনিয়ে নেওয়ার ঘটনা ঘটেছে।",
+      "pubDate": "2017-05-02T15:59:22.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2013/08/18/ctg-map.jpg/ALTERNATES/w140/CTG+MAP.jpg",
+      "link": "http://bangla.bdnews24.com/ctg/article1328948.bdnews"
+    },
+    "সিরাজগঞ্জে নির্মাণাধীন বাঁধে ধস": {
+      "title": "সিরাজগঞ্জে নির্মাণাধীন বাঁধে ধস",
+      "description": "সিরাজগঞ্জের চৌহালীতে নির্মাণাধীন বাঁধের ১০০ মিটার যমুনা গর্ভে ধসে গেছে।",
+      "pubDate": "2017-05-02T15:57:22.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/sirajgonj-baddosh-chowhali-.jpg/ALTERNATES/w140/Sirajgonj-baddosh-Chowhali-.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328947.bdnews"
+    },
+    "সালমান, আমিরকে হারালো ‘বাহুবলী’, শাহরুখ অজেয় এখনও!": {
+      "title": "সালমান, আমিরকে হারালো ‘বাহুবলী’, শাহরুখ অজেয় এখনও!",
+      "description": "মুক্তির পর থেকে একের পর এক রেকর্ড ভাঙতে থাকা সিনেমা ‘বাহুবলী টু’ টপকে গেছে\n‘দঙ্গল’ ও ‘সুলতান’-এর উদ্বোধনী আয়ের রেকর্ড। তবে এখনও অক্ষত ‘হ্যাপি নিউ ইয়ার’-এর\nরেকর্ড।",
+      "pubDate": "2017-05-02T15:56:09.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/baahubali-7591.jpg/ALTERNATES/w140/baahubali-7591.jpg",
+      "link": "http://bangla.bdnews24.com/glitz/article1328945.bdnews"
+    },
+    "সাগর-রুনি হত্যা: ৪৮ বারের মতো প্রতিবেদন দিতে ব্যর্থ র‌্যাব": {
+      "title": "সাগর-রুনি হত্যা: ৪৮ বারের মতো প্রতিবেদন দিতে ব্যর্থ র‌্যাব",
+      "description": "সাংবাদিক দম্পতি সাগর সরওয়ার ও মেহেরুন রুনি হত্যা মামলার তদন্ত প্রতিবেদন ৪৮তম\nবারের মতো জমা দিতে ব্যর্থ হল তদন্তকারী সংস্থা র‌্যাব।",
+      "pubDate": "2017-05-02T15:53:48.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2013/02/11/--2.jpg/ALTERNATES/w140/%E0%A6%B8%E0%A6%BE%E0%A6%97%E0%A6%B0-%E0%A6%B0%E0%A7%81%E0%A6%A8%E0%A6%BF+2.jpg",
+      "link": "http://bangla.bdnews24.com/bangladesh/article1328943.bdnews"
+    },
+    "কাজল খেলেন গো-মাংস?": {
+      "title": "কাজল খেলেন গো-মাংস?",
+      "description": "সম্প্রতি সামাজিক যোগাযোগ মাধ্যমে ছড়িয়ে পড়েছে ভারতীয় অভিনেত্রী কাজল-এর গরুর মাংস\nখাওয়ার একটি ভিডিও।ইতমধ্যেই বিষয়টি নিয়ে শুরু হয়েছে বিতর্ক ।",
+      "pubDate": "2017-05-02T15:43:31.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/kajal-instagrame.jpg/ALTERNATES/w140/kajal+instagrame.jpg",
+      "link": "http://bangla.bdnews24.com/glitz/article1328940.bdnews"
+    },
+    "প্রতিবন্ধী কিশোরী ধর্ষণ, ‘ধর্ষকের’ হুমকিতে দুইদিন থানায়": {
+      "title": "প্রতিবন্ধী কিশোরী ধর্ষণ, ‘ধর্ষকের’ হুমকিতে দুইদিন থানায়",
+      "description": "ঠাকুরগাঁও সদর উপজেলায় এক বাক প্রতিবন্ধী কিশোরী ধর্ষণের ঘটনায় মামলা হয়েছে; মামলার\nপর ‘ধর্ষকের’ হুমকিতে ওই মেয়ে ও তার মাকে দুইদিন থানায় অবস্থান করতে হয়।",
+      "pubDate": "2017-05-02T15:38:02.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/bangla-media/2017/03/20/thakurgaon-map.jpg/ALTERNATES/w140/Thakurgaon-map.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328937.bdnews"
+    },
+    "চট্টগ্রামে বাস-ট্রাককে পরিবেশে আদালতের জরিমানা": {
+      "title": "চট্টগ্রামে বাস-ট্রাককে পরিবেশে আদালতের জরিমানা",
+      "description": "চট্টগ্রাম নগরীর আকবর শাহ এলাকায় কালো ধোঁয়া ও হাইড্রোলিক হর্নের শব্দে পরিবেশ\nদূষণ করায় আটটি যানবাহনকে মোট ১২ হাজার টাকা জরিমানা করেছে পরিবেশ অধিদপ্তরের\nভ্রাম্যমাণ আদালত।",
+      "pubDate": "2017-05-02T15:30:13.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2013/08/18/ctg-map.jpg/ALTERNATES/w140/CTG+MAP.jpg",
+      "link": "http://bangla.bdnews24.com/ctg/article1328933.bdnews"
+    },
+    "জাতীয় দুর্যোগে নীরব গুণীজন সমাজের বোঝা: ইনু": {
+      "title": "জাতীয় দুর্যোগে নীরব গুণীজন সমাজের বোঝা: ইনু",
+      "description": "স্বাধীনতা সংগ্রাম বা জঙ্গিবাদের বিরুদ্ধে ‘যুদ্ধের’ মতো জাতীয় রাজনৈতিক দুর্যোগে\nচুপ থাকা গুণীজনরা সমাজের বোঝা বলে মন্তব্য করেছেন তথ্যমন্ত্রী হাসানুল হক ইনু।",
+      "pubDate": "2017-05-02T15:22:43.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/inu-07.jpg/ALTERNATES/w140/inu-07.jpg",
+      "link": "http://bangla.bdnews24.com/politics/article1328927.bdnews"
+    },
+    "‘অন্যায়ভাবে সিনেমা থেকে বাদ দেওয়া হয়েছিলো আমাকে’": {
+      "title": "‘অন্যায়ভাবে সিনেমা থেকে বাদ দেওয়া হয়েছিলো আমাকে’",
+      "description": "বহিরাগত ও নবাগতদের জন্য বলিউড মোটেও বন্ধুসুলভ নয়- এমন মন্তব্য করেছেন অনেক\nতারকাই। কাস্টিং কাউচ থেকে শুরু করে স্বজনপ্রীতির শিকার হয়ে ঝরে পড়েন অনেক প্রতিভা,\nএমন বক্তব্যে সরব হয়েছিলেন কঙ্গনা রানাউত। প্রিয়াঙ্কা চোপড়া জানালেন এমন অভিজ্ঞতার\nশিকার হয়েছিলেন তিনিও।",
+      "pubDate": "2017-05-02T15:21:38.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/priyanka-reuters2.jpg/ALTERNATES/w140/priyanka+reuters2.jpg",
+      "link": "http://bangla.bdnews24.com/glitz/article1328925.bdnews"
+    },
+    "সত্যজিতের জন্মশতবর্ষ নিয়ে বড় পরিকল্পনা পরিবারের": {
+      "title": "সত্যজিতের জন্মশতবর্ষ নিয়ে বড় পরিকল্পনা পরিবারের",
+      "description": "কিংবদন্তি বাঙালি চরচ্চিত্র নির্মাতা সত্যজিৎ রায়-এর ৯৭ তম জন্মদিনের অনুষ্ঠানে তার\nপুত্র সন্দীপ রায় বলেছেন ২০২১ সালে তার জন্মশতবর্ষ উদযাপনে বড় ধরণের পরিকল্পনা\nকরছেন তারা।",
+      "pubDate": "2017-05-02T15:13:20.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/sandeep-ray.jpg/ALTERNATES/w140/sandeep+ray.jpg",
+      "link": "http://bangla.bdnews24.com/glitz/article1328916.bdnews"
+    },
+    "মহানবীর অজানা শিক্ষা": {
+      "title": "মহানবীর অজানা শিক্ষা",
+      "description": "মুসলিমদের মহানবী হজরত মুহাম্মদ (সা.) বর্ণিত জীবনাদর্শ কখনওই ইসলামিক স্টেটের\n(আইএস) খ্রিস্টান নিপীড়নের নীতিকে সমর্থন করে না বলে দাবি করা হয়েছে এক গবেষণায়।",
+      "pubDate": "2017-05-02T15:00:37.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/quaran.jpg/ALTERNATES/w140/Quaran.jpg",
+      "link": "http://bangla.bdnews24.com/world/article1328906.bdnews"
+    },
+    "পুলিশের বিরুদ্ধে স্কুলছাত্রীকে ধর্ষণের অভিযোগ": {
+      "title": "পুলিশের বিরুদ্ধে স্কুলছাত্রীকে ধর্ষণের অভিযোগ",
+      "description": "গাজীপুরের টঙ্গীতে বিয়ের প্রলোভনে স্কুলছাত্রীকে ধর্ষণের অভিযোগে এক পুলিশ\nকনস্টেবলের বিরুদ্ধে মামলা হয়েছে।",
+      "pubDate": "2017-05-02T15:00:17.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/bangla-media/2017/05/01/gazipur-map.jpg/ALTERNATES/w140/Gazipur-map.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328903.bdnews"
+    },
+    "গ্রিড বিপর্যয়: ভোগান্তি জেলায় জেলায়": {
+      "title": "গ্রিড বিপর্যয়: ভোগান্তি জেলায় জেলায়",
+      "description": "ঝড়ের কারণে ক্ষতিগ্রস্ত একটি সঞ্চালন লাইন মেরামতের মধ্যেই জাতীয় গ্রিডের আরেকটি\nসঞ্চালন লাইনে বিভ্রাট দেখা দেওয়ায় দেশের উত্তর ও দক্ষিণ জনপদের অন্তত ৩২ জেলার\nমানুষকে কয়েক ঘণ্টা বিদ্যুৎহীন থাকতে হয়েছে।",
+      "pubDate": "2017-05-02T14:57:09.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/joypurhat-electricity-01.jpg/ALTERNATES/w140/Joypurhat-Electricity-01.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328895.bdnews"
+    },
+    "চট্টগ্রামে খালের উপর ১৫ ভাসমান উচ্ছেদ": {
+      "title": "চট্টগ্রামে খালের উপর ১৫ ভাসমান উচ্ছেদ",
+      "description": "চট্টগ্রামে খালের উপর অবৈধভাবে নির্মিত ১৫টি ভাসমান দোকান উচ্ছেদ করেছে চট্টগ্রাম\nসিটি করপোরেশন (সিসিসি)।",
+      "pubDate": "2017-05-02T14:56:42.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/ctg-eviction.jpg/ALTERNATES/w140/Ctg-Eviction.jpg",
+      "link": "http://bangla.bdnews24.com/ctg/article1328894.bdnews"
+    },
+    "সিরিয়ায় শরণার্থী শিবিরে আইএস হামলায় নিহত ৩০": {
+      "title": "সিরিয়ায় শরণার্থী শিবিরে আইএস হামলায় নিহত ৩০",
+      "description": "সিরিয়ার উত্তরপূর্বের ইরাক সীমান্ত এলাকায় একটি শরণার্থী শিবিরে ইসলামিক স্টেটের\nআত্মঘাতী বোমা হামলায় অন্তত ৩০ জন নিহত হয়েছে।",
+      "pubDate": "2017-05-02T14:50:18.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/women-is.jpg/ALTERNATES/w140/Women-IS.jpg",
+      "link": "http://bangla.bdnews24.com/world/article1328887.bdnews"
+    },
+    "জন্মদিনের শুভেচ্ছায় সিক্ত ফারুকী": {
+      "title": "জন্মদিনের শুভেচ্ছায় সিক্ত ফারুকী",
+      "description": "সামাজিক যোগাযোগ মাধ্যমে শুভেচ্ছার বন্যায় ভাসছেন নির্মাতা মোস্তফা সরয়ার ফারুকী।",
+      "pubDate": "2017-05-02T14:48:50.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/faruque-1.jpg/ALTERNATES/w140/faruque+1.jpg",
+      "link": "http://bangla.bdnews24.com/glitz/article1328877.bdnews"
+    },
+    "আঙুলের ছাপ ও আইরিশের প্রতিচ্ছবি ছাড়া স্মার্ট কার্ড হচ্ছে না": {
+      "title": "আঙুলের ছাপ ও আইরিশের প্রতিচ্ছবি ছাড়া স্মার্ট কার্ড হচ্ছে না",
+      "description": "নির্ধারিত সময়ের মধ্যে নাগরিকদের হাতে স্মার্ট কার্ড পৌঁছে দিতে দশ আঙুলের ছাপ ও\nআইরিশের প্রতিচ্ছবি আপাতত না নেওয়ার যে প্রস্তাব এসেছিল তা নাকচ করেছে নির্বাচন\nকমিশন।",
+      "pubDate": "2017-05-02T14:36:40.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2016/10/03/smart_card-5-.jpg/ALTERNATES/w140/Smart_Card+%285%29.jpg",
+      "link": "http://bangla.bdnews24.com/bangladesh/article1328866.bdnews"
+    },
+    "পদোন্নতি না দিয়ে পরীক্ষা: অডিটর জেনারেলের বিরুদ্ধে রিট": {
+      "title": "পদোন্নতি না দিয়ে পরীক্ষা: অডিটর জেনারেলের বিরুদ্ধে রিট",
+      "description": "আদালতের নির্দেশ অনুযায়ী সাড়ে পাঁচ হাজার নীরিক্ষককে (অডিটর) স্বয়ংক্রিয়ভাবে\nপদোন্নতি না দিয়ে বিভাগীয় পরীক্ষার ব্যবস্থা করায় অডিটর জেনারেলের বিরুদ্ধে হাই\nকোর্টে রিট হয়েছে।",
+      "pubDate": "2017-05-02T14:34:09.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/02/02/high-court_amo_010217_0004.jpg/ALTERNATES/w140/High+Court_AMO_010217_0004.jpg",
+      "link": "http://bangla.bdnews24.com/bangladesh/article1328863.bdnews"
+    },
+    "এসডিজি: সুশাসন অর্জনে গণমাধ্যম সহায়ক ‘আইনি পরিবেশ’ চায় টিআইবি": {
+      "title": "এসডিজি: সুশাসন অর্জনে গণমাধ্যম সহায়ক ‘আইনি পরিবেশ’ চায় টিআইবি",
+      "description": "টেকসই উন্নয়ন লক্ষ্য-এসডিজির সুশাসন সংক্রান্ত লক্ষ্য অর্জনে গণমাধ্যম সহায়ক আইনি\nপরিবেশ নিশ্চিত করার দাবি উঠেছে ট্রান্সপারেন্সি ইন্টারন্যাশনালের বাংলাদেশ\nচ্যাপ্টার টিআইবির একটি সংলাপে।",
+      "pubDate": "2017-05-02T14:30:45.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/tib.jpg/ALTERNATES/w140/TIB.JPG",
+      "link": "http://bangla.bdnews24.com/bangladesh/article1328861.bdnews"
+    },
+    "যুক্তরাষ্ট্র মুক্তিযোদ্ধা দলের মতবিনিময় সভা": {
+      "title": "যুক্তরাষ্ট্র মুক্তিযোদ্ধা দলের মতবিনিময় সভা",
+      "description": "প্রবাসে জাতীয়তাবাদী আদর্শের পক্ষের শক্তির ঐক্যের মাধ্যমে সরকারের বিরুদ্ধে\nআন্তর্জাতিক জনমত সৃষ্টির উপর জোর দিয়েছে বিএনপিপন্থী যুক্তরাষ্ট্র মুক্তিযোদ্ধা\nদলের সভাপতি ইশতিয়াক আজিজ।",
+      "pubDate": "2017-05-02T14:27:03.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/new-york-freedom--1-.jpg/ALTERNATES/w140/new-york%2C-freedom-%281%29.jpg",
+      "link": "http://bangla.bdnews24.com/probash/article1328858.bdnews"
+    },
+    "নির্বাহী ও বিচার বিভাগের টানাপড়েন নিয়ে সংসদে আলোচনার দাবি": {
+      "title": "নির্বাহী ও বিচার বিভাগের টানাপড়েন নিয়ে সংসদে আলোচনার দাবি",
+      "description": "রাষ্ট্রের তিনটি প্রধান অঙ্গের দুটি নির্বাহী বিভাগ ও বিচার বিভাগের টানাপড়েন নিয়ে\nঅন্য প্রধান অঙ্গ আইনসভায় আলোচনার দাবি উঠেছে।",
+      "pubDate": "2017-05-02T14:24:14.000Z",
+      "image": "none",
+      "link": "http://bangla.bdnews24.com/bangladesh/article1328851.bdnews"
+    },
+    "সত্যজিৎ রায় ‘অরাজনৈতিক’ ছিলেন না: অপর্ণা সেন": {
+      "title": "সত্যজিৎ রায় ‘অরাজনৈতিক’ ছিলেন না: অপর্ণা সেন",
+      "description": "কিংবদন্তি বাঙালি নির্মাতা সত্যজিৎ রায়কে নিয়ে নিন্দুকদের অনেক বড় অভিযোগ- সমকালীন\nরাজনীতি সবসময়ই অনুপস্থিত ছিল তার সিনেমায়। এবারে তার ‘তিন কন্যা’ দিয়ে অভিনয়ে\nকেরিয়ার শুরু করা অপর্ণা সেন।",
+      "pubDate": "2017-05-02T14:22:22.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/satyajit-ray-header.jpg/ALTERNATES/w140/Satyajit-Ray-header.jpg",
+      "link": "http://bangla.bdnews24.com/glitz/article1328850.bdnews"
+    },
+    "যশোরে হত্যা মামলায় ৬ জনের যাবজ্জীবন": {
+      "title": "যশোরে হত্যা মামলায় ৬ জনের যাবজ্জীবন",
+      "description": "যশোরে এক করাত কলের নৈশ প্রহরী হত্যা মামলায় ছয়জনকে যাবজ্জীবন কারাদণ্ড দিয়েছে\nআদালত।",
+      "pubDate": "2017-05-02T14:11:45.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/bangla-media/2017/04/24/justice-tm.jpg/ALTERNATES/w140/justice-tm.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328847.bdnews"
+    },
+    "ইউভেন্তুসের জমাট রক্ষণে চিন্তিত নয় মোনাকো": {
+      "title": "ইউভেন্তুসের জমাট রক্ষণে চিন্তিত নয় মোনাকো",
+      "description": "বার্সেলোনার বিশ্বসেরা আক্রমণভাগ পারেনি; কিন্তু পেরেছে আতালান্তা। জর্জো\nকিয়েল্লিনি, লিওনার্দো বোনুচ্চি, দানি আলভেসদের দুর্ভেদ্য রক্ষণ ভেঙে ইউভেন্তুসের\nজালে দুবার বল পাঠিয়েছে ইতালির অখ্যাত দলটি। আর তা থেকেই আত্মবিশ্বাস খুঁজে পাচ্ছেন\nমোনাকোর ফরোয়ার্ড রাদামেল ফালকাও।",
+      "pubDate": "2017-05-02T14:08:10.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/falcao.jpg/ALTERNATES/w140/Falcao.JPG",
+      "link": "http://bangla.bdnews24.com/sport/article1328843.bdnews"
+    },
+    "মহেশখালীতে রবি-টেন মিনিট স্কুল": {
+      "title": "মহেশখালীতে রবি-টেন মিনিট স্কুল",
+      "description": "শিক্ষার্থী ও শিক্ষকদের কাছে অনলাইন কুইজ, ফেইসবুকের মাধ্যমে লাইভ ক্লাস,\nস্মার্ট-বুক ও কথোপকথনমূলক ভিডিওসহ টেন মিনিট স্কুলের বিভিন্ন ফিচার নিয়ে আলোচনা হল\n‘ডিজিটাল আইল্যান্ড’ মহেশখালীতে।",
+      "pubDate": "2017-05-02T14:02:40.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/pr-picture--9-.jpg/ALTERNATES/w140/PR-Picture-%289%29.jpg",
+      "link": "http://bangla.bdnews24.com/business/article1328839.bdnews"
+    },
+    "আ. লীগ নেতা শামীম হত্যাচেষ্টা মামলা চলবে": {
+      "title": "আ. লীগ নেতা শামীম হত্যাচেষ্টা মামলা চলবে",
+      "description": "হাই কোর্টের আদেশ আপিল বিভাগের চেম্বার বিচারপতি স্থগিত করায় আওয়ামী লীগ নেতা\nএনামুল হক শামীমকে হত্যাচেষ্টার অভিযোগে স্ট্যামফোর্ড ইউনিভার্সিটির চেয়ারম্যান এম\nএ হান্নান ফিরোজের বিরুদ্ধে মামলাটি চলার বাধা কাটল।",
+      "pubDate": "2017-05-02T13:58:57.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/02/02/high-court_amo_010217_0004.jpg/ALTERNATES/w140/High+Court_AMO_010217_0004.jpg",
+      "link": "http://bangla.bdnews24.com/bangladesh/article1328836.bdnews"
+    },
+    "এডিবির সভায় যোগ দিতে জাপান যাচ্ছেন অর্থমন্ত্রী": {
+      "title": "এডিবির সভায় যোগ দিতে জাপান যাচ্ছেন অর্থমন্ত্রী",
+      "description": "এশীয় উন্নয়ন ব্যাংকের (এডিবি) ৫০তম বার্ষিক সভায় যোগ দিতে জাপান যাচ্ছেন\nঅর্থমন্ত্রী আবুল মাল আবদুল মুহিত।",
+      "pubDate": "2017-05-02T13:51:25.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/03/29/32_abul-maal-abdul-muhit_anti-corruption_award_am_290317_0003.jpg/ALTERNATES/w140/32_Abul+Maal+Abdul+Muhit_Anti+Corruption_Award_AM_290317_0003.jpg",
+      "link": "http://bangla.bdnews24.com/economy/article1328832.bdnews"
+    },
+    "‘সত্যজিৎ রায়ের প্রতিটি সিনেমা একটি করে স্কুল’": {
+      "title": "‘সত্যজিৎ রায়ের প্রতিটি সিনেমা একটি করে স্কুল’",
+      "description": "কিংবদন্তি নির্মাতা সত্যজিৎ রায় বিশ্বের যে কোনো বাঙালি নির্মাতার কাছে অন্যতম\nশিক্ষাগুরু। নির্মাণের কেরিয়ারে সত্যজিৎ রায়কে কীভাবে মূল্যায়ণ করেন সেই প্রশ্নই\nঢালিউডের বেশ কয়েকজন নির্মাতাদের কাছে রেখেছিলো গ্লিটজ।",
+      "pubDate": "2017-05-02T13:48:36.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/satyajit-ray-bd.jpg/ALTERNATES/w140/satyajit-ray-BD.jpg",
+      "link": "http://bangla.bdnews24.com/glitz/article1328831.bdnews"
+    },
+    "২৪ জেলায় নতুন ডিসি": {
+      "title": "২৪ জেলায় নতুন ডিসি",
+      "description": "চট্টগ্রাম, রাজশাহী, খুলনাসহ ২৪ জেলায় নতুন জেলা প্রশাসক (ডিসি) নিয়োগ দিয়েছে\nসরকার।",
+      "pubDate": "2017-05-02T13:46:14.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2013/09/01/ctg_court_building_2.jpg/ALTERNATES/w140/ctg_Court_Building_2.jpg",
+      "link": "http://bangla.bdnews24.com/bangladesh/article1328829.bdnews"
+    },
+    "সিডনি প্রেস অ্যান্ড মিডিয়া কাউন্সিলের জমকালো অভিষেক": {
+      "title": "সিডনি প্রেস অ্যান্ড মিডিয়া কাউন্সিলের জমকালো অভিষেক",
+      "description": "প্রথমবারের অস্ট্রেলিয়ায় প্রবাসী বাংলাদেশি লেখক ও সাংবাদিকদের নিয়ে 'সিডনি প্রেস\nঅ্যান্ড মিডিয়া কাউন্সিল' তাদের অভিষেক অনুষ্ঠান করেছে।",
+      "pubDate": "2017-05-02T13:45:25.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/australia-sydney-9.jpg/ALTERNATES/w140/Australia-Sydney-9.jpg",
+      "link": "http://bangla.bdnews24.com/probash/article1328828.bdnews"
+    },
+    "আপনারা প্রত্যেকে দেশের প্রতিনিধি: শান্তিরক্ষীদের আইজিপি": {
+      "title": "আপনারা প্রত্যেকে দেশের প্রতিনিধি: শান্তিরক্ষীদের আইজিপি",
+      "description": "জাতিসংঘ শান্তিরক্ষা মিশনে যোগ দিতে যাওয়া পুলিশ সদস্যদের নিষ্ঠার সঙ্গে দায়িত্ব\nপালনের আহ্বান জানিয়ে বাহিনীর প্রধান এ কে এম শহীদুল হক বলেছেন, তারা প্রত্যেকে এক\nএকজন ‘রাষ্ট্রদূত’, দেশ ও পুলিশের মর্যাদা বৃদ্ধিতে তাদের কাজ করতে হবে।",
+      "pubDate": "2017-05-02T13:44:40.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/igp-photo.jpg/ALTERNATES/w140/IGP-Photo.jpg",
+      "link": "http://bangla.bdnews24.com/bangladesh/article1328827.bdnews"
+    },
+    "সাংবাদিক শিমুল হত্যায় মেয়র মিরুসহ ৩৮ জনের বিরুদ্ধে অভিযোগপত্র": {
+      "title": "সাংবাদিক শিমুল হত্যায় মেয়র মিরুসহ ৩৮ জনের বিরুদ্ধে অভিযোগপত্র",
+      "description": "সিরাজগঞ্জের শাহজাদপুরে সাংবাদিক শিমুল হত্যা মামলায় মেয়র হালিমুল হক মিরুসহ ৩৮\nজনের বিরুদ্ধে অভিযোগপত্র দিয়েছে পুলিশ।",
+      "pubDate": "2017-05-02T13:43:53.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/bangla-media/2017/02/06/sirajganj-miru-in-court-update-1-.jpg/ALTERNATES/w140/Sirajganj+Miru+in+Court+Update+%281%29.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328825.bdnews"
+    },
+    "চট্টগ্রামে বিএনপির কর্মীসভায় হট্টগোল, চেয়ার ছোড়াছুড়ি": {
+      "title": "চট্টগ্রামে বিএনপির কর্মীসভায় হট্টগোল, চেয়ার ছোড়াছুড়ি",
+      "description": "দুই পক্ষের হট্টগোল আর চেয়ার ছোড়াছুড়ির মধ্যে তৃণমূল কর্মীদের বক্তব্য না শুনেই শেষ\nহয়েছে চট্টগ্রাম উত্তর জেলা বিএনপির কর্মীসভা।",
+      "pubDate": "2017-05-02T13:32:24.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/101_bnp_uttor_jela_fight_chittagong_020517_4.jpg/ALTERNATES/w140/101_BNP_Uttor_Jela_Fight_Chittagong_020517_4.jpg",
+      "link": "http://bangla.bdnews24.com/ctg/article1328806.bdnews"
+    },
+    "সুপ্রিম কোর্ট বারের দুই পক্ষের পাল্টাপাল্টি সংবাদ সম্মেলন": {
+      "title": "সুপ্রিম কোর্ট বারের দুই পক্ষের পাল্টাপাল্টি সংবাদ সম্মেলন",
+      "description": "বিচার বিভাগের স্বাধীনতা প্রশ্নে প্রধানমন্ত্রী, প্রধান বিচারপতি ও আইনমন্ত্রীর\nসাম্প্রতিক বক্তব্যের প্রেক্ষাপটে পাল্টাপাল্টি সংবাদ সম্মেলন করেছে সুপ্রিম কোর্ট\nআইনজীবী সমিতির দুটি অংশ।",
+      "pubDate": "2017-05-02T13:31:19.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2014/03/09/hc.jpg3/ALTERNATES/w140/HC.jpg",
+      "link": "http://bangla.bdnews24.com/bangladesh/article1328805.bdnews"
+    },
+    "ভারতে কারাতে চ্যাম্পিয়নশিপে সেরা বাংলাদেশ": {
+      "title": "ভারতে কারাতে চ্যাম্পিয়নশিপে সেরা বাংলাদেশ",
+      "description": "ভারতে সাউথ এশিয়ান হাকুয়াকাই কারাতে চ্যাম্পিয়নশিপের সপ্তম আসরে সেরা হয়েছে\nবাংলাদেশ।",
+      "pubDate": "2017-05-02T13:27:22.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/karate-pic-2.jpg/ALTERNATES/w140/karate-pic-2.jpg",
+      "link": "http://bangla.bdnews24.com/sport/article1328795.bdnews"
+    },
+    "ত্রাণের চাল কম দেওয়ার অভিযোগ খালিয়াজুরীতে": {
+      "title": "ত্রাণের চাল কম দেওয়ার অভিযোগ খালিয়াজুরীতে",
+      "description": "নেত্রকোণার খালিয়াজুরীতে ত্রাণের চাল ওজনে কম দেওয়ার অভিযোগে মানববন্ধন ও বিক্ষোভ\nকরেছে ভুক্তভোগিরা।",
+      "pubDate": "2017-05-02T13:24:32.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/netrakona-tran-durn-pic-.jpg/ALTERNATES/w140/Netrakona-Tran-Durn-pic-.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328792.bdnews"
+    },
+    "বেঙ্গালুরুর বিপক্ষে ঘুরে দাঁড়াতে মরিয়া আবাহনী": {
+      "title": "বেঙ্গালুরুর বিপক্ষে ঘুরে দাঁড়াতে মরিয়া আবাহনী",
+      "description": "গ্রুপ পর্বের তিন ম্যাচের সবগুলোতে হারা আবাহনী বেঙ্গালুরু এফসির বিপক্ষে ঘুরে\nদাঁড়াতে মরিয়া। ফিরতি লেগে খেলা নিজেদের মাঠে বলে আশাবাদী বাংলাদেশের চ্যাম্পিয়ন\nদলের ক্রোয়েশিয়ান কোচ দ্রাগো মামিচ।",
+      "pubDate": "2017-05-02T13:21:14.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/coach-captains.jpg/ALTERNATES/w140/Coach-Captains.jpg",
+      "link": "http://bangla.bdnews24.com/sport/article1328789.bdnews"
+    },
+    "শাহ্জালাল ইসলামী ব্যাংকের নির্বাহী কমিটির সভা": {
+      "title": "শাহ্জালাল ইসলামী ব্যাংকের নির্বাহী কমিটির সভা",
+      "description": "শাহ্জালাল ইসলামী ব্যাংকের নির্বাহী কমিটির ৭০৭তম সভা হয়েছে।",
+      "pubDate": "2017-05-02T13:18:36.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/shahjalal-bank_pr.jpg/ALTERNATES/w140/Shahjalal-Bank_PR.jpg",
+      "link": "http://bangla.bdnews24.com/business/article1328785.bdnews"
+    },
+    "সত্যজিতের প্রশংসা, সত্যজিতের নিন্দা !": {
+      "title": "সত্যজিতের প্রশংসা, সত্যজিতের নিন্দা !",
+      "description": "‘সত্যজিতের চলচ্চিত্র না দেখা আর পৃথিবীতে বাস করে চন্দ্র-সূর্য না দেখা একই কথা’-\nবলেছেন বিশ্বখ্যাত চলচ্চিত্র নির্মাতা আকিরা কুরোসাওয়া। বাংলাদেশের চলচ্চিত্র\nনির্মাতারা কী বলছেন?",
+      "pubDate": "2017-05-02T13:08:16.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/satyajit-ebong.jpg/ALTERNATES/w140/satyajit-ebong.jpg",
+      "link": "http://bangla.bdnews24.com/glitz/article1328782.bdnews"
+    },
+    "টাঙ্গাইলে বাস খাদে, নিহত অন্তত ৩": {
+      "title": "টাঙ্গাইলে বাস খাদে, নিহত অন্তত ৩",
+      "description": "টাঙ্গাইলে বাস খাদে পড়ে অন্তত তিনজন নিহত হওয়ার খবর পাওয়া গেছে।",
+      "pubDate": "2017-05-02T17:05:33.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2015/01/26/tangail_map.jpg/ALTERNATES/w140/Tangail_Map.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328966.bdnews"
+    },
+    "ভারত থেকে আসছে সহস্রাধিক বাস-ট্রাক: সড়কমন্ত্রী": {
+      "title": "ভারত থেকে আসছে সহস্রাধিক বাস-ট্রাক: সড়কমন্ত্রী",
+      "description": "ভারতীয় ঋণের আওতায় এক হাজারের বেশি বাস-ট্রাকসহ সড়ক নির্মাণের সরঞ্জামাদি আনার\nপ্রক্রিয়া এগিয়ে চলেছে বলে জানিয়েছেন সড়ক পরিবহন ও সেতুমন্ত্রী ওবায়দুল কাদের।",
+      "pubDate": "2017-05-02T13:01:18.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/o-kader-sringla.jpg/ALTERNATES/w140/O-Kader-Sringla.jpg",
+      "link": "http://bangla.bdnews24.com/economy/article1328779.bdnews"
+    },
+    "ইবিএল-এইচকেসি গ্রুপ পে-রোল ব্যাংকিং চুক্তি": {
+      "title": "ইবিএল-এইচকেসি গ্রুপ পে-রোল ব্যাংকিং চুক্তি",
+      "description": "ইস্টার্ন ব্যাংক লিমিটেডের (ইবিএল) সঙ্গে পে-রোল চুক্তি করেছে এইচকেসি গ্রুপ।",
+      "pubDate": "2017-05-02T12:57:53.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/ebl-pr-photo-30.4.17.jpg/ALTERNATES/w140/EBL-PR-Photo-30.4.17.jpg",
+      "link": "http://bangla.bdnews24.com/business/article1328776.bdnews"
+    },
+    "ম্যাজিক: ঝাঁকি দিলেই রঙিন": {
+      "title": "ম্যাজিক: ঝাঁকি দিলেই রঙিন",
+      "description": "অনেকগুলো বোতল ভর্তি পানি। বোতলের মুখে ছিপি আঁটা। বাইরে থেকে কোনোভাবেই ভেতরে রঙ\nঢোকা সম্ভব না। কিন্তু যখন বোতল ঝাঁকা দেওয়া হবে তখন এক একটা বোতলের পানি একেক রঙ\nহয়ে যাবে।",
+      "pubDate": "2017-05-02T12:55:09.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/bottle-kidz.jpg/ALTERNATES/w140/Bottle-kidz.jpg",
+      "link": "http://bangla.bdnews24.com/kidz/article1328773.bdnews"
+    },
+    "আইপিডিসির ৩০ কোটি টাকা বার্ষিক মুনাফা": {
+      "title": "আইপিডিসির ৩০ কোটি টাকা বার্ষিক মুনাফা",
+      "description": "২০১৬ সালে ৩০ কোটি ৩ লাখ টাকা মুনাফা করেছে আইপিডিসি ফাইন্যান্স লিমিটেড।",
+      "pubDate": "2017-05-02T12:54:35.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/ipdc-agm-img_0812.jpg/ALTERNATES/w140/IPDC-AGM-IMG_0812.jpg",
+      "link": "http://bangla.bdnews24.com/stocks/article1328771.bdnews"
+    },
+    "পুনর্বাসনের আওতায় আরও আড়াই লাখ দরিদ্র পরিবার": {
+      "title": "পুনর্বাসনের আওতায় আরও আড়াই লাখ দরিদ্র পরিবার",
+      "description": "নতুন করে আরও দুই লাখ ৫০ হাজার দরিদ্র পরিবারকে পুনর্বাসন করবে সরকার।",
+      "pubDate": "2017-05-02T12:52:10.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/pm-ecnec-2.5--3-.jpg/ALTERNATES/w140/PM-ECNEC-2.5-%283%29.jpg",
+      "link": "http://bangla.bdnews24.com/economy/article1328767.bdnews"
+    },
+    "নবীনগর থানার দুই পরিদর্শক বদলি": {
+      "title": "নবীনগর থানার দুই পরিদর্শক বদলি",
+      "description": "ব্রাহ্মণবাড়িয়ার নবীনগর থানার দুই পরিদর্শককে একসঙ্গে বদলি করা হয়েছে।",
+      "pubDate": "2017-05-02T12:51:11.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2015/04/02/brahmanbaria_map.jpg/ALTERNATES/w140/Brahmanbaria_Map.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328765.bdnews"
+    },
+    "আয় বেড়েছে এএমডি’র": {
+      "title": "আয় বেড়েছে এএমডি’র",
+      "description": "সেমিকন্ডাকটর নির্মাতা মার্কিন প্রতিষ্ঠান অ্যাডভান্সড মাইক্রো ডিভাইসেস (এএমডি)’র\nপ্রান্তিক আয় ১৮.৩ শতাংশ বেড়েছে, অংকটা বিশ্লেষকদের প্রত্যাশার সঙ্গে ভালোই মিল\nরেখেছে- বলা হয়েছে রয়টার্স-এর প্রতিবেদনে। কিন্তু দ্বিতীয় প্রান্তিকে প্রতিষ্ঠানটির\nমোট লাভের পূর্বাভাস কিছু উদ্বেগের জন্ম দিয়েছে বলেও প্রতিবেদনে উল্লেখ করা হয়।",
+      "pubDate": "2017-05-02T12:47:46.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/amd-s-revenue-rises-18.jpg/ALTERNATES/w140/AMD%27s-revenue-rises-18.jpg",
+      "link": "http://bangla.bdnews24.com/tech/article1328763.bdnews"
+    },
+    "নওগাঁয় কালবৈশাখীর তাণ্ডবে ফসল ও ঘরবাড়ির ক্ষয়ক্ষতি": {
+      "title": "নওগাঁয় কালবৈশাখীর তাণ্ডবে ফসল ও ঘরবাড়ির ক্ষয়ক্ষতি",
+      "description": "নওগাঁয় কালবৈশাখী ঝড়ে ব্যাপক ক্ষয়ক্ষতি হয়েছে।",
+      "pubDate": "2017-05-02T12:18:45.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/bangla-media/2017/05/02/naogaon-tornedo-pic-3s.jpg/ALTERNATES/w140/Naogaon-Tornedo-pic-3s.jpg",
+      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328735.bdnews"
+    },
+    "দেলোয়ার, শাহরিয়ার জেতালেন দোলেশ্বরকে": {
+      "title": "দেলোয়ার, শাহরিয়ার জেতালেন দোলেশ্বরকে",
+      "description": "দুই প্রাইমের ম্যাচে জয়ী দোলেশ্বর। লড়াইয়ের পুঁজি গড়তে না পারা মেহেদী মারুফের দল\nহেরেছে ৭ উইকেটে। শুরুতে প্রাইম ব্যাংক ক্রিকেট ক্লাবকে কাঁপিয়ে দিয়েছেন পেসার\nদেলোয়ার হোসেন, অপরাজিত অর্ধশতকে দলকে জিতিয়ে মাঠ ছেড়েছেন শাহরিয়ার নাফীস।",
+      "pubDate": "2017-05-02T12:45:39.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/pbcc-vs-prime-doleshwar-mat.jpg/ALTERNATES/w140/PBCC-vs-Prime-Doleshwar-mat.jpg",
+      "link": "http://bangla.bdnews24.com/cricket/article1328760.bdnews"
+    },
+    "ফারুকীর কাকতালীয় জন্মদিন": {
+      "title": "ফারুকীর কাকতালীয় জন্মদিন",
+      "description": "বিষয়টি কাকতাল হলেও জন্মদিন নিয়ে ২মে শুভেচ্ছায় সিক্ত হচ্ছেন বিখ্যাত বাঙালি\nনির্মাতা সত্যজিৎ রায় ও মোস্তফা সরয়ার ফারুকী। নিজের জন্মদিন প্রসঙ্গে বলতে গিয়ে\nফারুকী জানালেন, আজ কাকতালীয়ভাবে ইরাকের কুর্দিস্থানের নির্মাতা শওকত আমিন করকিরও\nজন্মদিন।",
+      "pubDate": "2017-05-02T14:48:50.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/faruque-1.jpg/ALTERNATES/w140/faruque+1.jpg",
+      "link": "http://bangla.bdnews24.com/glitz/article1328877.bdnews"
+    },
     "যুক্তরাষ্ট্রে টেনসেন্ট-এর এআই বিনিয়োগ": {
       "title": "যুক্তরাষ্ট্রে টেনসেন্ট-এর এআই বিনিয়োগ",
       "description": "যুক্তরাষ্ট্রে কৃত্রিম বুদ্ধিমত্তা (এআই) গবেষণা কেন্দ্র খুলছে চীনা সামাজিক\nযোগাযোগ মাধ্যম ও গেইমিং জায়ান্ট টেনসেন্ট হোল্ডিংস।",
@@ -30,6 +464,13 @@
       "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/brain-damage.jpg/ALTERNATES/w140/brain+damage.jpg",
       "link": "http://bangla.bdnews24.com/lifestyle/article1328746.bdnews"
     },
+    "মহানবীর শিক্ষায় আইএসের খ্রিস্টান নিপীড়নের নীতি নেই": {
+      "title": "মহানবীর শিক্ষায় আইএসের খ্রিস্টান নিপীড়নের নীতি নেই",
+      "description": "মুসলিমদের মহানবী হজরত মুহাম্মদ (সা.) বর্ণিত জীবনাদর্শ কখনওই ইসলামিক স্টেটের\n(আইএস) খ্রিস্টান নিপীড়নের নীতিকে সমর্থন করে না বলে দাবি করা হয়েছে এক গবেষণায়।",
+      "pubDate": "2017-05-02T15:00:37.000Z",
+      "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/quaran.jpg/ALTERNATES/w140/Quaran.jpg",
+      "link": "http://bangla.bdnews24.com/world/article1328906.bdnews"
+    },
     "৪ বলে ৯২ রান দেওয়া বোলার ১০ বছর নিষিদ্ধ": {
       "title": "৪ বলে ৯২ রান দেওয়া বোলার ১০ বছর নিষিদ্ধ",
       "description": "দলের কাছে, বোলারের কাছে যেটি প্রতিবাদের হাতিয়ার, বিসিবির চোখে সেটি দেশের\nক্রিকেটের ভাবমূর্তি নষ্ট করার চেষ্টা। শাস্তি তাই ভীষণ কঠোর। ঢাকা দ্বিতীয় বিভাগ\nলিগের ম্যাচে ৪ বলে ৯২ রান দেওয়া বোলার সুজন মাহমুদকে ১০ বছরের জন্য নিষিদ্ধ করেছে\nবিসিবি। আজীবন নিষিদ্ধ তার দল লালমাটিয়া ক্লাব।",
@@ -50,13 +491,6 @@
       "pubDate": "2017-05-02T12:26:42.000Z",
       "image": "http://d30fl32nd2baj9.cloudfront.net/media/2017/05/02/sr-23-.jpg/ALTERNATES/w140/SR+%2823%29.jpg",
       "link": "http://bangla.bdnews24.com/glitz/article1328742.bdnews"
-    },
-    "নওগাঁয় কালবৈশাখীর তাণ্ডবে ফসল ও ঘরবাড়ির ক্ষয়ক্ষতি": {
-      "title": "নওগাঁয় কালবৈশাখীর তাণ্ডবে ফসল ও ঘরবাড়ির ক্ষয়ক্ষতি",
-      "description": "নওগাঁয় কালবৈশাখী ঝড়ে ব্যাপক ক্ষয়ক্ষতি হয়েছে।",
-      "pubDate": "2017-05-02T12:18:45.000Z",
-      "image": "http://d30fl32nd2baj9.cloudfront.net/bangla-media/2017/05/02/naogaon-tornedo-pic-3s.jpg/ALTERNATES/w140/Naogaon-Tornedo-pic-3s.jpg",
-      "link": "http://bangla.bdnews24.com/samagrabangladesh/article1328735.bdnews"
     },
     "জাতীয় বিশ্ববিদ্যালয়ের রেজিস্ট্রারসহ তিনজন কারাগারে": {
       "title": "জাতীয় বিশ্ববিদ্যালয়ের রেজিস্ট্রারসহ তিনজন কারাগারে",

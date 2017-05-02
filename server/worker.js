@@ -1,3 +1,5 @@
-import AutoService from "./src/service";
+const AutoService = require("./src/service");
 const config = require("../config/config.json");
-module.exports = new AutoService(config.updating.autoUpdateTime); // intilize the service
+const updateService = new AutoService(config.updating.autoUpdateTime); // intilize the service
+updateService.runService(); // run the servie at initial startup
+updateService.deleteOldSource();

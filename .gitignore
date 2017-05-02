@@ -10,7 +10,6 @@ yarn-error.log*
 test*
 store/
 !store/**/index.json
-webpack.config.js
 config/runDyno.js
 server_es6
 old

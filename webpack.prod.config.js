@@ -20,7 +20,8 @@ module.exports = {
   },
   plugins: [
     new webpack.DefinePlugin({
-      "process.env.NODE_ENV": '"production"'
+      "process.env.NODE_ENV": '"production"',
+      PRODUCTION: JSON.stringify(true)
     }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
@@ -39,7 +40,7 @@ module.exports = {
       exclude: [/\.min\.js$/gi] // skip pre-minified libs
     }),
     // new webpack.IgnorePlugin(/^\.\/locale$/),
-    new webpack.NoErrorsPlugin(),
+    new webpack.NoEmitOnErrorsPlugin(),
     new CompressionPlugin({
       asset: "[path].gz[query]",
       algorithm: "gzip",

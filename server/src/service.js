@@ -171,4 +171,4 @@ const AutoService = class {
   }
 };
 
-export default AutoService;
+module.exports = AutoService;
