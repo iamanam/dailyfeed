@@ -88,7 +88,7 @@ class app extends Component {
             <FeedContainer
               feeds={this.state.feeds}
               sourceTitle={this.state.feedUrl}
-              lastFetched={lastFetched}
+              lastFetched={lastFetched || "Error"}
             />
           </div>
         </div>

@@ -38,7 +38,7 @@ class ListFeeds extends Component {
   render() {
     return (
       <div className="feed-container">
-        <nav className="navbar navbar-inverse bg-primary">
+        <nav className="navbar detailsInfo">
           <div className="row">
             <p className="col-sm-4">
               <i className="icon-info" />
