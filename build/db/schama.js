@@ -34,5 +34,23 @@ var feedSourceSchamaKeys = exports.feedSourceSchamaKeys = function feedSourceSch
   return Object.keys(feedSourceSchama);
 };
 
-exports.default = feedSourceSchama;
+var _default = feedSourceSchama;
+exports.default = _default;
+;
+
+var _temp = function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(feedSourceSchama, "feedSourceSchama", "server/db/schama.js");
+
+  __REACT_HOT_LOADER__.register(feedSourceInfoSchama, "feedSourceInfoSchama", "server/db/schama.js");
+
+  __REACT_HOT_LOADER__.register(feedSourceSchamaKeys, "feedSourceSchamaKeys", "server/db/schama.js");
+
+  __REACT_HOT_LOADER__.register(_default, "default", "server/db/schama.js");
+}();
+
+;
 //# sourceMappingURL=schama.js.map

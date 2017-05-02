@@ -14,7 +14,7 @@ module.exports = {
   // this is a default value; just be aware of it context: path.resolve(__dirname,
   // 'app'),
   output: {
-    filename: "bundle.js",
+    filename: "main.js",
     path: path.join(__dirname, "www"),
     publicPath: "./"
   },

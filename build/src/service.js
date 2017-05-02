@@ -323,4 +323,17 @@ var AutoService = function () {
 }();
 
 module.exports = AutoService;
+;
+
+var _temp = function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(rootPath, "rootPath", "server/src/service.js");
+
+  __REACT_HOT_LOADER__.register(AutoService, "AutoService", "server/src/service.js");
+}();
+
+;
 //# sourceMappingURL=service.js.map

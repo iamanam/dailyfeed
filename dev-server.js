@@ -9,8 +9,9 @@ const HotReload = app => {
     webpackDevMiddleware(compiler, {
       hot: true,
       filename: "bundle.js",
+      inline: true,
       publicPath: "/assets/",
-      stats: "errors-only",
+      // stats: "errors-only",
       historyApiFallback: true
     })
   );

@@ -1,11 +1,12 @@
-import "babel-polyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./app.js";
+import { AppContainer } from "react-hot-loader";
 import "./css/bootstrap/css/bootstrap.css";
 import "./css/bootstrap/css/bootstrap-theme.css";
 import "./css/header.less";
 import "./css/listFeed.less";
+// import { whyDidYouUpdate } from "why-did-you-update";
 
 // Production value should be true after webpack bundle
 if (PRODUCTION) {
@@ -14,7 +15,6 @@ if (PRODUCTION) {
   };
   render(App);
 } else {
-  const AppContainer = require("react-hot-loader");
   const render = Component => {
     ReactDOM.render(
       <AppContainer>
@@ -30,4 +30,5 @@ if (PRODUCTION) {
       render(App);
     });
   }
+  // whyDidYouUpdate(React);
 }

@@ -1,10 +1,9 @@
 "use strict";
 
-require("babel-polyfill");
-
 var _helper = require("./db/helper");
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; } // import "babel-polyfill";
+
 
 var AutoService = require("./src/service");
 var compression = require("compression");
@@ -18,7 +17,6 @@ process.env.rootPath = path.join(__dirname, "..");
 var rootPath = process.env.rootPath;
 
 // setting files of static to server easily
-app.use(express.static(path.join(rootPath, "www")));
 app.use(express.static(path.join(rootPath, "client")));
 app.use(express.static(path.join(rootPath, "store")));
 
@@ -27,11 +25,7 @@ app.use(express.static(path.join(rootPath, "store")));
 app.get("/", function (req, res, next) {
   res.sendFile("./index.html", { root: rootPath });
 });
-app.get("/*.js", function (req, res, next) {
-  req.url = req.url + ".gz";
-  res.header("Content-Encoding", "gzip");
-  next();
-});
+
 if (config.updating.autoUpdateFeed) {
   var updateService = new AutoService(config.updating.autoUpdateTime); // intilize the service
   setTimeout(function () {
@@ -106,6 +100,8 @@ if (process.env.NODE_ENV === "development") {
   var reload = require("reload");
   reload(server, app);
   require(path.join(path.join(rootPath, "./dev-server")))(app);
+} else {
+  app.use(express.static(path.join(rootPath, "www")));
 }
 
 app.set("port", process.env.PORT || 3000);
@@ -114,4 +110,19 @@ app.set("host", process.env.HOST || "localhost");
 server.listen(app.get("port"), function () {
   console.log("%s server listening at http://%s:%s", process.env.NODE_ENV, app.get("host"), app.get("port"));
 });
+;
+
+var _temp = function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(app, "app", "server/index.js");
+
+  __REACT_HOT_LOADER__.register(rootPath, "rootPath", "server/index.js");
+
+  __REACT_HOT_LOADER__.register(server, "server", "server/index.js");
+}();
+
+;
 //# sourceMappingURL=index.js.map

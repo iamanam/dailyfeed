@@ -32,4 +32,15 @@ var _fetch = function _fetch(sourceUrl) {
 };
 
 exports._fetch = _fetch;
+;
+
+var _temp = function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(_fetch, "_fetch", "server/src/util.js");
+}();
+
+;
 //# sourceMappingURL=util.js.map

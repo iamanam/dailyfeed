@@ -1,4 +1,4 @@
-import "babel-polyfill";
+// import "babel-polyfill";
 import { getFeedSourceInfo } from "./db/helper";
 const AutoService = require("./src/service");
 var compression = require("compression");
@@ -12,7 +12,6 @@ process.env.rootPath = path.join(__dirname, "..");
 const rootPath = process.env.rootPath;
 
 // setting files of static to server easily
-app.use(express.static(path.join(rootPath, "www")));
 app.use(express.static(path.join(rootPath, "client")));
 app.use(express.static(path.join(rootPath, "store")));
 
@@ -21,11 +20,7 @@ app.use(express.static(path.join(rootPath, "store")));
 app.get("/", function(req, res, next) {
   res.sendFile("./index.html", { root: rootPath });
 });
-app.get("/*.js", function(req, res, next) {
-  req.url = req.url + ".gz";
-  res.header("Content-Encoding", "gzip");
-  next();
-});
+
 if (config.updating.autoUpdateFeed) {
   const updateService = new AutoService(config.updating.autoUpdateTime); // intilize the service
   setTimeout(() => updateService.runService(), 10000); // run the servie at initial startup
@@ -74,6 +69,8 @@ if (process.env.NODE_ENV === "development") {
   const reload = require("reload");
   reload(server, app);
   require(path.join(path.join(rootPath, "./dev-server")))(app);
+} else {
+  app.use(express.static(path.join(rootPath, "www")));
 }
 
 app.set("port", process.env.PORT || 3000);

@@ -250,5 +250,27 @@ var CollectFeed = function CollectFeed(sourceTitle, sourceUrl, lastFirstFeedTitl
     });
     */
 
-exports.default = CollectFeed;
+var _default = CollectFeed;
+exports.default = _default;
+;
+
+var _temp = function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(rootPath, "rootPath", "server/src/collectFeed.js");
+
+  __REACT_HOT_LOADER__.register(scrapDescription, "scrapDescription", "server/src/collectFeed.js");
+
+  __REACT_HOT_LOADER__.register(altDes, "altDes", "server/src/collectFeed.js");
+
+  __REACT_HOT_LOADER__.register(formatItem, "formatItem", "server/src/collectFeed.js");
+
+  __REACT_HOT_LOADER__.register(CollectFeed, "CollectFeed", "server/src/collectFeed.js");
+
+  __REACT_HOT_LOADER__.register(_default, "default", "server/src/collectFeed.js");
+}();
+
+;
 //# sourceMappingURL=collectFeed.js.map

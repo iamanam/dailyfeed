@@ -8,25 +8,16 @@ import {
 import ModalExample from "./Modal";
 import "../css/listFeed.less";
 import propTypes from "prop-types";
-
+import timeago from "timeago.js";
 class ListFeeds extends Component {
   constructor(props) {
     super(props);
     this.state = {
       feeds: this.props.feeds,
-      sourceTitle: this.props.sourceTitle,
-      lastFetched: this.props.lastFetched
+      sourceTitle: this.props.sourceTitle
     };
   }
-  componentDidMount() {
-    /*
-    getItem("FeedSourceInfo", { sourceTitle: this.state.sourceTitle })
-      .promise()
-      .then(d => {
-        this.setState({ lastFetched: d.Item.lastFetched });
-      });
-      */
-  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.feeds !== this.state.feeds) {
       return this.setState({
@@ -38,21 +29,9 @@ class ListFeeds extends Component {
   render() {
     return (
       <div className="feed-container">
-        <nav className="navbar detailsInfo">
-          <div className="row">
-            <p className="col-sm-4">
-              <i className="icon-info" />
-              <span>{this.state.sourceTitle}</span>
-            </p>
-            <p className="col-sm-8 flex-last timeShow">
-              Updated:
-              {this.state.lastFetched}
-            </p>
-          </div>
-        </nav>
         <ListGroup id={this.state.sourceTitle} className="list-feeds">
           {Object.keys(this.state.feeds).map((key, index) => {
-            var feed = this.state.feeds[key];
+            let feed = this.state.feeds[key];
             return (
               <ListGroupItem className="feed-item" key={index}>
                 <ListGroupItemHeading>
@@ -70,7 +49,7 @@ class ListFeeds extends Component {
                   </small>
                 </ListGroupItemText>
                 <small className="text-muted">
-                  {new Date(feed.pubDate).toISOString()}
+                  {timeago(feed.pubDate).format()}
                 </small>
               </ListGroupItem>
             );
@@ -82,7 +61,6 @@ class ListFeeds extends Component {
 }
 ListFeeds.propTypes = {
   feeds: propTypes.object,
-  sourceTitle: propTypes.string,
-  lastFetched: propTypes.string
+  sourceTitle: propTypes.string
 };
 export default ListFeeds;

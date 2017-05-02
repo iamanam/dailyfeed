@@ -3,6 +3,7 @@ import SideBar from "./component/sidebar";
 import Header from "./component/header";
 import FeedContainer from "./component/feedContainer";
 import _fetch from "./component/helper/_fetch";
+import Overview from "./component/overview";
 import fetch from "isomorphic-fetch";
 import "./css/app.less";
 import "./css/fontello.css";
@@ -18,7 +19,8 @@ class app extends Component {
     this.state = {
       feedUrl: "prothom-alo",
       feeds: "",
-      sourceInfo: ""
+      sourceInfo: "",
+      lastFetched: ""
     };
     this.fetch = _fetch.fetch.bind(this);
     this.fetchType = _fetch.fetchType.bind(this);
@@ -33,16 +35,30 @@ class app extends Component {
         let i = item["Item"];
         stateObj[i["sourceTitle"]] = i;
       });
-      self.setState({ sourceInfo: stateObj });
+      self.setState({
+        sourceInfo: stateObj,
+        lastFetched: stateObj[self.state.feedUrl].lastFetched
+      });
     })();
   }
   // start fetching after initial load, this should be defualt feed source user
   // want
   componentDidMount() {
+    var self = this;
+    (async function getInfo() {
+      var res = await fetch("/source_info");
+      var jsonData = await res.json();
+      var stateObj = {};
+      jsonData.map(item => {
+        let i = item["Item"];
+        stateObj[i["sourceTitle"]] = i;
+      });
+      self.setState({ sourceInfo: stateObj });
+    })();
+
     this.fetchType(this.state.feedUrl);
   }
   handleUpdateClick(event) {
-    console.log("event");
     let getUrl = event.target.attributes.getNamedItem("data-href").value;
     this.setState({ feedUrl: getUrl });
     this.fetchType(getUrl, true);
@@ -74,10 +90,8 @@ class app extends Component {
       />
     );
   }
+
   render() {
-    if (this.state.sourceInfo[this.state.feedUrl]) {
-      var lastFetched = this.state.sourceInfo[this.state.feedUrl].lastFetched;
-    }
     return (
       <div>
         <Header />
@@ -85,11 +99,16 @@ class app extends Component {
           <div className="row">
             {this.state.sourceInfo && this.sideBar()}
             {!this.state.feeds && this.loading()}
-            <FeedContainer
-              feeds={this.state.feeds}
-              sourceTitle={this.state.feedUrl}
-              lastFetched={lastFetched || "Error"}
-            />
+            {this.state.lastFetched &&
+              <Overview
+                sourceTitle={this.state.feedUrl}
+                lastFetched={this.state.lastFetched}
+              />}
+            {this.state.feeds &&
+              <FeedContainer
+                feeds={this.state.feeds}
+                sourceTitle={this.state.feedUrl}
+              />}
           </div>
         </div>
       </div>

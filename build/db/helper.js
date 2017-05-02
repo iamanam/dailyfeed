@@ -160,4 +160,25 @@ var getFeedSourceInfo = exports.getFeedSourceInfo = function () {
     return _ref.apply(this, arguments);
   };
 }();
+;
+
+var _temp = function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(deletTable, "deletTable", "server/db/helper.js");
+
+  __REACT_HOT_LOADER__.register(putItem, "putItem", "server/db/helper.js");
+
+  __REACT_HOT_LOADER__.register(query, "query", "server/db/helper.js");
+
+  __REACT_HOT_LOADER__.register(getItem, "getItem", "server/db/helper.js");
+
+  __REACT_HOT_LOADER__.register(updateItem, "updateItem", "server/db/helper.js");
+
+  __REACT_HOT_LOADER__.register(getFeedSourceInfo, "getFeedSourceInfo", "server/db/helper.js");
+}();
+
+;
 //# sourceMappingURL=helper.js.map

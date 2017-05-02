@@ -52,7 +52,8 @@ var serveFeed = function serveFeed(sourceTitle, lastUpdate) {
   return initCollect;
 };
 
-exports.default = serveFeed;
+var _default = serveFeed;
+exports.default = _default;
 
 /*
   feedSource[sourceT&itle]["lastfetch"] = Date.now();
@@ -68,4 +69,20 @@ exports.default = serveFeed;
     );
   });
   */
+
+;
+
+var _temp = function () {
+  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
+    return;
+  }
+
+  __REACT_HOT_LOADER__.register(feedSource, "feedSource", "server/src/serveFeed.js");
+
+  __REACT_HOT_LOADER__.register(serveFeed, "serveFeed", "server/src/serveFeed.js");
+
+  __REACT_HOT_LOADER__.register(_default, "default", "server/src/serveFeed.js");
+}();
+
+;
 //# sourceMappingURL=serveFeed.js.map
