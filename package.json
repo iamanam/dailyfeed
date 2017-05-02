@@ -73,8 +73,8 @@
   },
   "scripts": {
     "start": "node ./init.js",
-    "dev": "node_modules/nodemon/bin/nodemon.js ./init.js --watch package.json --watch index.js --watch ./store/serveJson --watch server --dev",
-    "build": "NODE_ENV=production webpack --config ./webpack.prod.config.js --progress --colors",
+    "dev": "nodemon ./init.js --watch package.json --watch index.js --watch ./store/serveJson --watch server --dev",
+    "build": "NODE_ENV=production webpack --config ./webpack.prod.config.js --progress --colors && babel -d ./build ./server -s ",
     "eslint-check": "eslint --print-config .eslintrc.js | eslint-config-prettier-check"
   }
 }

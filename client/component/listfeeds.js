@@ -40,11 +40,11 @@ class ListFeeds extends Component {
       <div className="feed-container">
         <nav className="navbar navbar-inverse bg-primary">
           <div className="row">
-            <p className="col">
+            <p className="col-sm-4">
               <i className="icon-info" />
               <span>{this.state.sourceTitle}</span>
             </p>
-            <p className="col-8 flex-last timeShow">
+            <p className="col-sm-8 flex-last timeShow">
               Updated:
               {this.state.lastFetched}
             </p>

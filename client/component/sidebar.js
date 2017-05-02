@@ -42,7 +42,10 @@ class SideBar extends Component {
       <ListGroup>
         {this.sideItem(
           this.props.handleSourceClick,
-          this.props.handleUpdateClick
+          // now updating is same like fetching so..
+          this.props.handleSourceClick
+          // this.props.handleUpdateClick
+          // -----------------------------------------
         )}
       </ListGroup>
     );

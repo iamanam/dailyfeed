@@ -1,6 +1,7 @@
 require("babel-polyfill");
-require("babel-register");
 const path = require("path");
 process.env.rootPath = path.join(__dirname);
-
-require("./server/index.js");
+if (process.argv.pop() === "dev") {
+  require("./dev-server");
+}
+require("./build/index.js");

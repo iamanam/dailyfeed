@@ -1,9 +1,8 @@
-import source from "../config/source.json";
-//import fetchInfo from "./fetchInfo.json";
-import fs from "fs";
-import path from "path";
-export const getSource = sourceTitle => {
-  //console.log(source[sourceTitle]);
+const source = require("../config/source.json");
+// const path = require("path");
+// const fs = require("fs");
+
+module.exports.getSource = function(sourceTitle) {
   if (sourceTitle) return source[sourceTitle];
   return source;
 };

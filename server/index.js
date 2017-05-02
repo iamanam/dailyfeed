@@ -1,5 +1,5 @@
 import { getFeedSourceInfo } from "./db/helper";
-import AutoService from "../server/src/service";
+import AutoService from "../build/src/service";
 var compression = require("compression");
 const path = require("path");
 const express = require("express");
