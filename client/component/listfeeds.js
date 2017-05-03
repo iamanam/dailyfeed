@@ -9,6 +9,7 @@ import ModalExample from "./Modal";
 import "../css/listFeed.less";
 import propTypes from "prop-types";
 import timeago from "timeago.js";
+let timeInstance = timeago();
 class ListFeeds extends Component {
   constructor(props) {
     super(props);
@@ -49,7 +50,7 @@ class ListFeeds extends Component {
                   </small>
                 </ListGroupItemText>
                 <small className="text-muted">
-                  {timeago(feed.pubDate).format()}
+                  {timeInstance.format(feed.pubDate)}
                 </small>
               </ListGroupItem>
             );

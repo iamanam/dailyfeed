@@ -1,12 +1,11 @@
 const path = require("path");
 var base = process.env.PWD;
 const webpack = require("webpack");
-// var HtmlWebpackPlugin = require('html-webpack-plugin')
+var HtmlWebpackPlugin = require("html-webpack-plugin");
 // var AssetsPlugin = require('assets-webpack-plugin')
 module.exports = {
   entry: {
     app: [
-      //"babel-polyfill",
       "react-hot-loader/patch",
       "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
       path.join(base, "client", "index")
@@ -28,7 +27,11 @@ module.exports = {
       webpack.optimize.OccurrenceOrderPlugin)(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoEmitOnErrorsPlugin(),
-    new webpack.NamedModulesPlugin()
+    new webpack.NamedModulesPlugin(),
+    new HtmlWebpackPlugin({
+      filename: path.join(base, "index.html"),
+      template: path.join(__dirname, "client", "/main.html")
+    })
     // new AssetsPlugin()
     // new HtmlWebpackPlugin({title: "React express", template: "public/template.ejs"})
   ],
@@ -64,14 +67,5 @@ module.exports = {
         loader: "json-loader"
       }
     ]
-  },
-  devServer: {
-    filename: "bundle.js",
-    // It's a required option.
-    publicPath: "http://localhost:9000/assets/",
-    port: 9000,
-    hot: true,
-    stats: "errors-only",
-    inline: true
   }
 };

@@ -15,6 +15,7 @@ const AutoService = class {
     this.nextUpdate = ""; // this will return the remaining time
     this.latestUpdates = {};
     this.serviceRunnng = "false";
+    this.nextClean = "";
   }
   getPath(...arg) {
     return path.join(rootPath, "store", ...arg);
@@ -136,7 +137,8 @@ const AutoService = class {
     let result = findRemoveSync(path.join(rootPath, "store"), {
       age: { seconds: 3600 * 12 }, // 12 hr
       maxLevel: 2,
-      extensions: ".json"
+      extensions: ".json",
+      ignore: "index.json"
     });
     console.log("Old json source file which were deleted :", result);
   }

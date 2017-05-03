@@ -4,17 +4,6 @@ const webpackHotMiddleware = require("webpack-hot-middleware");
 const config = require("./webpack.config.js");
 const compiler = webpack(config);
 
-/*
-{
-  "presets": [
-    "latest",
-    "react"
-  ],
-  "plugins": [
-    "react-hot-loader/babel"
-  ]
-}
-*/
 const HotReload = app => {
   app.use(
     webpackDevMiddleware(compiler, {
@@ -22,6 +11,7 @@ const HotReload = app => {
       filename: "bundle.js",
       inline: true,
       publicPath: "/assets/",
+      colors: true,
       // stats: "errors-only",
       historyApiFallback: true
     })

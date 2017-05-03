@@ -8,7 +8,7 @@ var HtmlWebpackPlugin = require("html-webpack-plugin");
 // var AssetsPlugin = require('assets-webpack-plugin')
 module.exports = {
   entry: {
-    app: ["babel-polyfill", path.join(base, "client", "index")]
+    app: [path.join(base, "client", "index")]
   },
   devtool: "cheap-module-source-map",
   // this is a default value; just be aware of it context: path.resolve(__dirname,

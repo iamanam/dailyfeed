@@ -6,7 +6,6 @@ const express = require("express");
 const app = express();
 app.use(compression());
 const config = require("../config/config.json");
-const moment = require("moment");
 process.env.rootPath = path.join(__dirname, "..");
 const rootPath = process.env.rootPath;
 
@@ -21,8 +20,7 @@ app.get("/", function(req, res, next) {
 });
 
 if (config.updating.autoUpdateFeed) {
-  const updateService = new AutoService(config.updating.autoUpdateTime); // intilize the service
-  setTimeout(() => updateService.runService(), 10000); // run the servie at initial startup
+  var updateService = new AutoService(config.updating.autoUpdateTime); // intilize the service
   setInterval(() => updateService.deleteOldSource(), 60000 * 60 * 6);
   setInterval(
     () => updateService.runService(),
@@ -31,10 +29,6 @@ if (config.updating.autoUpdateFeed) {
 
   app.get("/source_info", async function(req, res, next) {
     let info = await getFeedSourceInfo();
-    info.map(item => {
-      let old = item["Item"]["lastFetched"];
-      item["Item"]["lastFetched"] = moment(old).calendar();
-    });
     if (info) res.json(info);
   });
 
@@ -70,6 +64,7 @@ if (process.env.NODE_ENV === "development") {
   require(path.join(path.join(rootPath, "./dev-server")))(app);
 } else {
   app.use(express.static(path.join(rootPath, "www")));
+  setTimeout(() => updateService.runService(), 10000); // run the servie at initial startup
 }
 
 app.set("port", process.env.PORT || 3000);

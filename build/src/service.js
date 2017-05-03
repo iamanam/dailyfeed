@@ -72,6 +72,7 @@ var AutoService = function () {
     this.nextUpdate = ""; // this will return the remaining time
     this.latestUpdates = {};
     this.serviceRunnng = "false";
+    this.nextClean = "";
   }
 
   _createClass(AutoService, [{
@@ -244,7 +245,8 @@ var AutoService = function () {
       var result = (0, _findRemove2.default)(_path2.default.join(rootPath, "store"), {
         age: { seconds: 3600 * 12 }, // 12 hr
         maxLevel: 2,
-        extensions: ".json"
+        extensions: ".json",
+        ignore: "index.json"
       });
       console.log("Old json source file which were deleted :", result);
     }

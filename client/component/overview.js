@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import propTypes from "prop-types";
 import timeago from "timeago.js";
+let timeInstance = timeago();
 
 class Overview extends Component {
   constructor(props) {
@@ -34,7 +35,7 @@ class Overview extends Component {
           </p>
           <p className="col-sm-8 flex-last timeShow">
             Updated:
-            {timeago(lastFetched).format()}
+            {timeInstance.format(lastFetched)}
           </p>
         </div>
       </nav>
