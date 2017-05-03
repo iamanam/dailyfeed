@@ -1,4 +1,3 @@
-import "babel-polyfill";
 import { getFeedSourceInfo } from "./db/helper";
 const AutoService = require("./src/service");
 var compression = require("compression");

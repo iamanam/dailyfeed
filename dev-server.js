@@ -4,6 +4,17 @@ const webpackHotMiddleware = require("webpack-hot-middleware");
 const config = require("./webpack.config.js");
 const compiler = webpack(config);
 
+/*
+{
+  "presets": [
+    "latest",
+    "react"
+  ],
+  "plugins": [
+    "react-hot-loader/babel"
+  ]
+}
+*/
 const HotReload = app => {
   app.use(
     webpackDevMiddleware(compiler, {

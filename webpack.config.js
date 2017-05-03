@@ -6,7 +6,7 @@ const webpack = require("webpack");
 module.exports = {
   entry: {
     app: [
-      "babel-polyfill",
+      //"babel-polyfill",
       "react-hot-loader/patch",
       "webpack-hot-middleware/client?path=/__webpack_hmr&timeout=20000",
       path.join(base, "client", "index")

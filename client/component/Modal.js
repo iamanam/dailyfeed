@@ -2,6 +2,7 @@ import React from "react";
 import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import config from "../../config/config.json";
 import propTypes from "prop-types";
+import "../css/Modal.css";
 class ModalExample extends React.Component {
   constructor(props) {
     super(props);

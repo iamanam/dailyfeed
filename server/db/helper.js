@@ -1,4 +1,3 @@
-import "babel-polyfill";
 import { dyn, docClient } from "./initDb";
 import { indexName } from "./table";
 import source from "../../config/source.json";
