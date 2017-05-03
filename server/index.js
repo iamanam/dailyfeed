@@ -22,6 +22,7 @@ app.get("/", function(req, res, next) {
 if (config.updating.autoUpdateFeed) {
   var updateService = new AutoService(config.updating.autoUpdateTime); // intilize the service
   setInterval(() => updateService.deleteOldSource(), 60000 * 60 * 6);
+  setTimeout(() => updateService.runService(), 10000); // run the servie at initial startup
   setInterval(
     () => updateService.runService(),
     config.updating.autoUpdateTime * 60000
@@ -32,13 +33,12 @@ if (config.updating.autoUpdateFeed) {
     if (info) res.json(info);
   });
 
-  /*
   app.get("/latest/:feedSource", function(req, res, next) {
     let sourceName = req.params.feedSource;
     if (req.params && sourceName !== "" && typeof sourceName === "string")
       return res.json({
         serviceRunning: updateService.serviceRunnng,
-        nextUpdate: moment(updateService.nextUpdate).fromNow(),
+        nextUpdate: updateService.nextUpdate,
         items: updateService.updatedMerge[req.params.feedSource]
       });
     console.error("Invalid request!!");
@@ -48,11 +48,10 @@ if (config.updating.autoUpdateFeed) {
     res.json({
       error: updateService.error,
       serviceRunning: updateService.serviceRunnng,
-      nextUpdate: moment(updateService.nextUpdate).fromNow(),
+      nextUpdate: updateService.nextUpdate,
       feeds: updateService.updatedMerge
     });
   });
-  */
 } // end of #if config.update.AutoupdateFeed
 
 var server = require("http").createServer(app);
@@ -64,7 +63,6 @@ if (process.env.NODE_ENV === "development") {
   require(path.join(path.join(rootPath, "./dev-server")))(app);
 } else {
   app.use(express.static(path.join(rootPath, "www")));
-  setTimeout(() => updateService.runService(), 10000); // run the servie at initial startup
 }
 
 app.set("port", process.env.PORT || 3000);

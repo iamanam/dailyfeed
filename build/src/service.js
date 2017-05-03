@@ -46,6 +46,10 @@ var _findRemove2 = _interopRequireDefault(_findRemove);
 
 var _helper = require("../db/helper.js");
 
+var _timeago = require("timeago.js");
+
+var _timeago2 = _interopRequireDefault(_timeago);
+
 var _fsExtra = require("fs-extra");
 
 var _fsExtra2 = _interopRequireDefault(_fsExtra);
@@ -62,6 +66,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var rootPath = process.env.rootPath || _path2.default.join(__dirname, "..", "..");
 var Promise = require("bluebird");
+var timeago = (0, _timeago2.default)();
 var AutoService = function () {
   function AutoService(updateInterval) {
     _classCallCheck(this, AutoService);
@@ -158,7 +163,23 @@ var AutoService = function () {
         });
       });
     }
+  }, {
+    key: "isUpdateRequired",
+    value: function isUpdateRequired(key) {
+      var _this2 = this;
 
+      return new Promise(function (resolve, reject) {
+        _fsExtra2.default.stat(_this2.getPath(key, "index.json"), function (e, c) {
+          if (e) return console.error(e);
+          var updateInterval = _config2.default.updating.autoUpdateTime * 60000;
+          if (Date.parse(c.mtime) + updateInterval >= Date.now()) {
+            console.log("%s updated=> at %s Next update=> %s", key, timeago.format(c.mtime), timeago.format(Date.parse(c.mtime) + updateInterval));
+            return resolve(false);
+          }
+          resolve(true);
+        });
+      });
+    }
     /**
     * This function fetch update by calling the serveFeed method
     * It calls out all the source titles included and call the mergeEachSourceFile to merge lates feeds
@@ -198,16 +219,6 @@ var AutoService = function () {
             return _ref2.apply(this, arguments);
           };
         }();
-        /*
-              fs.stat(this.getPath(key, "index.json"), (e, c) => {
-            if (e) return console.error(e);
-            let updateInterval = config.updating.autoUpdateTime * 60000;
-            if (Date.parse(c.mtime) + updateInterval >= Date.now())
-              console.log("Updating ignored.");
-            else ;
-          });
-          */
-
 
         var self, allPromises, key;
         return _regenerator2.default.wrap(function _callee2$(_context2) {
@@ -216,13 +227,34 @@ var AutoService = function () {
               case 0:
                 self = this;
                 allPromises = [];
+                _context2.t0 = _regenerator2.default.keys(_source2.default);
 
-                for (key in _source2.default) {
-                  allPromises.push(promiseBind(key));
+              case 3:
+                if ((_context2.t1 = _context2.t0()).done) {
+                  _context2.next = 11;
+                  break;
                 }
-                return _context2.abrupt("return", Promise.all(allPromises));
 
-              case 4:
+                key = _context2.t1.value;
+                _context2.next = 7;
+                return self.isUpdateRequired(key);
+
+              case 7:
+                if (!_context2.sent) {
+                  _context2.next = 9;
+                  break;
+                }
+
+                allPromises.push(promiseBind(key));
+
+              case 9:
+                _context2.next = 3;
+                break;
+
+              case 11:
+                return _context2.abrupt("return", allPromises.length >= 1 ? Promise.all(allPromises) : false);
+
+              case 12:
               case "end":
                 return _context2.stop();
             }
@@ -273,46 +305,48 @@ var AutoService = function () {
                 fetchUpdateAll = _context4.sent;
 
                 // after update finish then merge latest feeds with old feeds for each different source
-                fetchUpdateAll.map(function () {
-                  var _ref4 = _asyncToGenerator(_regenerator2.default.mark(function _callee3(feedUpdate) {
-                    var keyName, mergedFeeds;
-                    return _regenerator2.default.wrap(function _callee3$(_context3) {
-                      while (1) {
-                        switch (_context3.prev = _context3.next) {
-                          case 0:
-                            keyName = (0, _keys2.default)(feedUpdate)[0];
-                            // start merging
+                if (fetchUpdateAll && (typeof fetchUpdateAll === "undefined" ? "undefined" : _typeof(fetchUpdateAll)) === "object") {
+                  fetchUpdateAll.map(function () {
+                    var _ref4 = _asyncToGenerator(_regenerator2.default.mark(function _callee3(feedUpdate) {
+                      var keyName, mergedFeeds;
+                      return _regenerator2.default.wrap(function _callee3$(_context3) {
+                        while (1) {
+                          switch (_context3.prev = _context3.next) {
+                            case 0:
+                              keyName = (0, _keys2.default)(feedUpdate)[0];
+                              // start merging
 
-                            _context3.next = 3;
-                            return self.mergeEach(keyName, // source title
-                            feedUpdate[keyName] // source values as feeds
-                            );
+                              _context3.next = 3;
+                              return self.mergeEach(keyName, // source title
+                              feedUpdate[keyName] // source values as feeds
+                              );
 
-                          case 3:
-                            mergedFeeds = _context3.sent;
+                            case 3:
+                              mergedFeeds = _context3.sent;
 
-                            if (!mergedFeeds) {
-                              _context3.next = 6;
-                              break;
-                            }
+                              if (!mergedFeeds) {
+                                _context3.next = 6;
+                                break;
+                              }
 
-                            return _context3.abrupt("return", self.writeData(keyName, mergedFeeds));
+                              return _context3.abrupt("return", self.writeData(keyName, mergedFeeds));
 
-                          case 6:
-                            return _context3.abrupt("return", self.writeData(keyName, feedUpdate[keyName]));
+                            case 6:
+                              return _context3.abrupt("return", self.writeData(keyName, feedUpdate[keyName]));
 
-                          case 7:
-                          case "end":
-                            return _context3.stop();
+                            case 7:
+                            case "end":
+                              return _context3.stop();
+                          }
                         }
-                      }
-                    }, _callee3, this);
-                  }));
+                      }, _callee3, this);
+                    }));
 
-                  return function (_x3) {
-                    return _ref4.apply(this, arguments);
-                  };
-                }());
+                    return function (_x3) {
+                      return _ref4.apply(this, arguments);
+                    };
+                  }());
+                }
                 _context4.next = 12;
                 break;
 
@@ -326,7 +360,7 @@ var AutoService = function () {
                 _context4.prev = 12;
 
                 self.serviceRunnng = "false";
-                self.nextUpdate = Date.now() + 60000 * _config2.default.updateInterval;
+                self.nextUpdate = Date.now() + 60000 * _config2.default.updating.autoUpdateTime;
                 return _context4.finish(12);
 
               case 16:
@@ -347,6 +381,7 @@ var AutoService = function () {
 
   return AutoService;
 }();
-
+var d = new AutoService();
+d.runService();
 module.exports = AutoService;
 //# sourceMappingURL=service.js.map

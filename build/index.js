@@ -39,6 +39,9 @@ if (config.updating.autoUpdateFeed) {
   setInterval(function () {
     return updateService.deleteOldSource();
   }, 60000 * 60 * 6);
+  setTimeout(function () {
+    return updateService.runService();
+  }, 10000); // run the servie at initial startup
   setInterval(function () {
     return updateService.runService();
   }, config.updating.autoUpdateTime * 60000); // run service at specific intercal set in config
@@ -71,27 +74,24 @@ if (config.updating.autoUpdateFeed) {
     };
   }());
 
-  /*
-  app.get("/latest/:feedSource", function(req, res, next) {
-    let sourceName = req.params.feedSource;
-    if (req.params && sourceName !== "" && typeof sourceName === "string")
-      return res.json({
-        serviceRunning: updateService.serviceRunnng,
-        nextUpdate: moment(updateService.nextUpdate).fromNow(),
-        items: updateService.updatedMerge[req.params.feedSource]
-      });
+  app.get("/latest/:feedSource", function (req, res, next) {
+    var sourceName = req.params.feedSource;
+    if (req.params && sourceName !== "" && typeof sourceName === "string") return res.json({
+      serviceRunning: updateService.serviceRunnng,
+      nextUpdate: updateService.nextUpdate,
+      items: updateService.updatedMerge[req.params.feedSource]
+    });
     console.error("Invalid request!!");
     next();
   });
-  app.get("/next_update", function(req, res, next) {
+  app.get("/next_update", function (req, res, next) {
     res.json({
       error: updateService.error,
       serviceRunning: updateService.serviceRunnng,
-      nextUpdate: moment(updateService.nextUpdate).fromNow(),
+      nextUpdate: updateService.nextUpdate,
       feeds: updateService.updatedMerge
     });
   });
-  */
 } // end of #if config.update.AutoupdateFeed
 
 var server = require("http").createServer(app);
@@ -103,9 +103,6 @@ if (process.env.NODE_ENV === "development") {
   require(path.join(path.join(rootPath, "./dev-server")))(app);
 } else {
   app.use(express.static(path.join(rootPath, "www")));
-  setTimeout(function () {
-    return updateService.runService();
-  }, 10000); // run the servie at initial startup
 }
 
 app.set("port", process.env.PORT || 3000);

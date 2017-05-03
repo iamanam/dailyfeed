@@ -12,7 +12,7 @@ const HotReload = app => {
       inline: true,
       publicPath: "/assets/",
       colors: true,
-      // stats: "errors-only",
+      stats: "errors-only",
       historyApiFallback: true
     })
   );

@@ -3,10 +3,12 @@ import source from "../../config/source.json";
 import config from "../../config/config.json";
 import findRemoveSync from "find-remove";
 import { updateItem } from "../db/helper.js";
+import timeAgo from "timeago.js";
 import fs from "fs-extra";
 import path from "path";
 const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
 var Promise = require("bluebird");
+let timeago = timeAgo();
 const AutoService = class {
   constructor(updateInterval) {
     this.updateInterval = updateInterval; // this is config setting for update interval
@@ -101,7 +103,24 @@ const AutoService = class {
       });
     });
   }
-
+  isUpdateRequired(key) {
+    return new Promise((resolve, reject) => {
+      fs.stat(this.getPath(key, "index.json"), (e, c) => {
+        if (e) return console.error(e);
+        let updateInterval = config.updating.autoUpdateTime * 60000;
+        if (Date.parse(c.mtime) + updateInterval >= Date.now()) {
+          console.log(
+            "%s updated=> at %s Next update=> %s",
+            key,
+            timeago.format(c.mtime),
+            timeago.format(Date.parse(c.mtime) + updateInterval)
+          );
+          return resolve(false);
+        }
+        resolve(true);
+      });
+    });
+  }
   /**
  * This function fetch update by calling the serveFeed method
  * It calls out all the source titles included and call the mergeEachSourceFile to merge lates feeds
@@ -116,20 +135,13 @@ const AutoService = class {
       feed[key] = await serveFeed(key, self.latestUpdates || {});
       return Promise.resolve(feed);
     }
-    /*
-          fs.stat(this.getPath(key, "index.json"), (e, c) => {
-        if (e) return console.error(e);
-        let updateInterval = config.updating.autoUpdateTime * 60000;
-        if (Date.parse(c.mtime) + updateInterval >= Date.now())
-          console.log("Updating ignored.");
-        else ;
-      });
-      */
-    var allPromises = [];
+    let allPromises = [];
     for (var key in source) {
-      allPromises.push(promiseBind(key));
+      // first check if update require before fetching then push if available
+      if (await self.isUpdateRequired(key)) allPromises.push(promiseBind(key));
     }
-    return Promise.all(allPromises);
+    // return false if there are nothing to fetch
+    return allPromises.length >= 1 ? Promise.all(allPromises) : false;
   }
 
   // after fetching files delete json files which is older than 12 hrs
@@ -152,25 +164,28 @@ const AutoService = class {
       // now fetch latest updates
       let fetchUpdateAll = await this.fetchUpdateForAll();
       // after update finish then merge latest feeds with old feeds for each different source
-      fetchUpdateAll.map(async function(feedUpdate) {
-        let keyName = Object.keys(feedUpdate)[0];
-        // start merging
-        let mergedFeeds = await self.mergeEach(
-          keyName, // source title
-          feedUpdate[keyName] // source values as feeds
-        );
-        // after successful merging write in db and updated feeds in index.json
-        if (mergedFeeds) return self.writeData(keyName, mergedFeeds);
-        // if mergefeeds failed, then as alternative write latest updates ignore old feeds
-        return self.writeData(keyName, feedUpdate[keyName]);
-      });
+      if (fetchUpdateAll && typeof fetchUpdateAll === "object") {
+        fetchUpdateAll.map(async function(feedUpdate) {
+          let keyName = Object.keys(feedUpdate)[0];
+          // start merging
+          let mergedFeeds = await self.mergeEach(
+            keyName, // source title
+            feedUpdate[keyName] // source values as feeds
+          );
+          // after successful merging write in db and updated feeds in index.json
+          if (mergedFeeds) return self.writeData(keyName, mergedFeeds);
+          // if mergefeeds failed, then as alternative write latest updates ignore old feeds
+          return self.writeData(keyName, feedUpdate[keyName]);
+        });
+      }
     } catch (e) {
       console.log(e);
     } finally {
       self.serviceRunnng = "false";
-      self.nextUpdate = Date.now() + 60000 * config.updateInterval;
+      self.nextUpdate = Date.now() + 60000 * config.updating.autoUpdateTime;
     }
   }
 };
-
+var d = new AutoService();
+d.runService();
 module.exports = AutoService;

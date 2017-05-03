@@ -51,7 +51,7 @@ class Overview extends Component {
 }
 
 Overview.propTypes = {
-  lastFetched: propTypes.string,
+  lastFetched: propTypes.number,
   sourceTitle: propTypes.string
 };
 export default Overview;
