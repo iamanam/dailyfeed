@@ -1,19 +1,18 @@
 {
   "presets": [
-    [
-      "env",
-      {
-        "targets": {
-          "node": "current",
-          "browsers": [
-            "last 5 versions"
-          ]
-        }
-      }
-    ],
+    "latest",
     "react"
   ],
   "plugins": [
-    "react-hot-loader/babel"
+    [
+      "transform-runtime",
+      {
+        "helpers": false,
+        "polyfill": true,
+        "regenerator": true,
+        "moduleName": "babel-runtime"
+      },
+      "react-hot-loader/babel"
+    ]
   ]
 }

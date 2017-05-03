@@ -4,6 +4,14 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _keys = require("babel-runtime/core-js/object/keys");
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _stringify = require("babel-runtime/core-js/json/stringify");
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
 var _collectFeed = require("./collectFeed");
 
 var _collectFeed2 = _interopRequireDefault(_collectFeed);
@@ -14,7 +22,7 @@ var _source2 = _interopRequireDefault(_source);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var feedSource = JSON.parse(JSON.stringify(_source2.default));
+var feedSource = JSON.parse((0, _stringify2.default)(_source2.default));
 
 /*
 const saveFetchInfo = (sourceTitle, feedLength, fileName) => {
@@ -42,7 +50,7 @@ const saveFetchInfo = (sourceTitle, feedLength, fileName) => {
  */
 var serveFeed = function serveFeed(sourceTitle, lastUpdate) {
   if (lastUpdate[sourceTitle]) {
-    var lastFirstFeedTitle = Object.keys(lastUpdate[sourceTitle]["feeds"])[0]; // title of first item of last fetched feed item
+    var lastFirstFeedTitle = (0, _keys2.default)(lastUpdate[sourceTitle]["feeds"])[0]; // title of first item of last fetched feed item
   }
   var feedManage = new _collectFeed2.default(sourceTitle, feedSource[sourceTitle].sourceUrl, // get sourceinfo from saved json file
   lastFirstFeedTitle);
@@ -52,8 +60,7 @@ var serveFeed = function serveFeed(sourceTitle, lastUpdate) {
   return initCollect;
 };
 
-var _default = serveFeed;
-exports.default = _default;
+exports.default = serveFeed;
 
 /*
   feedSource[sourceT&itle]["lastfetch"] = Date.now();
@@ -69,20 +76,4 @@ exports.default = _default;
     );
   });
   */
-
-;
-
-var _temp = function () {
-  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
-    return;
-  }
-
-  __REACT_HOT_LOADER__.register(feedSource, "feedSource", "server/src/serveFeed.js");
-
-  __REACT_HOT_LOADER__.register(serveFeed, "serveFeed", "server/src/serveFeed.js");
-
-  __REACT_HOT_LOADER__.register(_default, "default", "server/src/serveFeed.js");
-}();
-
-;
 //# sourceMappingURL=serveFeed.js.map

@@ -1,8 +1,32 @@
 "use strict";
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _iterator = require("babel-runtime/core-js/symbol/iterator");
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _iterator2 = _interopRequireDefault(_iterator);
+
+var _symbol = require("babel-runtime/core-js/symbol");
+
+var _symbol2 = _interopRequireDefault(_symbol);
+
+var _defineProperty = require("babel-runtime/core-js/object/define-property");
+
+var _defineProperty2 = _interopRequireDefault(_defineProperty);
+
+var _regenerator = require("babel-runtime/regenerator");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _assign = require("babel-runtime/core-js/object/assign");
+
+var _assign2 = _interopRequireDefault(_assign);
+
+var _keys = require("babel-runtime/core-js/object/keys");
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; (0, _defineProperty2.default)(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _serveFeed = require("./serveFeed");
 
@@ -81,7 +105,7 @@ var AutoService = function () {
     key: "writeData",
     value: function writeData(sourceTitle, dataToWrite) {
       // after merging happen feed length will change, so update the length
-      dataToWrite.feedsLength = Object.keys(dataToWrite["feeds"]).length;
+      dataToWrite.feedsLength = (0, _keys2.default)(dataToWrite["feeds"]).length;
       try {
         // now save the fetching info in db
         this.saveFetchInfo(sourceTitle, dataToWrite.feedsLength, dataToWrite.fileName // its trick to find the latest file saved after index.json
@@ -119,7 +143,7 @@ var AutoService = function () {
                 var getFile = _this.getPath(sourceTitle, file);
                 if (getFile || getFile !== "" || typeof getFile !== "undefined") {
                   // merge only feeds, so we keeping intact other properties of lastfetched while merging feeds only
-                  latestFeedFetched["feeds"] = Object.assign({}, latestFeedFetched["feeds"], _fsExtra2.default.readJsonSync(getFile));
+                  latestFeedFetched["feeds"] = (0, _assign2.default)({}, latestFeedFetched["feeds"], _fsExtra2.default.readJsonSync(getFile));
                 }
               });
               // save updated latestfetched after merged saved as backup
@@ -145,11 +169,11 @@ var AutoService = function () {
   }, {
     key: "fetchUpdateForAll",
     value: function () {
-      var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+      var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee2() {
         var promiseBind = function () {
-          var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee(key) {
+          var _ref2 = _asyncToGenerator(_regenerator2.default.mark(function _callee(key) {
             var feed;
-            return regeneratorRuntime.wrap(function _callee$(_context) {
+            return _regenerator2.default.wrap(function _callee$(_context) {
               while (1) {
                 switch (_context.prev = _context.next) {
                   case 0:
@@ -185,7 +209,7 @@ var AutoService = function () {
 
 
         var self, allPromises, key;
-        return regeneratorRuntime.wrap(function _callee2$(_context2) {
+        return _regenerator2.default.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
@@ -227,9 +251,9 @@ var AutoService = function () {
   }, {
     key: "runService",
     value: function () {
-      var _ref3 = _asyncToGenerator(regeneratorRuntime.mark(function _callee4(param) {
+      var _ref3 = _asyncToGenerator(_regenerator2.default.mark(function _callee4(param) {
         var self, fetchUpdateAll;
-        return regeneratorRuntime.wrap(function _callee4$(_context4) {
+        return _regenerator2.default.wrap(function _callee4$(_context4) {
           while (1) {
             switch (_context4.prev = _context4.next) {
               case 0:
@@ -248,13 +272,13 @@ var AutoService = function () {
 
                 // after update finish then merge latest feeds with old feeds for each different source
                 fetchUpdateAll.map(function () {
-                  var _ref4 = _asyncToGenerator(regeneratorRuntime.mark(function _callee3(feedUpdate) {
+                  var _ref4 = _asyncToGenerator(_regenerator2.default.mark(function _callee3(feedUpdate) {
                     var keyName, mergedFeeds;
-                    return regeneratorRuntime.wrap(function _callee3$(_context3) {
+                    return _regenerator2.default.wrap(function _callee3$(_context3) {
                       while (1) {
                         switch (_context3.prev = _context3.next) {
                           case 0:
-                            keyName = Object.keys(feedUpdate)[0];
+                            keyName = (0, _keys2.default)(feedUpdate)[0];
                             // start merging
 
                             _context3.next = 3;
@@ -323,17 +347,4 @@ var AutoService = function () {
 }();
 
 module.exports = AutoService;
-;
-
-var _temp = function () {
-  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
-    return;
-  }
-
-  __REACT_HOT_LOADER__.register(rootPath, "rootPath", "server/src/service.js");
-
-  __REACT_HOT_LOADER__.register(AutoService, "AutoService", "server/src/service.js");
-}();
-
-;
 //# sourceMappingURL=service.js.map

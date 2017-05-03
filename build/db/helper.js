@@ -5,6 +5,22 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.getFeedSourceInfo = exports.updateItem = exports.getItem = exports.query = exports.putItem = exports.deletTable = undefined;
 
+var _regenerator = require("babel-runtime/regenerator");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _keys = require("babel-runtime/core-js/object/keys");
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _stringify = require("babel-runtime/core-js/json/stringify");
+
+var _stringify2 = _interopRequireDefault(_stringify);
+
+var _promise = require("babel-runtime/core-js/promise");
+
+var _promise2 = _interopRequireDefault(_promise);
+
 var _initDb = require("./initDb");
 
 var _table = require("./table");
@@ -15,8 +31,7 @@ var _source2 = _interopRequireDefault(_source);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new Promise(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return Promise.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; } //import "babel-polyfill";
-
+function _asyncToGenerator(fn) { return function () { var gen = fn.apply(this, arguments); return new _promise2.default(function (resolve, reject) { function step(key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { return _promise2.default.resolve(value).then(function (value) { step("next", value); }, function (err) { step("throw", err); }); } } return step("next"); }); }; }
 
 var deletTable = exports.deletTable = function deletTable(dyn, tableName) {
   dyn.deleteTable({
@@ -45,7 +60,7 @@ var putItem = exports.putItem = function putItem(dyn, table, data) {
  * @returns 
  */
 var query = exports.query = function query(dyn, tableName, condition, conditionJson) {
-  return new Promise(function (resolve, reject) {
+  return new _promise2.default(function (resolve, reject) {
     dyn.query({
       TableName: tableName,
       IndexName: (0, _table.indexName)(tableName),
@@ -78,7 +93,7 @@ var getItem = exports.getItem = function getItem(TableName, keyJson) {
     Key: keyJson
   }, function (err, data) {
     if (err) {
-      console.error("Unable to read item. Error JSON:", JSON.stringify(err, null, 2));
+      console.error("Unable to read item. Error JSON:", (0, _stringify2.default)(err, null, 2));
     } else {
       //console.log("GetItem succeeded:", JSON.stringify(data, null, 2));
       return data;
@@ -89,15 +104,15 @@ var getItem = exports.getItem = function getItem(TableName, keyJson) {
 var updateItem = exports.updateItem = function updateItem(params) {
   return _initDb.docClient.update(params, function (err, data) {
     if (err) {
-      console.error("Unable to update item. Error JSON:", JSON.stringify(err, null, 2));
+      console.error("Unable to update item. Error JSON:", (0, _stringify2.default)(err, null, 2));
     }
   });
 };
 
 var getFeedSourceInfo = exports.getFeedSourceInfo = function () {
-  var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+  var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee2() {
     var data, f, result;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+    return _regenerator2.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
@@ -111,9 +126,9 @@ var getFeedSourceInfo = exports.getFeedSourceInfo = function () {
               }).promise();
             };
 
-            Object.keys(_source2.default).map(function () {
-              var _ref2 = _asyncToGenerator(regeneratorRuntime.mark(function _callee(i) {
-                return regeneratorRuntime.wrap(function _callee$(_context) {
+            (0, _keys2.default)(_source2.default).map(function () {
+              var _ref2 = _asyncToGenerator(_regenerator2.default.mark(function _callee(i) {
+                return _regenerator2.default.wrap(function _callee$(_context) {
                   while (1) {
                     switch (_context.prev = _context.next) {
                       case 0:
@@ -132,7 +147,7 @@ var getFeedSourceInfo = exports.getFeedSourceInfo = function () {
               };
             }());
             _context2.next = 6;
-            return Promise.all(data);
+            return _promise2.default.all(data);
 
           case 6:
             result = _context2.sent;
@@ -161,25 +176,4 @@ var getFeedSourceInfo = exports.getFeedSourceInfo = function () {
     return _ref.apply(this, arguments);
   };
 }();
-;
-
-var _temp = function () {
-  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
-    return;
-  }
-
-  __REACT_HOT_LOADER__.register(deletTable, "deletTable", "server/db/helper.js");
-
-  __REACT_HOT_LOADER__.register(putItem, "putItem", "server/db/helper.js");
-
-  __REACT_HOT_LOADER__.register(query, "query", "server/db/helper.js");
-
-  __REACT_HOT_LOADER__.register(getItem, "getItem", "server/db/helper.js");
-
-  __REACT_HOT_LOADER__.register(updateItem, "updateItem", "server/db/helper.js");
-
-  __REACT_HOT_LOADER__.register(getFeedSourceInfo, "getFeedSourceInfo", "server/db/helper.js");
-}();
-
-;
 //# sourceMappingURL=helper.js.map

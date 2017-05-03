@@ -4,7 +4,23 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+var _iterator = require("babel-runtime/core-js/symbol/iterator");
+
+var _iterator2 = _interopRequireDefault(_iterator);
+
+var _symbol = require("babel-runtime/core-js/symbol");
+
+var _symbol2 = _interopRequireDefault(_symbol);
+
+var _keys = require("babel-runtime/core-js/object/keys");
+
+var _keys2 = _interopRequireDefault(_keys);
+
+var _regenerator = require("babel-runtime/regenerator");
+
+var _regenerator2 = _interopRequireDefault(_regenerator);
+
+var _typeof = typeof _symbol2.default === "function" && typeof _iterator2.default === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof _symbol2.default === "function" && obj.constructor === _symbol2.default && obj !== _symbol2.default.prototype ? "symbol" : typeof obj; };
 
 var _fsExtra = require("fs-extra");
 
@@ -74,9 +90,9 @@ var altDes = function altDes(item) {
  * @returns object
  */
 var formatItem = function () {
-  var _ref = _asyncToGenerator(regeneratorRuntime.mark(function _callee(item, scrapeIdentity) {
+  var _ref = _asyncToGenerator(_regenerator2.default.mark(function _callee(item, scrapeIdentity) {
     var descriptin, img, tag, result;
-    return regeneratorRuntime.wrap(function _callee$(_context) {
+    return _regenerator2.default.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -196,7 +212,7 @@ var CollectFeed = function CollectFeed(sourceTitle, sourceUrl, lastFirstFeedTitl
 
         _this.processWrite(timeNow, feedCollection);
         resolve({
-          feedsLength: Object.keys(feedCollection).length,
+          feedsLength: (0, _keys2.default)(feedCollection).length,
           fileName: timeNow + ".json",
           feeds: feedCollection,
           isUpdateAvailable: true
@@ -205,9 +221,9 @@ var CollectFeed = function CollectFeed(sourceTitle, sourceUrl, lastFirstFeedTitl
     });
   };
 
-  this.initCollect = _asyncToGenerator(regeneratorRuntime.mark(function _callee2() {
+  this.initCollect = _asyncToGenerator(_regenerator2.default.mark(function _callee2() {
     var getXml, processXml;
-    return regeneratorRuntime.wrap(function _callee2$(_context2) {
+    return _regenerator2.default.wrap(function _callee2$(_context2) {
       while (1) {
         switch (_context2.prev = _context2.next) {
           case 0:
@@ -250,27 +266,5 @@ var CollectFeed = function CollectFeed(sourceTitle, sourceUrl, lastFirstFeedTitl
     });
     */
 
-var _default = CollectFeed;
-exports.default = _default;
-;
-
-var _temp = function () {
-  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
-    return;
-  }
-
-  __REACT_HOT_LOADER__.register(rootPath, "rootPath", "server/src/collectFeed.js");
-
-  __REACT_HOT_LOADER__.register(scrapDescription, "scrapDescription", "server/src/collectFeed.js");
-
-  __REACT_HOT_LOADER__.register(altDes, "altDes", "server/src/collectFeed.js");
-
-  __REACT_HOT_LOADER__.register(formatItem, "formatItem", "server/src/collectFeed.js");
-
-  __REACT_HOT_LOADER__.register(CollectFeed, "CollectFeed", "server/src/collectFeed.js");
-
-  __REACT_HOT_LOADER__.register(_default, "default", "server/src/collectFeed.js");
-}();
-
-;
+exports.default = CollectFeed;
 //# sourceMappingURL=collectFeed.js.map

@@ -83,27 +83,5 @@ function createTable(dyn, tableName) {
   });
 }
 
-var _default = createTable;
-exports.default = _default;
-;
-
-var _temp = function () {
-  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
-    return;
-  }
-
-  __REACT_HOT_LOADER__.register(FeedSourceInfo, "FeedSourceInfo", "server/db/table.js");
-
-  __REACT_HOT_LOADER__.register(FeedSource, "FeedSource", "server/db/table.js");
-
-  __REACT_HOT_LOADER__.register(FeedReadMain, "FeedReadMain", "server/db/table.js");
-
-  __REACT_HOT_LOADER__.register(indexName, "indexName", "server/db/table.js");
-
-  __REACT_HOT_LOADER__.register(createTable, "createTable", "server/db/table.js");
-
-  __REACT_HOT_LOADER__.register(_default, "default", "server/db/table.js");
-}();
-
-;
+exports.default = createTable;
 //# sourceMappingURL=table.js.map

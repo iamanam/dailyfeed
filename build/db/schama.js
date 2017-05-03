@@ -3,6 +3,14 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.feedSourceSchamaKeys = exports.feedSourceInfoSchama = exports.feedSourceSchama = undefined;
+
+var _keys = require("babel-runtime/core-js/object/keys");
+
+var _keys2 = _interopRequireDefault(_keys);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 /**
  * Schama to save feedSource
  * @param {any} sourceTitle 
@@ -31,26 +39,8 @@ var feedSourceInfoSchama = exports.feedSourceInfoSchama = function feedSourceInf
 };
 
 var feedSourceSchamaKeys = exports.feedSourceSchamaKeys = function feedSourceSchamaKeys() {
-  return Object.keys(feedSourceSchama);
+  return (0, _keys2.default)(feedSourceSchama);
 };
 
-var _default = feedSourceSchama;
-exports.default = _default;
-;
-
-var _temp = function () {
-  if (typeof __REACT_HOT_LOADER__ === 'undefined') {
-    return;
-  }
-
-  __REACT_HOT_LOADER__.register(feedSourceSchama, "feedSourceSchama", "server/db/schama.js");
-
-  __REACT_HOT_LOADER__.register(feedSourceInfoSchama, "feedSourceInfoSchama", "server/db/schama.js");
-
-  __REACT_HOT_LOADER__.register(feedSourceSchamaKeys, "feedSourceSchamaKeys", "server/db/schama.js");
-
-  __REACT_HOT_LOADER__.register(_default, "default", "server/db/schama.js");
-}();
-
-;
+exports.default = feedSourceSchama;
 //# sourceMappingURL=schama.js.map
