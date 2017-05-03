@@ -170,7 +170,7 @@ var AutoService = function () {
 
       return new Promise(function (resolve, reject) {
         _fsExtra2.default.stat(_this2.getPath(key, "index.json"), function (e, c) {
-          if (e) return console.error(e);
+          if (e) return resolve(true);
           var updateInterval = _config2.default.updating.autoUpdateTime * 60000;
           if (Date.parse(c.mtime) + updateInterval >= Date.now()) {
             console.log("%s updated=> at %s Next update=> %s", key, timeago.format(c.mtime), timeago.format(Date.parse(c.mtime) + updateInterval));
@@ -381,7 +381,5 @@ var AutoService = function () {
 
   return AutoService;
 }();
-var d = new AutoService();
-d.runService();
 module.exports = AutoService;
 //# sourceMappingURL=service.js.map

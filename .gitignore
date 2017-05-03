@@ -10,7 +10,6 @@ yarn-error.log*
 .vscode
 test*
 store/
-!store/**/index.json
 config/runDyno.js
 server_es6
 old

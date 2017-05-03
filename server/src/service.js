@@ -106,7 +106,7 @@ const AutoService = class {
   isUpdateRequired(key) {
     return new Promise((resolve, reject) => {
       fs.stat(this.getPath(key, "index.json"), (e, c) => {
-        if (e) return console.error(e);
+        if (e) return resolve(true);
         let updateInterval = config.updating.autoUpdateTime * 60000;
         if (Date.parse(c.mtime) + updateInterval >= Date.now()) {
           console.log(
@@ -186,6 +186,4 @@ const AutoService = class {
     }
   }
 };
-var d = new AutoService();
-d.runService();
 module.exports = AutoService;

@@ -3,8 +3,8 @@ import path from "path";
 import through2 from "through2";
 import Feedparser from "feedparser";
 import { _fetch } from "./util";
-import { getSource } from "../../store/index";
 import config from "../../config/config.json";
+import source from "../../config/source.json";
 const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
 var Promise = require("bluebird");
 
@@ -79,7 +79,7 @@ const formatItem = async function(item, scrapeIdentity) {
 const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
   this.sourceUrl = sourceUrl;
   this.sourceTitle = sourceTitle;
-  this.scrapTag = getSource(sourceTitle).jsonFile;
+  this.scrapTag = source[sourceTitle].jsonFile;
   this.feedCollection = [];
   this.fetch = _fetch;
   this.writeFile = (fileName, fileToWrite) => {

@@ -40,11 +40,13 @@ var _feedparser2 = _interopRequireDefault(_feedparser);
 
 var _util = require("./util");
 
-var _index = require("../../store/index");
-
 var _config = require("../../config/config.json");
 
 var _config2 = _interopRequireDefault(_config);
+
+var _source = require("../../config/source.json");
+
+var _source2 = _interopRequireDefault(_source);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -163,7 +165,7 @@ var CollectFeed = function CollectFeed(sourceTitle, sourceUrl, lastFirstFeedTitl
 
   this.sourceUrl = sourceUrl;
   this.sourceTitle = sourceTitle;
-  this.scrapTag = (0, _index.getSource)(sourceTitle).jsonFile;
+  this.scrapTag = _source2.default[sourceTitle].jsonFile;
   this.feedCollection = [];
   this.fetch = _util._fetch;
   this.writeFile = function (fileName, fileToWrite) {
