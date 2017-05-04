@@ -165,7 +165,7 @@ var CollectFeed = function CollectFeed(sourceTitle, sourceUrl, lastFirstFeedTitl
 
   this.sourceUrl = sourceUrl;
   this.sourceTitle = sourceTitle;
-  this.scrapTag = _source2.default[sourceTitle].jsonFile;
+  this.scrapTag = _source2.default[sourceTitle].scrapeIdentity;
   this.feedCollection = [];
   this.fetch = _util._fetch;
   this.writeFile = function (fileName, fileToWrite) {

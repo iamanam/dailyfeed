@@ -79,7 +79,7 @@ const formatItem = async function(item, scrapeIdentity) {
 const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
   this.sourceUrl = sourceUrl;
   this.sourceTitle = sourceTitle;
-  this.scrapTag = source[sourceTitle].jsonFile;
+  this.scrapTag = source[sourceTitle].scrapeIdentity;
   this.feedCollection = [];
   this.fetch = _fetch;
   this.writeFile = (fileName, fileToWrite) => {
