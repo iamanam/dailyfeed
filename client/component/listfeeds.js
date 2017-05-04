@@ -48,8 +48,6 @@ class ListFeeds extends Component {
                     .toString()
                     .replace(/(<p>|<\/p>)/g, "")
                     .slice(0, 200)}
-                  {" "}
-                  --&gt;
                   <small className="">
                     <a href={feed.link}>...বিস্তারিত</a>
                   </small>

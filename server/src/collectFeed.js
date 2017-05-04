@@ -19,11 +19,11 @@ const scrapDescription = (itemUrl, scrapeIdentity) => {
   const cheerioReq = require("cheerio-req");
   return new Promise(resolve => {
     cheerioReq(itemUrl, (err, $) => {
-      var totalNews = [];
+      var totalNews = "";
       if (err) console.log(err);
       let $links = $(scrapeIdentity);
       for (let i = 0; i < $links.length; ++i) {
-        totalNews.push("<p>" + $links.eq(i).text() + "</p>");
+        totalNews += "<p>" + $links.eq(i).text() + "</p>";
       }
       resolve(totalNews);
     });

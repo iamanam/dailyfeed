@@ -16,9 +16,6 @@ class ModalExample extends React.Component {
       modal: !this.state.modal
     });
   }
-  createMarkup(text) {
-    return { __html: text };
-  }
   setModalBody() {
     if (config.local.newsSetting.scrapping === false) {
       return (
@@ -31,7 +28,10 @@ class ModalExample extends React.Component {
       );
     } else {
       return (
-        <p dangerouslySetInnerHTML={this.createMarkup(this.props.details)} />
+        <div
+          className="description"
+          dangerouslySetInnerHTML={{ __html: this.props.details }}
+        />
       );
     }
   }
