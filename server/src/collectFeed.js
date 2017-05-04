@@ -23,7 +23,7 @@ const scrapDescription = (itemUrl, scrapeIdentity) => {
       if (err) console.log(err);
       let $links = $(scrapeIdentity);
       for (let i = 0; i < $links.length; ++i) {
-        totalNews.push($links.eq(i).text());
+        totalNews.push("<p>" + $links.eq(i).text() + "</p>");
       }
       resolve(totalNews);
     });
@@ -96,6 +96,7 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
     }
   };
   this.processWrite = (fileName, dataToWrite) => {
+    console.log(" writing process of %s started.", sourceTitle);
     let self = this;
     let fileFolder = path.join(rootPath, "store", this.sourceTitle);
     fs.ensureDir(fileFolder, e => {
@@ -104,6 +105,7 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
   };
   var self = this;
   this.formatXml = Response => {
+    console.log("formatting xml of %s started.", sourceTitle);
     return new Promise((resolve, reject) => {
       var feedCollection = {};
       return Response.pipe(new Feedparser())
