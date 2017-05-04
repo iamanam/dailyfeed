@@ -44,7 +44,12 @@ class ListFeeds extends Component {
                   />
                 </ListGroupItemHeading>
                 <ListGroupItemText>
-                  {feed.description.toString().slice(0, 200)} --&gt;
+                  {feed.description
+                    .toString()
+                    .replace(/(<p>|<\/p>)/g, "")
+                    .slice(0, 200)}
+                  {" "}
+                  --&gt;
                   <small className="">
                     <a href={feed.link}>...বিস্তারিত</a>
                   </small>

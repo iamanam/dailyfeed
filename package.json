@@ -75,7 +75,7 @@
     "node": "7.7.1"
   },
   "scripts": {
-    "start": "yarn build && NODE_ENV=production node ./build/index.js",
+    "start": "yarn build && NODE_ENV=production nodejs ./build/index.js",
     "dev": "NODE_ENV=development nodemon --exec babel-node server/index.js package.json --watch ./store/index.js --watch server",
     "build": "NODE_ENV=production webpack --config ./webpack.prod.config.js --progress --colors && babel -d ./build ./server -s ",
     "es6": "NODE_ENV=production babel -d ./build ./server -s"
