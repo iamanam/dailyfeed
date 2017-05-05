@@ -12,7 +12,6 @@ class Overview extends Component {
     };
   }
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps);
     this.setState({
       lastFetched: nextProps.lastFetched,
       sourceTitle: nextProps.sourceTitle
@@ -24,27 +23,26 @@ class Overview extends Component {
       nextProps.lastFetched !== this.props.lastFetched
     );
   }
-  element() {
+
+  render() {
+    let styles = {
+      icon: { color: "white", marginLeft: "15px", marginRight: "5px" }
+    };
     const { sourceTitle, lastFetched } = this.state;
     return (
-      <nav className="navbar detailsInfo col-sm-12 col-md-9 col-lg-10">
-        <div className="row">
-          <p className="col-sm-4">
-            <i className="icon-info" />
-            <span>{sourceTitle}</span>
-          </p>
-          <p className="col-sm-8 flex-last timeShow">
-            Updated:
-            {timeInstance.format(lastFetched)}
-          </p>
-        </div>
-      </nav>
-    );
-  }
-  render() {
-    return (
       <div>
-        {this.state.lastFetched && this.element()}
+        {this.state.lastFetched &&
+          <section className="detailsInfo">
+            <p className="col-sm-12">
+              <i className="icon-info" />
+              <span>
+                {sourceTitle}
+                <i style={styles.icon} className="icon-clock" />
+                Updated:
+                {timeInstance.format(lastFetched)}
+              </span>
+            </p>
+          </section>}
       </div>
     );
   }

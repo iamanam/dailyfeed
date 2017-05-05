@@ -1,13 +1,25 @@
 import React, { Component } from "react";
-import SideBar from "./component/sidebar";
-import Header from "./component/header";
 import FeedContainer from "./component/feedContainer";
 import _fetch from "./component/helper/_fetch";
 import Overview from "./component/overview";
 import fetch from "isomorphic-fetch";
+import Sidebar from "./sidebar";
+import { contentHeader } from "./component/header";
+import {
+  onSetOpen,
+  mediaQueryChanged,
+  toggleOpen,
+  sideBar
+} from "./component/helper/_sidebar";
+
+// ----------------------------Load css----------------------
+import "./css/header.less";
 import "./css/app.less";
-import "./css/fontello.css";
+import "./css/fontello/css/animation.css";
+import "./css/fontello/css/feedparser_icons.css";
 require("es6-promise").polyfill();
+
+const mql = window.matchMedia(`(min-width: 800px)`);
 
 class app extends Component {
   constructor(props) {
@@ -17,6 +29,9 @@ class app extends Component {
     this.renderCount = 0;
     this.cachedFeed = {};
     this.state = {
+      mql: mql,
+      docked: false,
+      open: false,
       feedUrl: "prothom-alo",
       feeds: "",
       sourceInfo: "",
@@ -24,8 +39,24 @@ class app extends Component {
     };
     this.fetch = _fetch.fetch.bind(this);
     this.fetchType = _fetch.fetchType.bind(this);
+    this.mediaQueryChanged = mediaQueryChanged.bind(this);
+    this.toggleOpen = toggleOpen.bind(this);
+    this.onSetOpen = onSetOpen.bind(this);
+    this.sideBar = sideBar.bind(this);
+    this.contentHeader = contentHeader.bind(this);
+  }
+
+  componentWillUnmount() {
+    this.state.mql.removeListener(this.mediaQueryChanged);
   }
   componentWillMount() {
+    mql.addListener(this.mediaQueryChanged);
+    this.setState({ mql: mql, docked: mql.matches });
+  }
+
+  // start fetching after initial load, this should be defualt feed source user
+  // want
+  componentDidMount() {
     var self = this;
     (async function getInfo() {
       var res = await fetch("/source_info");
@@ -39,21 +70,6 @@ class app extends Component {
         sourceInfo: stateObj,
         lastFetched: stateObj[self.state.feedUrl].lastFetched
       });
-    })();
-  }
-  // start fetching after initial load, this should be defualt feed source user
-  // want
-  componentDidMount() {
-    var self = this;
-    (async function getInfo() {
-      var res = await fetch("/source_info");
-      var jsonData = await res.json();
-      var stateObj = {};
-      jsonData.map(item => {
-        let i = item["Item"];
-        stateObj[i["sourceTitle"]] = i;
-      });
-      self.setState({ sourceInfo: stateObj });
     })();
 
     this.fetchType(this.state.feedUrl);
@@ -80,24 +96,11 @@ class app extends Component {
       </div>
     );
   }
-  sideBar() {
-    return (
-      <SideBar
-        handleSourceClick={this.handleSourceClick}
-        handleUpdateClick={this.handleUpdateClick}
-        feedUrl={this.state.feedUrl}
-        sourceInfo={this.state.sourceInfo}
-      />
-    );
-  }
-
-  render() {
+  mainContent() {
     return (
       <div>
-        <Header />
         <div className="container-fluid">
           <div className="row">
-            {this.state.sourceInfo && this.sideBar()}
             {!this.state.feeds && this.loading()}
             {this.state.lastFetched &&
               <Overview
@@ -112,6 +115,25 @@ class app extends Component {
           </div>
         </div>
       </div>
+    );
+  }
+  render() {
+    const sidebarProps = {
+      sidebar: this.sideBar(),
+      docked: this.state.docked,
+      open: this.state.open,
+      onSetOpen: this.onSetOpen
+    };
+
+    return (
+      <Sidebar {...sidebarProps}>
+        <header>
+          {this.contentHeader()}
+        </header>
+        <div className="mainContent">
+          {this.mainContent()}
+        </div>
+      </Sidebar>
     );
   }
 }

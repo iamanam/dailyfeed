@@ -21,7 +21,7 @@ export default class FeedContainer extends Component {
   }
   render() {
     return (
-      <div id="feed-container" className="col-sm-12 col-md-9 col-lg-10">
+      <div id="feed-container" className="col-sm-12">
         {this.state.feeds &&
           <ListFeed
             sourceTitle={this.state.sourceTitle}

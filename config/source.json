@@ -10,5 +10,25 @@
         "feedLength": 15,
         "lastfetch": 1492087048112,
         "scrapeIdentity": "div.custombody>p"
+    },
+    "amar-desh": {
+        "sourceUrl": "http://amar-desh24.com/bangla/rss.xml?feed=true",
+        "scrapeIdentity": "div#DetailsNews>p"
+    },
+    "ittefaq": {
+        "sourceUrl": "http://www.ittefaq.com.bd/rss.xml",
+        "scrapeIdentity": "div.details>div"
+    },
+    "somokal": {
+        "sourceUrl": "http://bangla.samakal.net/rss.xml",
+        "scrapeIdentity": "div#newsDtl"
+    },
+    "jugantor": {
+        "sourceUrl": "http://www.jugantor.com/rss_online.xml",
+        "scrapeIdentity": "div#myText"
+    },
+    "the daily start": {
+        "sourceUrl": "http://www.thedailystar.net/rss",
+        "scrapeIdentity": "div.field-body view-mode-full>p"
     }
 }

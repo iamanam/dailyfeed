@@ -4,6 +4,7 @@
     "react"
   ],
   "plugins": [
+    "transform-object-rest-spread",
     [
       "transform-runtime",
       {
@@ -11,8 +12,8 @@
         "polyfill": true,
         "regenerator": true,
         "moduleName": "babel-runtime"
-      },
-      "react-hot-loader/babel"
-    ]
+      }
+    ],
+    "react-hot-loader/babel"
   ]
 }

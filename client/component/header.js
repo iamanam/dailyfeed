@@ -1,6 +1,8 @@
 import React, { Component } from "react";
+import "../css/header.less";
 // import { Nav, NavItem, NavLink } from 'reactstrap'
-class Header extends Component {
+
+export class Header extends Component {
   render() {
     return (
       <div className="navbar-component">
@@ -21,5 +23,22 @@ class Header extends Component {
     );
   }
 }
-
-export default Header;
+export function contentHeader() {
+  return (
+    <section>
+      <span>
+        {!this.state.docked &&
+          <a
+            className="header-link"
+            onClick={this.toggleOpen.bind(this)}
+            href="#"
+          >
+            <i className="icon-menu" />
+          </a>}
+      </span>
+      <span className="logo">
+        <a href="#" className="brand">Feed<b>&</b>Read</a>
+      </span>
+    </section>
+  );
+}

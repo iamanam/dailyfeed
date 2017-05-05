@@ -1,6 +1,27 @@
 .soucelist {
-    padding: 0 !important;
-    position: static;
+    position: relative;
+    list-style: none;
+    padding: 0;
+    li{
+        display: flex;
+        padding:10px;
+        justify-content: space-between;
+        background: #03a9f4;
+        margin-bottom: 5px;
+        .sourceLink{
+            display: flex;
+            justify-content: space-around;
+            width: 75%;
+        a{
+            text-transform: capitalize;
+            color: white;
+            font-size: 1.5rem;
+            text-decoration: none
+        }
+        }
+
+
+    }
     .list-group{
         .list-group-item{
             border-radius: 0;
