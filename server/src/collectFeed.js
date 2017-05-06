@@ -105,6 +105,7 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
   };
   var self = this;
   this.formatXml = Response => {
+    if (!Response) return { isUpdateAvailable: false };
     console.log("formatting xml of %s started.", sourceTitle);
     return new Promise((resolve, reject) => {
       var feedCollection = {};

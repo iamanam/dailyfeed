@@ -26,9 +26,5 @@
     "jugantor": {
         "sourceUrl": "http://www.jugantor.com/rss_online.xml",
         "scrapeIdentity": "div#myText"
-    },
-    "the daily start": {
-        "sourceUrl": "http://www.thedailystar.net/rss",
-        "scrapeIdentity": "div.field-body view-mode-full>p"
     }
 }
