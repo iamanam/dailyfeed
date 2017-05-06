@@ -3,8 +3,10 @@ import path from "path";
 import through2 from "through2";
 import Feedparser from "feedparser";
 import { _fetch } from "./util";
-import config from "../../config/config.json";
 import source from "../../config/source.json";
+const config = process.env.NODE_ENV === "development"
+  ? require("../../config/config.json")
+  : require("../../config/config_production.json");
 const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
 var Promise = require("bluebird");
 

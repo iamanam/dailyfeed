@@ -1,0 +1,14 @@
+{
+    "local": {
+        "newsSetting": {
+            "scrapping": true
+        }
+    },
+    "updating": {
+        "autoUpdateFeed": true,
+        "autoUpdateTime": 10
+    },
+    "source": {
+        "source": "config/source.json"
+    }
+}

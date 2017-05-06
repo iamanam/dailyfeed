@@ -1,11 +1,14 @@
 import serveFeed from "./serveFeed";
 import source from "../../config/source.json";
-import config from "../../config/config.json";
 import findRemoveSync from "find-remove";
 import { updateItem } from "../db/helper.js";
 import timeAgo from "timeago.js";
 import fs from "fs-extra";
 import path from "path";
+const config = process.env.NODE_ENV === "development"
+  ? require("../../config/config.json")
+  : require("../../config/config_production.json");
+
 const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
 var Promise = require("bluebird");
 let timeago = timeAgo();

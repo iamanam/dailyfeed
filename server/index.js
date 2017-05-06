@@ -5,7 +5,11 @@ const path = require("path");
 const express = require("express");
 const app = express();
 app.use(compression());
-const config = require("../config/config.json");
+
+const config = process.env.NODE_ENV === "development"
+  ? require("../config/config.json")
+  : require("../config/config_production.json");
+
 process.env.rootPath = path.join(__dirname, "..");
 const rootPath = process.env.rootPath;
 
