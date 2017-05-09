@@ -40,8 +40,7 @@ var _fetch = {
     try {
       // if contents are not cached then fetch and cache it
       return new Promise((resolve, reject) => {
-        // setting up no cors
-        fetchIso(fetchUrl, { mode: "no-cors" })
+        fetchIso(fetchUrl)
           .catch(e => {
             throw Error("error at fetching in fetch.js lin 43");
           })
@@ -49,9 +48,7 @@ var _fetch = {
             if (response.status >= 400) {
               return reject(response);
             }
-            // remove json parsing
-            // previously resolve(response.json())
-            resolve(response);
+            resolve(response.json());
           });
       }).then(feeds => {
         if (isUpdate) return self.setState({ feeds: feeds["items"] });
