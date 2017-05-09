@@ -32,7 +32,7 @@ class app extends Component {
       mql: mql,
       docked: false,
       open: false,
-      feedUrl: "prothom-alo",
+      feedUrl: "somokal",
       feeds: "",
       sourceInfo: "",
       lastFetched: ""
@@ -61,6 +61,7 @@ class app extends Component {
     (async function getInfo() {
       var res = await fetch("/source_info");
       var jsonData = await res.json();
+      console.log(jsonData);
       var stateObj = {};
       jsonData.map(item => {
         let i = item["Item"];

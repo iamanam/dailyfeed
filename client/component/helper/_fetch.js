@@ -1,6 +1,7 @@
 import fetchIso from "isomorphic-fetch";
 var Promise = require("bluebird");
-
+console.log(process.env);
+const coludFrontUrl = "http://dqf1m5iv0fm88.cloudfront.net";
 var _fetch = {
   /**
   * This function will fetch feed from different source depends on request
@@ -19,7 +20,12 @@ var _fetch = {
     } else {
       if (this.cachedFeed[sourceTitle])
         return this.setState({ feeds: this.cachedFeed[sourceTitle] });
-      else return this.fetch(sourceTitle, sourceTitle + "/index" + ".json"); // search from local source by defualt
+      // else return this.fetch(sourceTitle, sourceTitle + "/index" + ".json"); // search from local source by defualt
+
+      return this.fetch(
+        sourceTitle,
+        coludFrontUrl + "/" + sourceTitle + ".json"
+      );
     }
   },
 
@@ -34,7 +40,7 @@ var _fetch = {
     try {
       // if contents are not cached then fetch and cache it
       return new Promise((resolve, reject) => {
-        fetchIso(fetchUrl)
+        fetchIso(fetchUrl, { mode: "cors" })
           .catch(e => {
             throw Error("error at fetching in fetch.js lin 43");
           })

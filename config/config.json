@@ -1,7 +1,7 @@
 {
     "local": {
         "newsSetting": {
-            "scrapping": false
+            "scrapping": true
         }
     },
     "updating": {

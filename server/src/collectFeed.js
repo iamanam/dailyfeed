@@ -25,7 +25,15 @@ const scrapDescription = (itemUrl, scrapeIdentity) => {
       if (err) console.log(err);
       let $links = $(scrapeIdentity);
       for (let i = 0; i < $links.length; ++i) {
-        totalNews += "<p>" + $links.eq(i).text() + "</p>";
+        let text = $links.eq(i).text().replace(/\s+/g, " ");
+        if (scrapeIdentity === "div#myText") {
+          let s = text.indexOf("var");
+          let f = text.indexOf("});") + 3;
+          text = text.replace(text.slice(s, f), "");
+        }
+        if (text.length >= 5 && typeof text === "string") {
+          totalNews += "<p>" + text + "</p>";
+        }
       }
       resolve(totalNews);
     });
@@ -118,6 +126,7 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
             // if old feed first item title is equal with new first source item then we will cancel
             // fetching as there is nothing new to update
             if (chunk.title === lastFirstFeedTitle) {
+              console.log("Nothing new to update. Cross checking title");
               return resolve({ isUpdateAvailable: false });
             }
             // if new items available then process will be continued
@@ -137,7 +146,6 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
         })
         .on("end", () => {
           var timeNow = Date.now(); // this time will use as a refrence into file name
-
           this.processWrite(timeNow, feedCollection);
           resolve({
             feedsLength: Object.keys(feedCollection).length,

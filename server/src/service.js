@@ -181,13 +181,15 @@ const AutoService = class {
           let dataJson = typeof mergedFeeds === "object"
             ? mergedFeeds
             : feedUpdate[keyName];
-          self.writeData(keyName, dataJson);
-          // start uploading to s3 server
-          return uploadFile(
-            keyName + ".json",
-            JSON.stringify(dataJson),
-            "application/json"
-          );
+          // start uploading to s3 server only if its production server
+          if (process.env.NODE_ENV === "production") {
+            uploadFile(
+              keyName + ".json",
+              JSON.stringify(dataJson),
+              "application/json"
+            );
+          }
+          return self.writeData(keyName, dataJson);
         });
       }
     } catch (e) {
