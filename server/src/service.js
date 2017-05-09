@@ -3,6 +3,7 @@ import source from "../../config/source.json";
 import findRemoveSync from "find-remove";
 import { updateItem } from "../db/helper.js";
 import timeAgo from "timeago.js";
+import uploadFile from "./s3_upload";
 import fs from "fs-extra";
 import path from "path";
 const config = process.env.NODE_ENV === "development"
@@ -107,6 +108,7 @@ const AutoService = class {
     });
   }
   isUpdateRequired(key) {
+    if (process.env.NODE_ENV === "production") return true;
     return new Promise((resolve, reject) => {
       fs.stat(this.getPath(key, "index.json"), (e, c) => {
         if (e) return resolve(true);
@@ -176,9 +178,16 @@ const AutoService = class {
             feedUpdate[keyName] // source values as feeds
           );
           // after successful merging write in db and updated feeds in index.json
-          if (mergedFeeds) return self.writeData(keyName, mergedFeeds);
-          // if mergefeeds failed, then as alternative write latest updates ignore old feeds
-          return self.writeData(keyName, feedUpdate[keyName]);
+          let dataJson = typeof mergedFeeds === "object"
+            ? mergedFeeds
+            : feedUpdate[keyName];
+          self.writeData(keyName, dataJson);
+          // start uploading to s3 server
+          return uploadFile(
+            keyName + ".json",
+            JSON.stringify(dataJson),
+            "application/json"
+          );
         });
       }
     } catch (e) {
