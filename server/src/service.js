@@ -160,6 +160,11 @@ const AutoService = class {
     console.log("Old json source file which were deleted :", result);
   }
 
+
+  /**
+   * The main function to run the service
+   * @param {any} param 
+   */
   async runService(param) {
     let self = this;
     try {
