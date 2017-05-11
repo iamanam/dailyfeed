@@ -58,6 +58,7 @@ class SideBar extends Component {
   }
 }
 SideBar.propTypes = {
+  sidebar: propTypes.func,
   feedUrl: propTypes.string,
   handleSourceClick: propTypes.func,
   handleUpdateClick: propTypes.func,

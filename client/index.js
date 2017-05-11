@@ -3,7 +3,6 @@ import ReactDOM from "react-dom";
 import App from "./app.js";
 import { AppContainer } from "react-hot-loader";
 import "./css/bootstrap/css/bootstrap.css";
-import "./css/bootstrap/css/bootstrap-theme.css";
 import "./css/header.less";
 import "./css/listFeed.less";
 // import { whyDidYouUpdate } from "why-did-you-update";

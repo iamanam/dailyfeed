@@ -15,8 +15,8 @@ import {
 // ----------------------------Load css----------------------
 import "./css/header.less";
 import "./css/app.less";
-import "./css/fontello/css/animation.css";
 import "./css/fontello/css/feedparser_icons.css";
+import "./css/fontello/css/animation.css";
 require("es6-promise").polyfill();
 
 const mql = window.matchMedia(`(min-width: 800px)`);
@@ -61,7 +61,6 @@ class app extends Component {
     (async function getInfo() {
       var res = await fetch("/source_info");
       var jsonData = await res.json();
-      console.log(jsonData);
       var stateObj = {};
       jsonData.map(item => {
         let i = item["Item"];
@@ -125,16 +124,22 @@ class app extends Component {
       open: this.state.open,
       onSetOpen: this.onSetOpen
     };
-
+    if (sidebarProps.sidebar) {
+      return (
+        <Sidebar {...sidebarProps}>
+          <header>
+            {this.contentHeader()}
+          </header>
+          <div className="mainContent">
+            {this.mainContent()}
+          </div>
+        </Sidebar>
+      );
+    }
     return (
-      <Sidebar {...sidebarProps}>
-        <header>
-          {this.contentHeader()}
-        </header>
-        <div className="mainContent">
-          {this.mainContent()}
-        </div>
-      </Sidebar>
+      <div>
+        <i style={{ fontSize: "50px" }} className="icon-spin5 loading" />
+      </div>
     );
   }
 }
