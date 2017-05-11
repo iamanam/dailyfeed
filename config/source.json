@@ -13,7 +13,7 @@
     },
     "amar-desh": {
         "sourceUrl": "http://amar-desh24.com/bangla/rss.xml?feed=true",
-        "scrapeIdentity": "div#DetailsNews>p"
+        "scrapeIdentity": "span#DetailsNews"
     },
     "ittefaq": {
         "sourceUrl": "http://www.ittefaq.com.bd/rss.xml",

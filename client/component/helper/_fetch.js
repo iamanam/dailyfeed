@@ -1,6 +1,5 @@
 import fetchIso from "isomorphic-fetch";
 var Promise = require("bluebird");
-console.log(process.env);
 const coludFrontUrl = "http://dqf1m5iv0fm88.cloudfront.net";
 var _fetch = {
   /**
@@ -20,8 +19,8 @@ var _fetch = {
     } else {
       if (this.cachedFeed[sourceTitle])
         return this.setState({ feeds: this.cachedFeed[sourceTitle] });
-      // else return this.fetch(sourceTitle, sourceTitle + "/index" + ".json"); // search from local source by defualt
-
+      if (!PRODUCTION)
+        return this.fetch(sourceTitle, sourceTitle + "/index" + ".json"); // search from local source by defualt
       return this.fetch(
         sourceTitle,
         coludFrontUrl + "/" + sourceTitle + ".json"

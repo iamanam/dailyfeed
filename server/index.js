@@ -70,7 +70,7 @@ if (process.env.NODE_ENV === "development") {
   app.use(express.static(path.join(rootPath, "www")));
 }
 
-app.set("port", process.env.PORT || 80);
+app.set("port", process.env.PORT || 3000);
 app.set("host", process.env.HOST || "localhost");
 
 server.listen(app.get("port"), function() {

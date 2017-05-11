@@ -137,7 +137,7 @@ const AutoService = class {
     let self = this;
     async function promiseBind(key) {
       var feed = {};
-      feed[key] = await serveFeed(key, self.latestUpdates || {});
+      feed[key] = await serveFeed(key, self.updatedMerge || {});
       return Promise.resolve(feed);
     }
     let allPromises = [];
@@ -160,7 +160,6 @@ const AutoService = class {
     console.log("Old json source file which were deleted :", result);
   }
 
-
   /**
    * The main function to run the service
    * @param {any} param 
@@ -177,24 +176,27 @@ const AutoService = class {
       if (fetchUpdateAll && typeof fetchUpdateAll === "object") {
         fetchUpdateAll.map(async function(feedUpdate) {
           let keyName = Object.keys(feedUpdate)[0];
-          // start merging
-          let mergedFeeds = await self.mergeEach(
-            keyName, // source title
-            feedUpdate[keyName] // source values as feeds
-          );
-          // after successful merging write in db and updated feeds in index.json
-          let dataJson = typeof mergedFeeds === "object"
-            ? mergedFeeds
-            : feedUpdate[keyName];
-          // start uploading to s3 server only if its production server
-          if (process.env.NODE_ENV === "production") {
-            uploadFile(
-              keyName + ".json",
-              JSON.stringify(dataJson),
-              "application/json"
+          if (feedUpdate[keyName].isUpdateAvailable) {
+            // start merging
+            let mergedFeeds = await self.mergeEach(
+              keyName, // source title
+              feedUpdate[keyName] // source values as feeds
             );
+            // after successful merging write in db and updated feeds in index.json
+            let dataJson = typeof mergedFeeds === "object"
+              ? mergedFeeds
+              : feedUpdate[keyName];
+            // start uploading to s3 server only if its production server
+            if (process.env.NODE_ENV === "production") {
+              uploadFile(
+                keyName + ".json",
+                JSON.stringify(dataJson),
+                "application/json"
+              );
+            }
+            return self.writeData(keyName, dataJson);
           }
-          return self.writeData(keyName, dataJson);
+          console.log("service cancelled");
         });
       }
     } catch (e) {

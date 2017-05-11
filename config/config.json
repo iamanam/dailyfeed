@@ -6,7 +6,7 @@
     },
     "updating": {
         "autoUpdateFeed": true,
-        "autoUpdateTime": 60
+        "autoUpdateTime": 5
     },
     "source": {
         "source": "config/source.json"
