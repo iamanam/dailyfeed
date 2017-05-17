@@ -3,7 +3,10 @@ import path from "path";
 import through2 from "through2";
 import Feedparser from "feedparser";
 import { _fetch } from "./util";
-import source from "../../config/source.json";
+const source = process.env.NODE_ENV === "development"
+  ? require("../../config/source.json")
+  : require("../../config/source_pro.json");
+
 const config = process.env.NODE_ENV === "development"
   ? require("../../config/config.json")
   : require("../../config/config_production.json");
@@ -92,6 +95,8 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
   this.scrapTag = source[sourceTitle].scrapeIdentity;
   this.feedCollection = [];
   this.fetch = _fetch;
+  this.file = require("../../store/" + sourceTitle + "/index.json");
+  this.lastFirstFeedTitle = Object.keys(this.file["feeds"])[0];
   this.writeFile = (fileName, fileToWrite) => {
     try {
       if (typeof fileToWrite !== "undefined") {
@@ -114,6 +119,7 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
     });
   };
   var self = this;
+  var chunkRun = 0;
   this.formatXml = Response => {
     if (!Response) return { isUpdateAvailable: false };
     return new Promise((resolve, reject) => {
@@ -124,12 +130,21 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
             // here it will cross check with old feed first item with newly chunked from stream
             // if old feed first item title is equal with new first source item then we will cancel
             // fetching as there is nothing new to update
-            if (chunk.title === lastFirstFeedTitle) {
-              console.log("Nothing new to update. Cross checking title");
+            // need chunkrun to ensure the comparison happen between first chunk with latest feed
+            if (chunkRun === 0 && chunk.title === self.lastFirstFeedTitle) {
+              console.log("Nothing new to update for %s ", sourceTitle);
               return resolve({ isUpdateAvailable: false });
             }
+            // if title is equal with lastfeedTitle then it means next upcoming feed chunks are already parsed earlier
+            // if flase then
+            chunkRun++;
+            // if feed with lastFirstFeedTtile found, then it means all upcoming chunks are already parsed earlier,
+            // so we are skipping those which already been parsed.
+            if (chunk.title === self.lastFirstFeedTitle) {
+              return this.push(null);
+            }
             // if new items available then process will be continued
-            new Promise((resolve, reject) => {
+            return new Promise((resolve, reject) => {
               resolve(formatItem(chunk, self.scrapTag));
             }).then(v => {
               this.push(v);

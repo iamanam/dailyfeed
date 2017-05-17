@@ -1,6 +1,7 @@
 import { dyn, docClient } from "./initDb";
 import { indexName } from "./table";
-import source from "../../config/source.json";
+import source from "../../config/source_pro.json";
+
 export const deletTable = (dyn, tableName) => {
   dyn.deleteTable(
     {

@@ -1,5 +1,4 @@
 import serveFeed from "./serveFeed";
-import source from "../../config/source.json";
 import findRemoveSync from "find-remove";
 import { updateItem } from "../db/helper.js";
 import timeAgo from "timeago.js";
@@ -9,6 +8,9 @@ import path from "path";
 const config = process.env.NODE_ENV === "development"
   ? require("../../config/config.json")
   : require("../../config/config_production.json");
+const source = process.env.NODE_ENV === "development"
+  ? require("../../config/source.json")
+  : require("../../config/source_pro.json");
 
 const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
 var Promise = require("bluebird");
@@ -19,7 +21,6 @@ const AutoService = class {
     this.updatedMerge = {}; // this will hold the lates updateed merge
     this.minCounter = 0; // this will use to track passed min between instance
     this.nextUpdate = ""; // this will return the remaining time
-    this.latestUpdates = {};
     this.serviceRunnng = "false";
     this.nextClean = "";
   }
@@ -112,7 +113,8 @@ const AutoService = class {
     return new Promise((resolve, reject) => {
       fs.stat(this.getPath(key, "index.json"), (e, c) => {
         if (e) return resolve(true);
-        let updateInterval = config.updating.autoUpdateTime * 60000;
+        // minus 1 for the time spent on parsing other file
+        let updateInterval = config.updating.autoUpdateTime - 1 * 60000;
         if (Date.parse(c.mtime) + updateInterval >= Date.now()) {
           console.log(
             "%s updated=> at %s Next update=> %s",
@@ -136,9 +138,13 @@ const AutoService = class {
   async fetchUpdateForAll() {
     let self = this;
     async function promiseBind(key) {
-      var feed = {};
-      feed[key] = await serveFeed(key, self.updatedMerge || {});
-      return Promise.resolve(feed);
+      try {
+        var feed = {};
+        feed[key] = await serveFeed(key, self.updatedMerge || {});
+        return Promise.resolve(feed);
+      } catch (e) {
+        console.log(e);
+      }
     }
     let allPromises = [];
     for (var key in source) {
@@ -157,6 +163,7 @@ const AutoService = class {
       extensions: ".json",
       ignore: "index.json"
     });
+
     console.log("Old json source file which were deleted :", result);
   }
 

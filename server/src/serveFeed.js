@@ -1,5 +1,8 @@
 import CollectFeed from "./collectFeed";
-import source from "../../config/source.json";
+const source = process.env.NODE_ENV === "development"
+  ? require("../../config/source.json")
+  : require("../../config/source_pro.json");
+
 let feedSource = JSON.parse(JSON.stringify(source));
 
 /**

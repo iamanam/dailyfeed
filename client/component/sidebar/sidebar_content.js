@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import MaterialTitlePanel from "./material_title_panel";
 import PropTypes from "prop-types";
-import feedSource from "../../../config/source.json";
 import "../../css/sidebar.less";
+const feedSource = PRODUCTION
+  ? require("../../../config/source_pro.json")
+  : require("../../../config/source.json");
 
 const styles = {
   icon: {

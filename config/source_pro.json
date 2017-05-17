@@ -1,0 +1,30 @@
+{
+    "prothom-alo": {
+        "sourceUrl": "http://www.prothom-alo.com/feed/",
+        "feedLength": 20059,
+        "lastfetch": 1492083903303,
+        "scrapeIdentity": "div[itemprop=articleBody]>p"
+    },
+    "bdnews24": {
+        "sourceUrl": "http://bangla.bdnews24.com/?widgetName=rssfeed&widgetId=1151&getXmlFeed=true",
+        "feedLength": 15,
+        "lastfetch": 1492087048112,
+        "scrapeIdentity": "div.custombody>p"
+    },
+    "amar-desh": {
+        "sourceUrl": "http://amar-desh24.com/bangla/rss.xml?feed=true",
+        "scrapeIdentity": "span#DetailsNews"
+    },
+    "ittefaq": {
+        "sourceUrl": "http://www.ittefaq.com.bd/rss.xml",
+        "scrapeIdentity": "div.details>div"
+    },
+    "somokal": {
+        "sourceUrl": "http://bangla.samakal.net/rss.xml",
+        "scrapeIdentity": "div#newsDtl"
+    },
+    "jugantor": {
+        "sourceUrl": "http://www.jugantor.com/rss_online.xml",
+        "scrapeIdentity": "div#myText"
+    }
+}

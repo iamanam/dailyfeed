@@ -32,7 +32,7 @@ class app extends Component {
       mql: mql,
       docked: false,
       open: false,
-      feedUrl: "somokal",
+      feedUrl: "prothom-alo",
       feeds: "",
       sourceInfo: "",
       lastFetched: ""

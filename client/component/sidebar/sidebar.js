@@ -1,8 +1,10 @@
 import React, { Component } from "react";
 import propTypes from "prop-types";
 import { ListGroup, ListGroupItem, Badge } from "reactstrap";
-import feedSource from "../../config/source.json";
 import "../css/sidebar.less";
+const feedSource = PRODUCTION
+  ? require("../../config/source_pro.json")
+  : require("../../config/source.json");
 
 class SideBar extends Component {
   constructor(props) {
