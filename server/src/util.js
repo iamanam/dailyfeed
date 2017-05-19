@@ -9,7 +9,10 @@ require("es6-promise").polyfill();
  * @returns stream
  */
 const _fetch = sourceUrl => {
-  return fetch(sourceUrl).then((res, err) => {
+  return fetch(sourceUrl, {
+    "cache-control": "max-age=0",
+    pragma: "no-cache"
+  }).then((res, err) => {
     /*
     if (res.status === 200) {
       return res

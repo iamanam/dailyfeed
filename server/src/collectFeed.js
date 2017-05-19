@@ -95,8 +95,13 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
   this.scrapTag = source[sourceTitle].scrapeIdentity;
   this.feedCollection = [];
   this.fetch = _fetch;
-  this.file = require("../../store/" + sourceTitle + "/index.json");
-  this.lastFirstFeedTitle = Object.keys(this.file["feeds"])[0];
+  // if index.json doesn't exist then it will throw a error
+  try {
+    this.file = require("../../store/" + sourceTitle + "/index.json");
+    this.lastFirstFeedTitle = Object.keys(this.file["feeds"])[0];
+  } catch (e) {
+    this.lastFirstFeedTitle = null;
+  }
   this.writeFile = (fileName, fileToWrite) => {
     try {
       if (typeof fileToWrite !== "undefined") {
@@ -131,7 +136,11 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
             // if old feed first item title is equal with new first source item then we will cancel
             // fetching as there is nothing new to update
             // need chunkrun to ensure the comparison happen between first chunk with latest feed
-            if (chunkRun === 0 && chunk.title === self.lastFirstFeedTitle) {
+            if (
+              self.lastFirstFeedTitle && // if lastFirstFeedTitle isn't null
+              chunkRun === 0 && // if its the first chunk of stream
+              chunk.title === self.lastFirstFeedTitle
+            ) {
               console.log("Nothing new to update for %s ", sourceTitle);
               return resolve({ isUpdateAvailable: false });
             }

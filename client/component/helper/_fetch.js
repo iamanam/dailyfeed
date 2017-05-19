@@ -39,7 +39,9 @@ var _fetch = {
     try {
       // if contents are not cached then fetch and cache it
       return new Promise((resolve, reject) => {
-        fetchIso(fetchUrl)
+        fetchIso(fetchUrl, {
+          cache: "no-cache"
+        })
           .catch(e => {
             throw Error("error at fetching in fetch.js lin 43");
           })
