@@ -9,13 +9,16 @@ import "../css/listFeed.less";
 import propTypes from "prop-types";
 import timeago from "timeago.js";
 import SkyLight from "react-skylight";
+import { sortBy } from "underscore";
 
 let timeInstance = timeago();
 class ListFeeds extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      feeds: this.props.feeds,
+      feeds: sortBy(this.props.feeds, function(item) {
+        return -new Date(item.pubDate).getTime();
+      }),
       sourceTitle: this.props.sourceTitle
     };
   }
