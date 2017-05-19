@@ -44,17 +44,21 @@ const scrapDescription = (itemUrl, scrapeIdentity) => {
 };
 
 const altDes = item => {
-  const htmlToText = require("html-to-text");
-  return htmlToText.fromString(
-    item.description ||
-      item["content:encoded"][1] ||
-      "no description available",
-    {
-      hideLinkHrefIfSameAsText: true,
-      ignoreHref: true,
-      ignoreImage: true
-    }
-  );
+  try {
+    const htmlToText = require("html-to-text");
+    return htmlToText.fromString(
+      item.description ||
+        item["content:encoded"][1] ||
+        "no description available",
+      {
+        hideLinkHrefIfSameAsText: true,
+        ignoreHref: true,
+        ignoreImage: true
+      }
+    );
+  } catch (e) {
+    console.log(e);
+  }
 };
 /**
  * This will exculde only the required information form stream source for each feed
@@ -99,6 +103,11 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
   try {
     this.file = require("../../store/" + sourceTitle + "/index.json");
     this.lastFirstFeedTitle = Object.keys(this.file["feeds"])[0];
+    // there is a simple bug in jugantor feed system which shows an old feed as first item, so
+    // comparison always failed as it alaways find the same feed to compare with. so instead of
+    // getting item [0], we will use item [1] to do the comparison
+    if (this.sourceTitle === "jugantor")
+      this.lastFirstFeedTitle = Object.keys(this.file["feeds"])[1];
   } catch (e) {
     this.lastFirstFeedTitle = null;
   }
