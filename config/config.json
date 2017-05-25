@@ -6,9 +6,13 @@
     },
     "updating": {
         "autoUpdateFeed": true,
-        "autoUpdateTime": 10
+        "autoUpdateTime": 5
     },
     "source": {
         "source": "config/source.json"
+    },
+    "uploading": {
+        "s3": false,
+        "dyno": true
     }
 }

@@ -8,7 +8,8 @@
         "autoUpdateFeed": true,
         "autoUpdateTime": 10
     },
-    "source": {
-        "source": "config/source.json"
+    "uploading": {
+        "s3": false,
+        "dyno": true
     }
 }

@@ -103,17 +103,20 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
   try {
     this.file = require("../../store/" + sourceTitle + "/index.json");
     this.lastFirstFeedTitle = Object.keys(this.file["feeds"])[0];
-    // there is a simple bug in jugantor feed system which shows an old feed as first item, so
-    // comparison always failed as it alaways find the same feed to compare with. so instead of
-    // getting item [0], we will use item [1] to do the comparison
-    if (this.sourceTitle === "jugantor")
-      this.lastFirstFeedTitle = Object.keys(this.file["feeds"])[1];
   } catch (e) {
     this.lastFirstFeedTitle = null;
   }
   this.writeFile = (fileName, fileToWrite) => {
     try {
       if (typeof fileToWrite !== "undefined") {
+        // ----------------------------------This is fix for jugantor only which behave werid---------------------------
+        // Jugantor always showing a old feed as a first item, but other items are latest. so deleting that item to be saved
+        if (this.sourceTitle === "jugantor") {
+          if (fileToWrite["দেশে ফিরেছেন প্রধানমন্ত্রী"])
+            delete fileToWrite["দেশে ফিরেছেন প্রধানমন্ত্রী"];
+        }
+        // ----------------------------------This is fix for jugantor only which behave werid---------------------------
+
         fs.writeJson(
           path.join(rootPath, "store", this.sourceTitle, fileName + ".json"),
           fileToWrite

@@ -11,12 +11,12 @@ export const deletTable = (dyn, tableName) => {
   );
 };
 
-export const putItem = (dyn, table, data) => {
+export const putItem = (table, data) => {
   var Data = {
     TableName: table,
     Item: data
   };
-  dyn.put(Data, (e, r) => console.log(e, r));
+  docClient.put(Data, (e, r) => console.log(e, r));
 };
 
 /**

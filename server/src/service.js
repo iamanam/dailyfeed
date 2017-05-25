@@ -4,7 +4,11 @@ import { updateItem } from "../db/helper.js";
 import timeAgo from "timeago.js";
 import uploadFile from "./s3_upload";
 import fs from "fs-extra";
+import SaveFeedDyno from "./saveFeedDyno";
 import path from "path";
+import createTable, { feedStore } from "../db/table";
+import { dyn } from "../db/initDb";
+
 const config = process.env.NODE_ENV === "development"
   ? require("../../config/config.json")
   : require("../../config/config_production.json");
@@ -43,7 +47,16 @@ const AutoService = class {
     };
     return updateItem(params);
   }
-
+  async makeDynoTable() {
+    return Object.keys(source).map(async element => {
+      // go through each feed source
+      var table = await dyn.listTables().promise();
+      if (table["TableNames"].includes(element)) {
+        return console.log("%s table exist", element);
+      }
+      await createTable(dyn, feedStore(element));
+    });
+  }
   writeData(sourceTitle, dataToWrite) {
     // after merging happen feed length will change, so update the length
     dataToWrite.feedsLength = Object.keys(dataToWrite["feeds"]).length;
@@ -54,6 +67,11 @@ const AutoService = class {
         dataToWrite.feedsLength,
         dataToWrite.fileName // its trick to find the latest file saved after index.json
       );
+      if (config.uploading.dyno) {
+        // save it on dyno
+        let saveOnDyno = new SaveFeedDyno(); // a new instance
+        saveOnDyno.init(sourceTitle, dataToWrite["feeds"]);
+      }
     } catch (e) {
       console.log(e);
     } finally {
@@ -178,6 +196,7 @@ const AutoService = class {
       // at first delete outdated json files before merging occur
       // self.deleteOldSource();
       // now fetch latest updates
+      this.makeDynoTable(); // make table for dyno
       let fetchUpdateAll = await this.fetchUpdateForAll();
       // after update finish then merge latest feeds with old feeds for each different source
       if (fetchUpdateAll && typeof fetchUpdateAll === "object") {
@@ -193,8 +212,8 @@ const AutoService = class {
             let dataJson = typeof mergedFeeds === "object"
               ? mergedFeeds
               : feedUpdate[keyName];
-            // start uploading to s3 server only if its production server
-            if (process.env.NODE_ENV === "production") {
+            // start uploading to s3 server only if its production
+            if (process.env.NODE_ENV === "production" && config.uploading.s3) {
               uploadFile(
                 keyName + ".json",
                 JSON.stringify(dataJson),
