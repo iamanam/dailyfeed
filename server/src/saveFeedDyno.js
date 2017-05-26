@@ -44,7 +44,7 @@ export default class SaveFeedDyno {
       let store = [];
       feedKeys.map((item, i) => {
         let singleFeed = feeds[item]; // its an object
-        singleFeed.publish = new Date(singleFeed.pubDate);
+        singleFeed.publish = new Date(singleFeed.pubDate).getTime();
         store.push({
           PutRequest: {
             Item: singleFeed
