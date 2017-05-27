@@ -3,6 +3,7 @@ import createTable, { feedStore } from "../db/table.js";
 const source = process.env.NODE_ENV === "development"
   ? require("../../config/source.json")
   : require("../../config/source_pro.json");
+var omitEmpty = require("omit-empty");
 
 export default class SaveFeedDyno {
   /*
@@ -45,6 +46,7 @@ export default class SaveFeedDyno {
       feedKeys.map((item, i) => {
         let singleFeed = feeds[item]; // its an object
         singleFeed.publish = new Date(singleFeed.pubDate).getTime();
+        omitEmpty(singleFeed); // it will remove empty proerties
         store.push({
           PutRequest: {
             Item: singleFeed
