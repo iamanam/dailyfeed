@@ -116,7 +116,12 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
             delete fileToWrite["দেশে ফিরেছেন প্রধানমন্ত্রী"];
         }
         // ----------------------------------This is fix for jugantor only which behave werid---------------------------
-
+        if (Object.keys(fileToWrite).length <= 0) {
+          return console.log(
+            "nothing to write as feed is empty for %s",
+            this.sourceTitle
+          );
+        }
         fs.writeJson(
           path.join(rootPath, "store", this.sourceTitle, fileName + ".json"),
           fileToWrite
@@ -138,63 +143,86 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
   var self = this;
   var chunkRun = 0;
   this.formatXml = Response => {
-    if (!Response) return { isUpdateAvailable: false };
-    return new Promise((resolve, reject) => {
-      var feedCollection = {};
-      return Response.pipe(new Feedparser())
-        .pipe(
-          through2.obj(function(chunk, enc, callback) {
-            // here it will cross check with old feed first item with newly chunked from stream
-            // if old feed first item title is equal with new first source item then we will cancel
-            // fetching as there is nothing new to update
-            // need chunkrun to ensure the comparison happen between first chunk with latest feed
-            if (
-              self.lastFirstFeedTitle && // if lastFirstFeedTitle isn't null
-              chunkRun === 0 && // if its the first chunk of stream
-              chunk.title === self.lastFirstFeedTitle
-            ) {
-              console.log("Nothing new to update for %s ", sourceTitle);
-              return resolve({ isUpdateAvailable: false });
-            }
-            // if title is equal with lastfeedTitle then it means next upcoming feed chunks are already parsed earlier
-            // if flase then
-            chunkRun++;
-            // if feed with lastFirstFeedTtile found, then it means all upcoming chunks are already parsed earlier,
-            // so we are skipping those which already been parsed.
-            if (chunk.title === self.lastFirstFeedTitle) {
-              return this.push(null);
-            }
-            // if new items available then process will be continued
-            return new Promise((resolve, reject) => {
-              resolve(formatItem(chunk, self.scrapTag));
-            }).then(v => {
-              this.push(v);
-              callback();
-            });
+    try {
+      if (!Response) return { isUpdateAvailable: false };
+      return new Promise((resolve, reject) => {
+        var feedCollection = {};
+        var feedparser = new Feedparser();
+        return Response.pipe(feedparser)
+          .pipe(
+            through2.obj(function(chunk, enc, callback) {
+              feedparser.on("error", e => console.log(e));
+              // here it will cross check with old feed first item with newly chunked from stream
+              // if old feed first item title is equal with new first source item then we will cancel
+              // fetching as there is nothing new to update
+              // need chunkrun to ensure the comparison happen between first chunk with latest feed
+              if (typeof self.lastFirstFeedTitle === "string") {
+                // if the feed in this run is same with latest saved first item
+                let isSameLastFeed = chunk.title === self.lastFirstFeedTitle;
+                // next bit of code need this
+                if (
+                  chunkRun === 0 && // if its the first chunk of stream
+                  isSameLastFeed
+                ) {
+                  console.log("Nothing new to update for %s ", sourceTitle);
+                  return resolve({ isUpdateAvailable: false });
+                }
+                // -------------------------------------- This is specially for jugator feed bug---------
+                if (
+                  chunkRun === 1 &&
+                  sourceTitle === "jugantor" &&
+                  isSameLastFeed
+                ) {
+                  console.log("Nothing new to update for %s ", sourceTitle);
+                  return resolve({ isUpdateAvailable: false });
+                }
+                // -------------------------------------- This is specially for jugator feed bug---------
+
+                // if title is equal with lastfeedTitle then it means next upcoming feed chunks are already parsed earlier
+                // if flase then
+                // if feed with lastFirstFeedTtile found, then it means all upcoming chunks are already parsed earlier,
+                // so we are skipping those which already been parsed.
+                if (isSameLastFeed) {
+                  return this.push(null);
+                }
+              }
+              chunkRun++;
+
+              // if new items available then process will be continued
+              return new Promise((resolve, reject) => {
+                resolve(formatItem(chunk, self.scrapTag));
+              }).then(v => {
+                this.push(v);
+                callback();
+              });
+            })
+          )
+          .on("error", e => {
+            throw Error(e);
           })
-        )
-        .on("error", e => {
-          throw Error(e);
-        })
-        .on("data", data => {
-          feedCollection[data.title] = data;
-        })
-        .on("end", () => {
-          var timeNow = Date.now(); // this time will use as a refrence into file name
-          this.processWrite(timeNow, feedCollection);
-          resolve({
-            feedsLength: Object.keys(feedCollection).length,
-            fileName: timeNow + ".json",
-            feeds: feedCollection,
-            isUpdateAvailable: true
+          .on("data", data => {
+            feedCollection[data.title] = data;
+          })
+          .on("end", () => {
+            var timeNow = Date.now(); // this time will use as a refrence into file name
+            this.processWrite(timeNow, feedCollection);
+            resolve({
+              feedsLength: Object.keys(feedCollection).length,
+              fileName: timeNow + ".json",
+              feeds: feedCollection,
+              isUpdateAvailable: true
+            });
           });
-        });
-    });
+      });
+    } catch (e) {
+      console.log(e);
+    }
   };
 
   this.initCollect = async function() {
     try {
       let getXml = await self.fetch(sourceUrl);
+      if (!getXml) return { isUpdateAvailable: false };
       let processXml = await self.formatXml(getXml.body);
       return processXml;
     } catch (error) {
@@ -202,17 +230,5 @@ const CollectFeed = function(sourceTitle, sourceUrl, lastFirstFeedTitle) {
     }
   };
 };
-/*
-    return new Promise((resolve, reject) => {
-      self.fetch(sourceUrl).then(response => {
-        if (response.status === 200) {
-          return resolve(response.body);
-        }
-        reject(response.status);
-      });
-    }).then(response => {
-      return Promise.resolve(self.formatXml(response));
-    });
-    */
 
 export default CollectFeed;

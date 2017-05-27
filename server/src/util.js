@@ -13,12 +13,11 @@ const _fetch = sourceUrl => {
     "cache-control": "max-age=0",
     pragma: "no-cache"
   }).then((res, err) => {
-    /*
     if (res.status === 200) {
-      return res
+      return res;
     }
-    */
-    return res;
+    return false;
+    // return res;
   });
 };
 

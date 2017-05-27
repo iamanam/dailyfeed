@@ -1,6 +1,6 @@
 import serveFeed from "./serveFeed";
 import findRemoveSync from "find-remove";
-import { updateItem } from "../db/helper.js";
+import { updateItem, deletTable } from "../db/helper.js";
 import timeAgo from "timeago.js";
 import uploadFile from "./s3_upload";
 import fs from "fs-extra";
@@ -48,14 +48,24 @@ const AutoService = class {
     return updateItem(params);
   }
   async makeDynoTable() {
-    return Object.keys(source).map(async element => {
-      // go through each feed source
-      var table = await dyn.listTables().promise();
-      if (table["TableNames"].includes(element)) {
-        return console.log("%s table exist", element);
-      }
-      await createTable(dyn, feedStore(element));
-    });
+    try {
+      let date = new Date().getDate();
+      let prev = date - 1;
+      return Object.keys(source).map(async element => {
+        // go through each feed source
+        var table = await dyn.listTables().promise();
+        // if there are no table for ths element then create one
+        if (table["TableNames"].includes(element + "_" + date)) {
+          if (table["TableNames"].includes(element + "_" + prev))
+            deletTable(dyn, element + "_" + prev);
+          return console.log("%s table exist", element);
+        }
+        // if there are no tables then create table and delete table of previous day
+        await createTable(dyn, feedStore(element + "_" + date));
+      });
+    } catch (e) {
+      console.log(e);
+    }
   }
   writeData(sourceTitle, dataToWrite) {
     // after merging happen feed length will change, so update the length

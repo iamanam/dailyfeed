@@ -88,7 +88,7 @@ export default class SaveFeedDyno {
       );
     });
   }
-  init(tableName, feeds) {
+  init(table, feeds) {
     let self = this;
     /*
     // first of all lets make dynomodb tables if they don't exist
@@ -112,6 +112,8 @@ export default class SaveFeedDyno {
       })
       */
     try {
+      let date = new Date().getDate();
+      let tableName = table + "_" + date;
       let formattedFeeds = self.formatFeeds(tableName, feeds);
       return self.putData(tableName, formattedFeeds);
     } catch (e) {
