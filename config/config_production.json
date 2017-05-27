@@ -6,7 +6,7 @@
     },
     "updating": {
         "autoUpdateFeed": true,
-        "autoUpdateTime": 10
+        "autoUpdateTime": 30
     },
     "uploading": {
         "s3": false,
