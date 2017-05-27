@@ -84,7 +84,7 @@ const formatItem = async function(item, scrapeIdentity) {
     let result = await {
       title: item.title,
       description: descriptin,
-      pubDate: item.pubDate,
+      publish: new Date(item.pubDate).getTime(),
       image: tag,
       link: item.link
     };

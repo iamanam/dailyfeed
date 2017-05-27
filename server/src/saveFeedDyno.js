@@ -45,7 +45,6 @@ export default class SaveFeedDyno {
       let store = [];
       feedKeys.map((item, i) => {
         let singleFeed = feeds[item]; // its an object
-        singleFeed.publish = new Date(singleFeed.pubDate).getTime();
         omitEmpty(singleFeed); // it will remove empty proerties
         store.push({
           PutRequest: {
