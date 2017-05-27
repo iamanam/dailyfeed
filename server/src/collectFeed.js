@@ -12,6 +12,7 @@ const config = process.env.NODE_ENV === "development"
   : require("../../config/config_production.json");
 const rootPath = process.env.rootPath || path.join(__dirname, "..", "..");
 var Promise = require("bluebird");
+var omitEmpty = require("omit-empty");
 
 /**
  * This function scrap details text of each news feed while autoupdating
@@ -88,7 +89,7 @@ const formatItem = async function(item, scrapeIdentity) {
       image: tag,
       link: item.link
     };
-    return result;
+    return omitEmpty(result);
   }
   throw Error("item feeds cant be formatted");
 };

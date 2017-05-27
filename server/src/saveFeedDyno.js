@@ -76,22 +76,39 @@ export default class SaveFeedDyno {
   }
   putData(tableName, feedsArray) {
     feedsArray.map(feedSplited => {
-      let Data = {};
-      Data[tableName] = feedSplited;
-      docClient.batchWrite(
-        {
-          RequestItems: Data
-        },
-        (e, r) => {
-          if (e) return console.log(e);
-          console.log("Data for %s saved successfully in dynomodb", tableName);
-        }
-      );
+      setTimeout(async () => {
+        let Data = {};
+        Data[tableName] = feedSplited;
+        await docClient.batchWrite(
+          {
+            RequestItems: Data
+          },
+          (e, r) => {
+            if (e) return console.log(e);
+            console.log(
+              "Data for %s saved successfully in dynomodb",
+              tableName
+            );
+          }
+        );
+      }, 2000);
     });
   }
   init(table, feeds) {
     let self = this;
-    /*
+
+    try {
+      let date = new Date().getDate();
+      let tableName = table + "_" + date;
+      let formattedFeeds = self.formatFeeds(tableName, feeds);
+      return self.putData(tableName, formattedFeeds);
+    } catch (e) {
+      console.log(e);
+    }
+  }
+}
+
+/*
     // first of all lets make dynomodb tables if they don't exist
     let allPromise = [] // prmise holder
     Object.keys(source).map(async element => {
@@ -112,13 +129,3 @@ export default class SaveFeedDyno {
         }, 8000)
       })
       */
-    try {
-      let date = new Date().getDate();
-      let tableName = table + "_" + date;
-      let formattedFeeds = self.formatFeeds(tableName, feeds);
-      return self.putData(tableName, formattedFeeds);
-    } catch (e) {
-      console.log(e);
-    }
-  }
-}
