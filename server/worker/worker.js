@@ -1,6 +1,8 @@
 import formatItem from "./formatter";
 import { sortBy } from "underscore";
-import SaveFeedDyno from "./saveDyno";
+import { deletTable } from "../db/helper";
+import { dyn } from "../db/initDb";
+import SaveDyno from "./saveDyno";
 const path = require("path");
 const axios = require("axios");
 const fs = require("fs-extra");
@@ -9,7 +11,6 @@ const FeedParser = require("feedparser");
 // const Promise = require("bluebird");
 const through2 = require("through2");
 const myEmitter = new EventEmitter();
-let successFullRun = 0;
 
 class Worker {
   constructor(feedSource, feedUrl) {
@@ -84,16 +85,20 @@ class Worker {
         return -new Date(item.publish).getTime();
       });
       if (sorted.length < 1) return myEmitter.emit("info", "cancelled");
-      var w = fs.createWriteStream(this.destFolder + "/info.json");
-      w.write(
-        JSON.stringify({
-          lastSavedFile: this.getFileName(),
-          lastFetched: this.date,
-          firstItem: sorted[0].title
-        })
-      );
-      w.on("finish", () => myEmitter.emit("info", 2));
-      return w.end();
+      let infoFile = this.destFolder + "/info.json";
+      fs.ensureFile(infoFile, (e, r) => {
+        if (e) return console.log(e);
+        var w = fs.createWriteStream(infoFile);
+        w.write(
+          JSON.stringify({
+            lastSavedFile: this.getFileName(),
+            lastFetched: this.date,
+            firstItem: sorted[0].title
+          })
+        );
+        w.on("finish", () => myEmitter.emit("info", 2));
+        return w.end();
+      });
     } catch (e) {
       myEmitter.emit("error", e);
     }
@@ -130,7 +135,7 @@ class Worker {
                   self.getFetchInfo() &&
                   self.getFetchInfo()["firstItem"] === title
                 ) {
-                  return self.saveParsed(self.allFeeds);
+                  return self.saveParsed();
                 }
                 // if there are new item to be processed and saved
                 this.push(fi);
@@ -155,52 +160,93 @@ class Worker {
   init() {
     return new Promise((resolve, reject) => {
       this.pipeToFeedParser(this.fetchXml());
+      let info = {
+        source: this.feedSource,
+        data: this.allFeeds
+      };
       myEmitter.on("info", (step, data) => {
-        if (step === "cancelled") return resolve(true);
-        if (step === 1) this.saveFetchInfo(data); // after first step done, start saving info
+        if (step === "cancelled") {
+          return resolve(info);
+        }
+        if (step === 1) {
+          this.saveFetchInfo(); // after first step done, start saving info
+        }
         if (step === 2) {
-          let saveOnDyno = new SaveFeedDyno();
-          return saveOnDyno
-            .init(this.feedSource, this.allFeeds)
-            .then(d => {
-              if (d) {
-                console.log("Work finished for %s", this.feedSource);
-                resolve(d);
-              }
-            })
-            .catch(e => console.log(e));
+          resolve(info);
         }
       });
       myEmitter.on("error", message => console.log(message));
     });
   }
 }
+/*
+var work = new Worker("prothom-alo", "http://www.prothom-alo.com/feed/");
+let isFinish = work.init();
+console.log(isFinish);
+*/
+const source = process.env.NODE_ENV === "production"
+  ? require("../../config/source_pro.json")
+  : require("../../config/source.json");
 
-let source = require("../config/source.json");
+/*
+function t(item) {
+  return new Promise(resolve => {
+    setTimeout(() => resolve(item), 2000);
+  });
+}
+
+Object.keys(source).forEach(async item => {
+  console.time("test");
+  let url = source[item].sourceUrl;
+  let res = await t(item);
+  console.log(res);
+  console.timeEnd("test");
+});
+
+*/
 let totalItem = Object.keys(source).length - 1;
 
 async function runWorkerForAll() {
-  let title = Object.keys(source)[totalItem];
-  let url = source[title].sourceUrl;
-  var work = new Worker(title, url);
-  let isFinish = await work.init();
-  if (isFinish && totalItem !== 0) {
-    totalItem--;
-    successFullRun++;
-    return runWorkerForAll();
+  try {
+    let title = Object.keys(source)[totalItem];
+    let url = source[title].sourceUrl;
+    var work = new Worker(title, url);
+    let data = await work.init();
+    if (data.data && data.source && Object.keys(data.data).length > 0) {
+      let dynoSaving = new SaveDyno();
+      await dynoSaving.init(data.source, data.data);
+    } else console.log("Nothing to save on dyno for %s", data.source);
+
+    if (data && totalItem !== 0) {
+      totalItem--;
+      return runWorkerForAll();
+    }
+  } catch (e) {
+    console.log(e);
   }
 }
 
-// runWorkerForAll();
+runWorkerForAll();
 
-setInterval(() => runWorkerForAll(), 1000 * 60 * 15);
+/*
+setInterval(() => {
+  let dynoProcess = require("./saveDyno");
+  dynoProcess.runWorker();
+}, 1000 * 60 * 5);
 
-/* let saveOnDyno = new SaveFeedDyno();
-          saveOnDyno
-            .init(this.feedSource, this.getFileName())
-            .then(d => {
-              if (d) {
-                console.log(d);
-              }
-            })
-            .catch(e => console.log(e)); */
+
+setInterval(() => {
+  let day = new Date().getDate() - 1;
+  try {
+    Object.keys(source).map(async item => {
+      let tableName = item + "_" + day;
+      var table = await dyn.listTables().promise();
+      if (table["TableNames"].includes(tableName)) {
+        await deletTable(dyn, tableName);
+      }
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}, 1000 * 60 * 60 * 12);
+*/
