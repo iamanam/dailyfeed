@@ -1,6 +1,7 @@
 import formatItem from "./formatter";
 import { sortBy } from "underscore";
-import SaveFeedDyno from "./saveDyno";
+import { deletTable } from "../db/helper";
+import { dyn } from "../db/initDb";
 const path = require("path");
 const axios = require("axios");
 const fs = require("fs-extra");
@@ -9,7 +10,6 @@ const FeedParser = require("feedparser");
 // const Promise = require("bluebird");
 const through2 = require("through2");
 const myEmitter = new EventEmitter();
-let successFullRun = 0;
 
 class Worker {
   constructor(feedSource, feedUrl) {
@@ -84,16 +84,20 @@ class Worker {
         return -new Date(item.publish).getTime();
       });
       if (sorted.length < 1) return myEmitter.emit("info", "cancelled");
-      var w = fs.createWriteStream(this.destFolder + "/info.json");
-      w.write(
-        JSON.stringify({
-          lastSavedFile: this.getFileName(),
-          lastFetched: this.date,
-          firstItem: sorted[0].title
-        })
-      );
-      w.on("finish", () => myEmitter.emit("info", 2));
-      return w.end();
+      let infoFile = this.destFolder + "/info.json";
+      fs.ensureFile(infoFile, (e, r) => {
+        if (e) return console.log(e);
+        var w = fs.createWriteStream(infoFile);
+        w.write(
+          JSON.stringify({
+            lastSavedFile: this.getFileName(),
+            lastFetched: this.date,
+            firstItem: sorted[0].title
+          })
+        );
+        w.on("finish", () => myEmitter.emit("info", 2));
+        return w.end();
+      });
     } catch (e) {
       myEmitter.emit("error", e);
     }
@@ -159,16 +163,7 @@ class Worker {
         if (step === "cancelled") return resolve(true);
         if (step === 1) this.saveFetchInfo(data); // after first step done, start saving info
         if (step === 2) {
-          let saveOnDyno = new SaveFeedDyno();
-          return saveOnDyno
-            .init(this.feedSource, this.allFeeds)
-            .then(d => {
-              if (d) {
-                console.log("Work finished for %s", this.feedSource);
-                resolve(d);
-              }
-            })
-            .catch(e => console.log(e));
+          resolve(true);
         }
       });
       myEmitter.on("error", message => console.log(message));
@@ -176,31 +171,46 @@ class Worker {
   }
 }
 
-let source = require("../config/source.json");
+const source = process.env.NODE_ENV === "production"
+  ? require("../../config/source_pro.json")
+  : require("../../config/source.json");
+
 let totalItem = Object.keys(source).length - 1;
 
 async function runWorkerForAll() {
-  let title = Object.keys(source)[totalItem];
-  let url = source[title].sourceUrl;
-  var work = new Worker(title, url);
-  let isFinish = await work.init();
-  if (isFinish && totalItem !== 0) {
-    totalItem--;
-    successFullRun++;
-    return runWorkerForAll();
+  try {
+    let title = Object.keys(source)[totalItem];
+    let url = source[title].sourceUrl;
+    var work = new Worker(title, url);
+    let isFinish = await work.init();
+    if (isFinish && totalItem !== 0) {
+      totalItem--;
+      return runWorkerForAll();
+    }
+    setTimeout(() => {
+      console.log("saving on dyno started");
+      require("./saveDyno");
+    }, 10000);
+  } catch (e) {
+    console.log(e);
   }
 }
 
-// runWorkerForAll();
+runWorkerForAll();
 
 setInterval(() => runWorkerForAll(), 1000 * 60 * 15);
 
-/* let saveOnDyno = new SaveFeedDyno();
-          saveOnDyno
-            .init(this.feedSource, this.getFileName())
-            .then(d => {
-              if (d) {
-                console.log(d);
-              }
-            })
-            .catch(e => console.log(e)); */
+setInterval(() => {
+  let day = new Date().getDate() - 1;
+  try {
+    Object.keys(source).map(async item => {
+      let tableName = item + "_" + day;
+      var table = await dyn.listTables().promise();
+      if (table["TableNames"].includes(tableName)) {
+        await deletTable(dyn, tableName);
+      }
+    });
+  } catch (e) {
+    console.log(e);
+  }
+}, 1000 * 60 * 60 * 12);

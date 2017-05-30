@@ -1,6 +1,6 @@
 const config = process.env.NODE_ENV === "development"
-  ? require("../config/config.json")
-  : require("../config/config_production.json");
+  ? require("../../config/config.json")
+  : require("../../config/config_production.json");
 
 function scrapDescription(itemUrl, scrapeIdentity) {
   const cheerioReq = require("cheerio-req");
@@ -46,7 +46,8 @@ export default async function formatItem(item, scrapeIdentity) {
         description: item.description,
         publish: new Date(item.pubDate).getTime(),
         image: tag,
-        link: item.link
+        link: item.link,
+        dayToday: new Date(item.pubDate).getDate()
       };
       return result;
     }

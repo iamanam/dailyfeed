@@ -26,8 +26,38 @@ export const feedStore = tableName => {
     TableName: tableName,
     AttributeDefinitions: [
       {
+        AttributeName: "dayToday",
+        AttributeType: "N"
+      },
+      {
         AttributeName: "publish",
-        AttributeType: "S"
+        AttributeType: "N"
+      }
+    ],
+    KeySchema: [
+      {
+        AttributeName: "dayToday",
+        KeyType: "HASH"
+      },
+      {
+        AttributeName: "publish",
+        KeyType: "RANGE"
+      }
+    ],
+    ProvisionedThroughput: {
+      ReadCapacityUnits: 10,
+      WriteCapacityUnits: 10
+    }
+  };
+};
+
+export const feedStore_old = tableName => {
+  return {
+    TableName: tableName,
+    AttributeDefinitions: [
+      {
+        AttributeName: "publish",
+        AttributeType: "N"
       }
     ],
     KeySchema: [

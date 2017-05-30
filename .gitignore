@@ -1,3 +1,4 @@
+server/worker/workstore
 build
 dev-server.js
 # Logs
