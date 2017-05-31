@@ -188,22 +188,6 @@ const source = process.env.NODE_ENV === "production"
   ? require("../../config/source_pro.json")
   : require("../../config/source.json");
 
-/*
-function t(item) {
-  return new Promise(resolve => {
-    setTimeout(() => resolve(item), 2000);
-  });
-}
-
-Object.keys(source).forEach(async item => {
-  console.time("test");
-  let url = source[item].sourceUrl;
-  let res = await t(item);
-  console.log(res);
-  console.timeEnd("test");
-});
-
-*/
 let totalItem = Object.keys(source).length - 1;
 
 async function runWorkerForAll() {
@@ -227,6 +211,29 @@ async function runWorkerForAll() {
 }
 
 runWorkerForAll();
+
+function deleteOldJson() {
+  let folderPath = path.join(__dirname, "workstore");
+  fs.readdir(folderPath, (e, f) => {
+    f.forEach(name => {
+      fs.readdir(path.join(folderPath, name), (e, f) => {
+        f.pop();
+        if (e) return console.log(e);
+        f.forEach(file => {
+          let fileDate = parseInt(file.split("_")[0]);
+          let today = new Date().getTime();
+          let yesterDay = new Date(today - 1000 * 60 * 60 * 24).getDate();
+          if (fileDate === yesterDay) {
+            let absoulatePath = path.join(folderPath, name, file);
+            fs.removeSync(absoulatePath);
+            console.log(absoulatePath);
+          }
+        });
+      });
+    });
+  });
+}
+deleteOldJson();
 
 /*
 setInterval(() => {
