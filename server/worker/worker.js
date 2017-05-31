@@ -1,14 +1,14 @@
 import formatItem from "./formatter";
 import { sortBy } from "underscore";
-import { deletTable } from "../db/helper";
-import { dyn } from "../db/initDb";
+// import { deletTable } from "../db/helper";
+// import { dyn } from "../db/initDb";
 import SaveDyno from "./saveDyno";
 const path = require("path");
 const axios = require("axios");
 const fs = require("fs-extra");
 const EventEmitter = require("events");
 const FeedParser = require("feedparser");
-// const Promise = require("bluebird");
+const Promise = require("bluebird");
 const through2 = require("through2");
 const myEmitter = new EventEmitter();
 
@@ -23,7 +23,7 @@ class Worker {
   }
   getFetchInfo() {
     try {
-      let fetchInfo = require(this.destFolder + "/info.json");
+      let fetchInfo = fs.readJSONSync(this.destFolder + "/info.json");
       if (typeof fetchInfo === "object" && Object.keys(fetchInfo).length > 0) {
         return fetchInfo;
       }
@@ -179,18 +179,12 @@ class Worker {
     });
   }
 }
-/*
-var work = new Worker("prothom-alo", "http://www.prothom-alo.com/feed/");
-let isFinish = work.init();
-console.log(isFinish);
-*/
+
 const source = process.env.NODE_ENV === "production"
   ? require("../../config/source_pro.json")
   : require("../../config/source.json");
 
-let totalItem = Object.keys(source).length - 1;
-
-async function runWorkerForAll() {
+async function runWorkerForAll(totalItem) {
   try {
     let title = Object.keys(source)[totalItem];
     let url = source[title].sourceUrl;
@@ -203,45 +197,46 @@ async function runWorkerForAll() {
 
     if (data && totalItem !== 0) {
       totalItem--;
-      return runWorkerForAll();
+      return runWorkerForAll(totalItem);
     }
   } catch (e) {
     console.log(e);
   }
 }
 
-runWorkerForAll();
+let totalItem = Object.keys(source).length - 1;
+runWorkerForAll(totalItem);
+setInterval(() => {
+  let totalItem = Object.keys(source).length - 1;
+  runWorkerForAll(totalItem);
+}, 1000 * 60 * 10);
 
-function deleteOldJson() {
-  let folderPath = path.join(__dirname, "workstore");
-  fs.readdir(folderPath, (e, f) => {
-    f.forEach(name => {
-      fs.readdir(path.join(folderPath, name), (e, f) => {
-        f.pop();
-        if (e) return console.log(e);
-        f.forEach(file => {
-          let fileDate = parseInt(file.split("_")[0]);
-          let today = new Date().getTime();
-          let yesterDay = new Date(today - 1000 * 60 * 60 * 24).getDate();
-          if (fileDate === yesterDay) {
-            let absoulatePath = path.join(folderPath, name, file);
-            fs.removeSync(absoulatePath);
-            console.log(absoulatePath);
-          }
+setInterval(() => {
+  function deleteOldJson() {
+    let folderPath = path.join(__dirname, "workstore");
+    fs.readdir(folderPath, (e, f) => {
+      f.forEach(name => {
+        fs.readdir(path.join(folderPath, name), (e, f) => {
+          f.pop();
+          if (e) return console.log(e);
+          f.forEach(file => {
+            let fileDate = parseInt(file.split("_")[0]);
+            let today = new Date().getTime();
+            let yesterDay = new Date(today - 1000 * 60 * 60 * 24).getDate();
+            if (fileDate === yesterDay) {
+              let absoulatePath = path.join(folderPath, name, file);
+              fs.removeSync(absoulatePath);
+              console.log(absoulatePath);
+            }
+          });
         });
       });
     });
-  });
-}
-deleteOldJson();
+  }
+  deleteOldJson();
+}, 1000 * 60 * 60 * 6);
 
 /*
-setInterval(() => {
-  let dynoProcess = require("./saveDyno");
-  dynoProcess.runWorker();
-}, 1000 * 60 * 5);
-
-
 setInterval(() => {
   let day = new Date().getDate() - 1;
   try {

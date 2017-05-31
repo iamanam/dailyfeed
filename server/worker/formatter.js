@@ -47,7 +47,7 @@ export default async function formatItem(item, scrapeIdentity) {
         publish: new Date(item.pubDate).getTime(),
         image: tag,
         link: item.link,
-        dayToday: new Date(item.pubDate).getDate()
+        dayToday: new Date().getDate()
       };
       return result;
     }
