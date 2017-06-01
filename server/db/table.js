@@ -45,8 +45,8 @@ export const feedStore = tableName => {
       }
     ],
     ProvisionedThroughput: {
-      ReadCapacityUnits: 10,
-      WriteCapacityUnits: 10
+      ReadCapacityUnits: 2,
+      WriteCapacityUnits: 2
     }
   };
 };

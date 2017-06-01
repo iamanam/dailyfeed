@@ -1,7 +1,7 @@
 import { dyn, docClient } from "../db/initDb";
 import { feedStore } from "../db/table.js";
 import fs from "fs-extra";
-
+import path from "path";
 var omitEmpty = require("omit-empty");
 var Promise = require("bluebird");
 
@@ -53,14 +53,34 @@ export default class SaveFeedDyno {
       return dataStore;
     }
   }
-  putData(tableName, feedsArray) {
+  existsSync(filePath) {
+    try {
+      fs.statSync(filePath);
+    } catch (err) {
+      if (err.code === "ENOENT") return false;
+    }
+    return true;
+  }
+  putData(table, tableName, feedsArray) {
     let k = Object.keys(feedsArray);
     let l = k.length;
     let c = 1;
+    let excludedItem = 0;
+    let savedItem = {};
+    let savedInfoPath = path.join(__dirname, "workstore", table, "saved.json");
+    if (this.existsSync(savedInfoPath)) {
+      var savedInfo = fs.readJSONSync(savedInfoPath);
+      var savedInfoKeys = Object.keys(savedInfo);
+    }
     try {
       return new Promise((resolve, reject) => {
         if (l > 0) {
           k.map((key, i) => {
+            if (savedInfoKeys && savedInfoKeys.includes(key)) {
+              // console.log("item %s already saved for %s", key, tableName);
+              excludedItem++;
+              return;
+            }
             let item = feedsArray[key];
             docClient
               .put({
@@ -69,8 +89,19 @@ export default class SaveFeedDyno {
               })
               .promise()
               .then(r => {
+                savedItem[key] = true;
                 if (c === l) {
-                  console.log("saving %s item for %s", l, tableName);
+                  // if everything finishes
+                  console.log(
+                    "%s => total =>(%s) excluded =>(%s)",
+                    tableName,
+                    l,
+                    excludedItem
+                  );
+                  let totalItem = savedInfo
+                    ? [...savedInfo, ...savedItem]
+                    : savedItem;
+                  fs.writeJsonSync(savedInfoPath, totalItem);
                   return resolve(true);
                 }
                 c++;
@@ -89,11 +120,10 @@ export default class SaveFeedDyno {
       return new Promise((resolve, reject) => {
         let date = new Date().getDate();
         let tableName = table + "_" + date;
-        // let yesTableName = table + "_" + date - 1;
-        // let formattedFeeds = self.formatFeeds(tableName, feeds);
+
         let putNow = () => {
           return self
-            .putData(tableName, feeds)
+            .putData(table, tableName, feeds)
             .then(r => {
               resolve(true);
             })

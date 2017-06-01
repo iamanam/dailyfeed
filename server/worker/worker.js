@@ -21,10 +21,12 @@ class Worker {
     this.formatItem = formatItem.bind(this);
     this.date = new Date();
     this.allFeeds = {};
+    this.infoFile = this.destFolder + "/info.json";
+    this.run = 0;
   }
   getFetchInfo() {
     try {
-      let fetchInfo = fs.readJSONSync(this.destFolder + "/info.json");
+      let fetchInfo = fs.readJSONSync(this.infoFile);
       if (typeof fetchInfo === "object" && Object.keys(fetchInfo).length > 0) {
         return fetchInfo;
       }
@@ -79,24 +81,40 @@ class Worker {
       myEmitter.emit("error", e);
     }
   }
+  existsSync(filePath) {
+    try {
+      fs.statSync(filePath);
+    } catch (err) {
+      if (err.code === "ENOENT") return false;
+    }
+    return true;
+  }
   saveFetchInfo() {
     var data = this.allFeeds;
+    let infoFile = this.destFolder + "/info.json";
+
     try {
       var sorted = sortBy(data, function(item) {
         return -new Date(item.publish).getTime();
       });
+      var sortedFirst;
+      if (sorted && sorted[0] && sorted[0].title) {
+        sortedFirst = sorted[0].title;
+      } else sortedFirst = this.firstItemTitle;
+      let firstItem = this.feedSource === "jugantor"
+        ? sortedFirst
+        : this.firstItemTitle ? this.firstItemTitle : sortedFirst;
       if (sorted.length < 1) return myEmitter.emit("info", "cancelled");
-      let infoFile = this.destFolder + "/info.json";
       fs.ensureFile(infoFile, (e, r) => {
         if (e) return console.log(e);
+        let data = {
+          lastSavedFile: this.getFileName(),
+          lastFetched: this.date,
+          firstItem: firstItem
+        };
+
         var w = fs.createWriteStream(infoFile);
-        w.write(
-          JSON.stringify({
-            lastSavedFile: this.getFileName(),
-            lastFetched: this.date,
-            firstItem: sorted[0].title
-          })
-        );
+        w.write(JSON.stringify(data));
         w.on("finish", () => myEmitter.emit("info", 2));
         return w.end();
       });
@@ -158,6 +176,7 @@ class Worker {
       })
       .catch(e => myEmitter.emit("error", e));
   }
+
   init() {
     return new Promise((resolve, reject) => {
       this.pipeToFeedParser(this.fetchXml());
@@ -173,6 +192,7 @@ class Worker {
           this.saveFetchInfo(); // after first step done, start saving info
         }
         if (step === 2) {
+          // this.filterAlreadySaved();
           resolve(info);
         }
       });
@@ -217,8 +237,7 @@ let totalItem = Object.keys(source).length - 1;
       ).getDate();
       let table = item + "_" + date;
       let prevTable = item + "_" + prevDate;
-      if (list["TableNames"].includes(table)) console.log("table exist");
-      else {
+      if (!list["TableNames"].includes(table)) {
         dyn.createTable(feedStore(table), (e, r) => {
           if (e) {
             console.log(e);
@@ -228,6 +247,7 @@ let totalItem = Object.keys(source).length - 1;
           }
         });
       }
+
       if (list["TableNames"].includes(prevTable)) {
         return dyn.deleteTable(
           {
@@ -246,11 +266,13 @@ let totalItem = Object.keys(source).length - 1;
 (function deleteOldJson() {
   let folderPath = path.join(__dirname, "workstore");
   fs.readdir(folderPath, (e, f) => {
+    if (e) return;
     f.forEach(name => {
       fs.readdir(path.join(folderPath, name), (e, f) => {
         f.pop();
         if (e) return console.log(e);
         f.forEach(file => {
+          if (file === "info.json") return;
           let fileDate = parseInt(file.split("_")[0]);
           let today = new Date().getTime();
           let yesterDay = new Date(today - 1000 * 60 * 60 * 24).getDate();
@@ -280,4 +302,37 @@ setInterval(() => {
     console.log(e);
   }
 }, 1000 * 60 * 60 * 12);
+
+  filterAlreadySaved(feeds = this.allFeeds) {
+    if (this.run === 0) {
+      if (feeds && typeof feeds === "object" && Object.keys(feeds).length > 0) {
+        try {
+          fs.readJson(this.infoFile, (e, info) => {
+            if (e) return console.log(e);
+            var filterdArry = [];
+            if (info["savedTitles"]) {
+              var newKeys = Object.keys(feeds);
+              newKeys.map(title => {
+                if (info.savedTitles.includes(title)) {
+                  console.log("item saved already => %s", title);
+                  delete feeds[title];
+                } else filterdArry.push(title);
+              });
+              info["savedTitles"] = [...info["savedTitles"], ...filterdArry];
+            } else {
+              console.log("no savedTitles");
+              console.log(Object.keys(feeds));
+              info["savedTitles"] = Object.keys(feeds);
+            }
+            fs.writeJsonSync(this.infoFile, info);
+            return feeds;
+          });
+        } catch (e) {
+          console.log(e);
+        }
+      }
+      ++this.run;
+    }
+    return feeds;
+  }
 */
