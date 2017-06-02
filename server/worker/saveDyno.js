@@ -61,13 +61,69 @@ export default class SaveFeedDyno {
     }
     return true;
   }
+  saveFetchInfo(sourceTitle, itemCount, totalSaved) {
+    var params = {
+      TableName: "SaveInfo",
+      Key: {
+        sourceName: sourceTitle
+      },
+      UpdateExpression: "set lastSavedTime =:dt, savedItem = :item ,totalSaved=:ts",
+      ExpressionAttributeValues: {
+        ":dt": parseInt(new Date().getTime()),
+        ":item": parseInt(itemCount),
+        ":ts": parseInt(totalSaved)
+      },
+      ReturnValues: "UPDATED_NEW"
+    };
+    return docClient.update(params, function(err, data) {
+      if (err) {
+        console.error(
+          "Unable to update item. Error JSON:",
+          JSON.stringify(err, null, 2)
+        );
+      }
+    });
+  }
+  getSaveInfo(table) {
+    try {
+      return docClient
+        .get({
+          TableName: "SaveInfo",
+          Key: {
+            sourceName: table
+          }
+        })
+        .promise()
+        .then(data => {
+          return data.Item;
+        })
+        .catch(e => console.log(e));
+    } catch (e) {
+      console.log(e);
+    }
+  }
+  saveInfo(table, newSaved) {
+    let d = new Date();
+    let hours = d.getHours();
+    let min = d.getMinutes();
+    return this.getSaveInfo(table).then(data => {
+      if (hours === 0 && min <= 10) data.totalSaved = 0;
+      this.saveFetchInfo(table, newSaved, data.totalSaved + newSaved);
+    });
+  }
   putData(table, tableName, feedsArray) {
     let k = Object.keys(feedsArray);
     let l = k.length;
     let c = 1;
     let excludedItem = 0;
     let savedItem = {};
-    let savedInfoPath = path.join(__dirname, "workstore", table, "saved.json");
+    let savedInfoPath = path.join(
+      __dirname,
+      "workstore",
+      table,
+      new Date().getDate().toString(),
+      "saved.json"
+    );
     if (this.existsSync(savedInfoPath)) {
       var savedInfo = fs.readJSONSync(savedInfoPath);
       var savedInfoKeys = Object.keys(savedInfo);
@@ -77,7 +133,7 @@ export default class SaveFeedDyno {
         if (l > 0) {
           k.map((key, i) => {
             if (savedInfoKeys && savedInfoKeys.includes(key)) {
-              // console.log("item %s already saved for %s", key, tableName);
+              console.log("item %s already saved for %s", key, tableName);
               excludedItem++;
               return;
             }
@@ -98,10 +154,13 @@ export default class SaveFeedDyno {
                     l,
                     excludedItem
                   );
+                  let newSaved = l - excludedItem;
                   let totalItem = savedInfo
-                    ? [...savedInfo, ...savedItem]
+                    ? Object.assign({}, savedItem, savedInfo)
                     : savedItem;
                   fs.writeJsonSync(savedInfoPath, totalItem);
+                  if (process.env.NODE_ENV === "production")
+                    this.saveInfo(table, newSaved);
                   return resolve(true);
                 }
                 c++;

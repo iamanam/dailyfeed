@@ -17,7 +17,12 @@ class Worker {
   constructor(feedSource, feedUrl) {
     this.feedSource = feedSource;
     this.feedUrl = feedUrl;
-    this.destFolder = path.join(__dirname, "workstore", feedSource);
+    this.destFolder = path.join(
+      __dirname,
+      "workstore",
+      feedSource,
+      new Date().getDate().toString()
+    );
     this.formatItem = formatItem.bind(this);
     this.date = new Date();
     this.allFeeds = {};
@@ -205,9 +210,9 @@ const source = process.env.NODE_ENV === "production"
   ? require("../../config/source_pro.json")
   : require("../../config/source.json");
 
-let totalItem = Object.keys(source).length - 1;
+// let totalItem = Object.keys(source).length - 1;
 
-(async function runWorkerForAll() {
+async function runWorkerForAll(totalItem) {
   try {
     let title = Object.keys(source)[totalItem];
     let url = source[title].sourceUrl;
@@ -220,12 +225,20 @@ let totalItem = Object.keys(source).length - 1;
 
     if (data && totalItem !== 0) {
       totalItem--;
-      return runWorkerForAll();
+      return runWorkerForAll(totalItem);
     }
   } catch (e) {
     console.log(e);
   }
-})();
+}
+
+let totalItem = Object.keys(source).length - 1;
+runWorkerForAll(totalItem);
+
+setInterval(() => {
+  let totalItem = Object.keys(source).length - 1;
+  runWorkerForAll(totalItem);
+}, 1000 * 60 * 10);
 
 (function processTable() {
   dyn.listTables((e, list) => {

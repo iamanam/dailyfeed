@@ -83,6 +83,7 @@
     "node": "7.7.1"
   },
   "scripts": {
+    "worker": "NODE_ENV=production pm2 start ./build/worker/worker.js",
     "prod": "pm2 start npm -- start",
     "start": "NODE_ENV=production nodejs ./build/index.js",
     "dev": "NODE_ENV=development nodemon --exec babel-node server/index.js package.json --watch ./store/index.js --watch server",
