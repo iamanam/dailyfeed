@@ -1,8 +1,7 @@
 import formatItem from "./formatter";
 import { sortBy } from "underscore";
 // import { deletTable } from "../db/helper";
-import { dyn } from "../db/initDb";
-import { feedStore } from "../db/table.js";
+
 import SaveDyno from "./saveDyno";
 const path = require("path");
 const axios = require("axios");
@@ -12,7 +11,9 @@ const FeedParser = require("feedparser");
 const Promise = require("bluebird");
 const through2 = require("through2");
 const myEmitter = new EventEmitter();
-
+myEmitter.setMaxListeners(20);
+var updateTime = 5;
+var totalUpdate = 0;
 class Worker {
   constructor(feedSource, feedUrl) {
     this.feedSource = feedSource;
@@ -109,6 +110,7 @@ class Worker {
       let firstItem = this.feedSource === "jugantor"
         ? sortedFirst
         : this.firstItemTitle ? this.firstItemTitle : sortedFirst;
+
       if (sorted.length < 1) return myEmitter.emit("info", "cancelled");
       fs.ensureFile(infoFile, (e, r) => {
         if (e) return console.log(e);
@@ -214,6 +216,7 @@ const source = process.env.NODE_ENV === "production"
 
 async function runWorkerForAll(totalItem) {
   try {
+    console.log("work start for %s =item no=> %s", feedSource, totalItem);
     let title = Object.keys(source)[totalItem];
     let url = source[title].sourceUrl;
     var work = new Worker(title, url);
@@ -221,7 +224,7 @@ async function runWorkerForAll(totalItem) {
     if (data.data && data.source && Object.keys(data.data).length > 0) {
       let dynoSaving = new SaveDyno();
       await dynoSaving.init(data.source, data.data);
-    } else console.log("Nothing to save on dyno for %s", data.source);
+    }
 
     if (data && totalItem !== 0) {
       totalItem--;
@@ -236,116 +239,15 @@ let totalItem = Object.keys(source).length - 1;
 runWorkerForAll(totalItem);
 
 setInterval(() => {
+  console.log(
+    "======== Update no-> %s ====== Next Update %s ",
+    totalUpdate,
+    new Date(new Date().getTime() + 1000 * 60 * updateTime)
+  );
+  console.log(
+    "\n -----------------------------------------------------------------------"
+  );
   let totalItem = Object.keys(source).length - 1;
   runWorkerForAll(totalItem);
-}, 1000 * 60 * 10);
-
-(function processTable() {
-  dyn.listTables((e, list) => {
-    if (e) return console.log(e);
-    Object.keys(source).map(item => {
-      let date = new Date(new Date().getTime() + 1000 * 60 * 60 * 24).getDate();
-      let prevDate = new Date(
-        new Date().getTime() - 1000 * 60 * 60 * 48
-      ).getDate();
-      let table = item + "_" + date;
-      let prevTable = item + "_" + prevDate;
-      if (!list["TableNames"].includes(table)) {
-        dyn.createTable(feedStore(table), (e, r) => {
-          if (e) {
-            console.log(e);
-          }
-          if (r["TableDescription"]["TableStatus"] === "ACTIVE") {
-            console.log("table created for %s", table);
-          }
-        });
-      }
-
-      if (list["TableNames"].includes(prevTable)) {
-        return dyn.deleteTable(
-          {
-            TableName: prevTable
-          },
-          (e, r) => {
-            if (e) return console.log(e);
-            console.log("table successfully deleted =>%s", prevTable);
-          }
-        );
-      }
-    });
-  });
-})();
-
-(function deleteOldJson() {
-  let folderPath = path.join(__dirname, "workstore");
-  fs.readdir(folderPath, (e, f) => {
-    if (e) return;
-    f.forEach(name => {
-      fs.readdir(path.join(folderPath, name), (e, f) => {
-        f.pop();
-        if (e) return console.log(e);
-        f.forEach(file => {
-          if (file === "info.json") return;
-          let fileDate = parseInt(file.split("_")[0]);
-          let today = new Date().getTime();
-          let yesterDay = new Date(today - 1000 * 60 * 60 * 24).getDate();
-          if (fileDate === yesterDay) {
-            let absoulatePath = path.join(folderPath, name, file);
-            fs.removeSync(absoulatePath);
-            console.log(absoulatePath);
-          }
-        });
-      });
-    });
-  });
-})();
-
-/*
-setInterval(() => {
-  let day = new Date().getDate() - 1;
-  try {
-    Object.keys(source).map(async item => {
-      let tableName = item + "_" + day;
-      var table = await dyn.listTables().promise();
-      if (table["TableNames"].includes(tableName)) {
-        await deletTable(dyn, tableName);
-      }
-    });
-  } catch (e) {
-    console.log(e);
-  }
-}, 1000 * 60 * 60 * 12);
-
-  filterAlreadySaved(feeds = this.allFeeds) {
-    if (this.run === 0) {
-      if (feeds && typeof feeds === "object" && Object.keys(feeds).length > 0) {
-        try {
-          fs.readJson(this.infoFile, (e, info) => {
-            if (e) return console.log(e);
-            var filterdArry = [];
-            if (info["savedTitles"]) {
-              var newKeys = Object.keys(feeds);
-              newKeys.map(title => {
-                if (info.savedTitles.includes(title)) {
-                  console.log("item saved already => %s", title);
-                  delete feeds[title];
-                } else filterdArry.push(title);
-              });
-              info["savedTitles"] = [...info["savedTitles"], ...filterdArry];
-            } else {
-              console.log("no savedTitles");
-              console.log(Object.keys(feeds));
-              info["savedTitles"] = Object.keys(feeds);
-            }
-            fs.writeJsonSync(this.infoFile, info);
-            return feeds;
-          });
-        } catch (e) {
-          console.log(e);
-        }
-      }
-      ++this.run;
-    }
-    return feeds;
-  }
-*/
+  totalUpdate++;
+}, 1000 * 60 * updateTime);

@@ -133,8 +133,12 @@ export default class SaveFeedDyno {
         if (l > 0) {
           k.map((key, i) => {
             if (savedInfoKeys && savedInfoKeys.includes(key)) {
-              console.log("item %s already saved for %s", key, tableName);
+              if (c === l) {
+                return resolve(true);
+              }
+              // console.log("item %s already saved for %s", key, tableName);
               excludedItem++;
+              c++;
               return;
             }
             let item = feedsArray[key];
