@@ -10,12 +10,11 @@ const EventEmitter = require("events");
 const FeedParser = require("feedparser");
 const Promise = require("bluebird");
 const through2 = require("through2");
-const myEmitter = new EventEmitter();
-myEmitter.setMaxListeners(20);
+
 var updateTime = 5;
 var totalUpdate = 0;
 class Worker {
-  constructor(feedSource, feedUrl) {
+  constructor(feedSource, feedUrl, myEmitter) {
     this.feedSource = feedSource;
     this.feedUrl = feedUrl;
     this.destFolder = path.join(
@@ -26,6 +25,7 @@ class Worker {
     );
     this.formatItem = formatItem.bind(this);
     this.date = new Date();
+    this.myEmitter = myEmitter;
     this.allFeeds = {};
     this.infoFile = this.destFolder + "/info.json";
     this.run = 0;
@@ -60,7 +60,7 @@ class Worker {
         timeout: 5000
       });
     } catch (e) {
-      myEmitter.emit("error", "couldn't fetch data for " + this.feedUrl);
+      this.myEmitter.emit("error", "couldn't fetch data for " + this.feedUrl);
     }
   }
 
@@ -73,18 +73,18 @@ class Worker {
   saveParsed() {
     try {
       if (Object.keys(this.allFeeds).length < 1)
-        return myEmitter.emit("info", "cancelled");
+        return this.myEmitter.emit("info", "cancelled");
       // ensure folder before saving operation
       fs.ensureDir(this.destFolder, err => {
-        if (err) myEmitter.emit("error", err);
+        if (err) this.myEmitter.emit("error", err);
         // dir has now been created, including the directory it is to be placed in
         var w = fs.createWriteStream(this.getFileName());
         w.write(JSON.stringify(this.allFeeds));
-        w.on("finish", () => myEmitter.emit("info", 1));
+        w.on("finish", () => this.myEmitter.emit("info", 1));
         w.end();
       });
     } catch (e) {
-      myEmitter.emit("error", e);
+      this.myEmitter.emit("error", e);
     }
   }
   existsSync(filePath) {
@@ -111,7 +111,7 @@ class Worker {
         ? sortedFirst
         : this.firstItemTitle ? this.firstItemTitle : sortedFirst;
 
-      if (sorted.length < 1) return myEmitter.emit("info", "cancelled");
+      if (sorted.length < 1) return this.myEmitter.emit("info", "cancelled");
       fs.ensureFile(infoFile, (e, r) => {
         if (e) return console.log(e);
         let data = {
@@ -122,11 +122,11 @@ class Worker {
 
         var w = fs.createWriteStream(infoFile);
         w.write(JSON.stringify(data));
-        w.on("finish", () => myEmitter.emit("info", 2));
+        w.on("finish", () => this.myEmitter.emit("info", 2));
         return w.end();
       });
     } catch (e) {
-      myEmitter.emit("error", e);
+      this.myEmitter.emit("error", e);
     }
   }
   // this will pipe response stream to feedparser
@@ -138,7 +138,7 @@ class Worker {
     fetch
       .then(response => {
         if (response.status !== 200) {
-          return myEmitter.emit("error", "Couldn't fetch xml");
+          return self.myEmitter.emit("error", "Couldn't fetch xml");
         }
         response.data // if response is good
           .pipe(feedparser) // pipe to feedparser
@@ -151,7 +151,7 @@ class Worker {
                   if (!self.firstItemTitle) self.firstItemTitle = title; // save the first item for later use;
                   // Check if there are any new news item by comparing with last saved file and continue if its true
                   if (self.isAnyNewFeed(title)) {
-                    return myEmitter.emit("info", "cancelled");
+                    return self.myEmitter.emit("info", "cancelled");
                   }
                   zeroAlreadyrun = true;
                 }
@@ -168,7 +168,7 @@ class Worker {
                 cb();
                 run++;
               } catch (e) {
-                myEmitter.emit(
+                self.myEmitter.emit(
                   "error",
                   "Problem in piping through feedparser \n" + e
                 );
@@ -181,7 +181,7 @@ class Worker {
           }) // push each item to all
           .on("finish", () => self.saveParsed()); // save json
       })
-      .catch(e => myEmitter.emit("error", e));
+      .catch(e => self.myEmitter.emit("error", e));
   }
 
   init() {
@@ -191,7 +191,7 @@ class Worker {
         source: this.feedSource,
         data: this.allFeeds
       };
-      myEmitter.on("info", (step, data) => {
+      this.myEmitter.on("info", (step, data) => {
         if (step === "cancelled") {
           return resolve(info);
         }
@@ -203,7 +203,7 @@ class Worker {
           resolve(info);
         }
       });
-      myEmitter.on("error", message => console.log(message));
+      this.myEmitter.on("error", message => console.log(message));
     });
   }
 }
@@ -216,16 +216,17 @@ const source = process.env.NODE_ENV === "production"
 
 async function runWorkerForAll(totalItem) {
   try {
-    console.log("work start for %s =item no=> %s", feedSource, totalItem);
     let title = Object.keys(source)[totalItem];
+    console.log("work start for %s =item no=> %s", title, totalItem);
     let url = source[title].sourceUrl;
-    var work = new Worker(title, url);
+    const myEmitter = new EventEmitter();
+    myEmitter.setMaxListeners(20);
+    var work = new Worker(title, url, myEmitter);
     let data = await work.init();
     if (data.data && data.source && Object.keys(data.data).length > 0) {
       let dynoSaving = new SaveDyno();
       await dynoSaving.init(data.source, data.data);
     }
-
     if (data && totalItem !== 0) {
       totalItem--;
       return runWorkerForAll(totalItem);
