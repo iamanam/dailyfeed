@@ -37,6 +37,26 @@ class Worker {
         return fetchInfo;
       }
     } catch (e) {
+      let oldDate = new Date(new Date().getTime() - 1000 * 60 * 60 * 24)
+        .getDate()
+        .toString();
+      let oldInfopath = path.join(
+        __dirname,
+        "workstore",
+        this.feedSource,
+        oldDate
+      );
+      let infoFile = oldInfopath + "/info.json";
+      if (this.existsSync(infoFile)) {
+        let fetchInfo = fs.readJSONSync(infoFile);
+        if (
+          typeof fetchInfo === "object" &&
+          Object.keys(fetchInfo).length > 0
+        ) {
+          console.log("using old info file");
+          return fetchInfo;
+        }
+      }
       return false;
     }
   }
@@ -66,7 +86,7 @@ class Worker {
 
   isAnyNewFeed(latestTitle) {
     let fetchInfo = this.getFetchInfo();
-    // console.log(fetchInfo["firstItem"], latestTitle);
+    console.log(fetchInfo["firstItem"], latestTitle);
     if (fetchInfo) return fetchInfo["firstItem"] === latestTitle;
     return false;
   }
