@@ -1,7 +1,12 @@
 import { dyn } from "../db/initDb";
 import { feedStore } from "../db/table.js";
+const fs = require("fs-extra");
+const path = require("path");
 
-(function processTable() {
+const source = process.env.NODE_ENV === "production"
+  ? require("../../config/source_pro.json")
+  : require("../../config/source.json");
+function processTable() {
   dyn.listTables((e, list) => {
     if (e) return console.log(e);
     Object.keys(source).map(item => {
@@ -35,9 +40,9 @@ import { feedStore } from "../db/table.js";
       }
     });
   });
-})();
+}
 
-(function deleteOldJson() {
+function deleteOldJson() {
   let folderPath = path.join(__dirname, "workstore");
   fs.readdir(folderPath, (e, f) => {
     if (e) return;
@@ -59,4 +64,10 @@ import { feedStore } from "../db/table.js";
       });
     });
   });
-})();
+}
+
+processTable();
+setInterval(() => {
+  processTable();
+  deleteOldJson();
+}, 1000 * 60 * 60 * 8);
