@@ -77,7 +77,7 @@ class Worker {
     try {
       return axios.get(this.feedUrl, {
         responseType: "stream",
-        timeout: 5000
+        timeout: 10000
       });
     } catch (e) {
       this.myEmitter.emit("error", "couldn't fetch data for " + this.feedUrl);
@@ -85,10 +85,23 @@ class Worker {
   }
 
   isAnyNewFeed(latestTitle) {
-    let fetchInfo = this.getFetchInfo();
-    // console.log(fetchInfo["firstItem"], latestTitle);
-    if (fetchInfo) return fetchInfo["firstItem"] === latestTitle;
-    return false;
+    try {
+      let fetchInfo = this.getFetchInfo();
+      // console.log(fetchInfo["firstItem"], latestTitle);
+      if (fetchInfo) {
+        // if items are not updating for 4 hrs then return false, to fetch all
+        if (
+          new Date(fetchInfo.lastFetched).getTime() <
+          new Date().getTime() - 1000 * 60 * 60 * 4
+        ) {
+          return false;
+        }
+        return fetchInfo["firstItem"] === latestTitle;
+      }
+      return false;
+    } catch (e) {
+      return false;
+    }
   }
   saveParsed() {
     try {
