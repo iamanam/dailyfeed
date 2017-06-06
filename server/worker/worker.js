@@ -86,7 +86,7 @@ class Worker {
 
   isAnyNewFeed(latestTitle) {
     let fetchInfo = this.getFetchInfo();
-    console.log(fetchInfo["firstItem"], latestTitle);
+    // console.log(fetchInfo["firstItem"], latestTitle);
     if (fetchInfo) return fetchInfo["firstItem"] === latestTitle;
     return false;
   }
@@ -127,7 +127,8 @@ class Worker {
       if (sorted && sorted[0] && sorted[0].title) {
         sortedFirst = sorted[0].title;
       } else sortedFirst = this.firstItemTitle;
-      let firstItem = this.feedSource === "jugantor"
+      let firstItem = this.feedSource === "jugantor" ||
+        this.feedSource === "ittefaq"
         ? sortedFirst
         : this.firstItemTitle ? this.firstItemTitle : sortedFirst;
 
