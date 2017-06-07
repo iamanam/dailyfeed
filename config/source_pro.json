@@ -3,7 +3,7 @@
         "sourceUrl": "http://www.prothom-alo.com/feed/",
         "feedLength": 20059,
         "lastfetch": 1492083903303,
-        "scrapeIdentity": "div[itemprop=articleBody]>p"
+        "scrapeIdentity": "div[itemprop=articleBody] p"
     },
     "bdnews24": {
         "sourceUrl": "http://bangla.bdnews24.com/?widgetName=rssfeed&widgetId=1151&getXmlFeed=true",

@@ -3,9 +3,10 @@ import { feedStore } from "../db/table.js";
 const fs = require("fs-extra");
 const path = require("path");
 
-const source = process.env.NODE_ENV === "production"
-  ? require("../../config/source_pro.json")
-  : require("../../config/source.json");
+const source = process.env.NODE_ENV === "development"
+  ? require("../../config/source.json")
+  : require("../../config/source_pro.json");
+
 function processTable() {
   dyn.listTables((e, list) => {
     if (e) return console.log(e);
@@ -58,7 +59,6 @@ function deleteOldJson() {
           if (fileDate === yesterDay) {
             let absoulatePath = path.join(folderPath, name, file);
             fs.removeSync(absoulatePath);
-            console.log(absoulatePath);
           }
         });
       });

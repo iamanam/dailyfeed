@@ -89,10 +89,6 @@ class Worker {
       let fetchInfo = this.getFetchInfo();
       // console.log(fetchInfo["firstItem"], latestTitle);
       if (fetchInfo) {
-        console.log(
-          new Date(fetchInfo.lastFetched).getTime(),
-          new Date().getTime() - 1000 * 60 * 60 * 3
-        );
         // if items are not updating for 4 hrs then return false, to fetch all
         if (
           new Date(fetchInfo.lastFetched).getTime() <
