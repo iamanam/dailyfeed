@@ -145,7 +145,7 @@ export default class SaveFeedDyno {
             docClient
               .put({
                 TableName: tableName,
-                Item: item
+                Item: omitEmpty(item)
               })
               .promise()
               .then(r => {

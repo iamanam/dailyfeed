@@ -1,3 +1,4 @@
+var omitEmpty = require("omit-empty");
 const config = process.env.NODE_ENV === "development"
   ? require("../../config/config.json")
   : require("../../config/config_production.json");
@@ -53,7 +54,7 @@ export default async function formatItem(item, feedSource) {
         link: item.link,
         dayToday: new Date().getDate()
       };
-      return result;
+      return omitEmpty(result);
     }
     throw Error("item feeds cant be formatted");
   } catch (e) {
