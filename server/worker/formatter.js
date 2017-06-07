@@ -2,6 +2,10 @@ const config = process.env.NODE_ENV === "development"
   ? require("../../config/config.json")
   : require("../../config/config_production.json");
 
+const source = process.env.NODE_ENV === "production"
+  ? require("../../config/source_pro.json")
+  : require("../../config/source.json");
+
 function scrapDescription(itemUrl, scrapeIdentity) {
   const cheerioReq = require("cheerio-req");
   return new Promise(resolve => {
@@ -24,15 +28,15 @@ function scrapDescription(itemUrl, scrapeIdentity) {
     });
   });
 }
-export default async function formatItem(item, scrapeIdentity) {
+export default async function formatItem(item, feedSource) {
   try {
-    if (item && typeof item === "object") {
-      /*
-         let description;
+    if (item && typeof item === "object" && feedSource) {
+      let scrapeIdentity = source[feedSource]["scrapeIdentity"];
+      let description;
       if (config.local.newsSetting.scrapping) {
         description = await scrapDescription(item.link, scrapeIdentity); // this is the main description fetched from main site
       } else description = altDes(item); // this is the short descriptin comes from feed after normalize html signs
-*/
+
       // finding an image from feed is bit of problem, so needed to go through some
       // extra mechanism
       let img = item["rss:image"];
@@ -43,7 +47,7 @@ export default async function formatItem(item, scrapeIdentity) {
       }
       let result = await {
         title: item.title,
-        description: item.description,
+        description: description,
         publish: new Date(item.pubDate).getTime(),
         image: tag,
         link: item.link,

@@ -89,11 +89,16 @@ class Worker {
       let fetchInfo = this.getFetchInfo();
       // console.log(fetchInfo["firstItem"], latestTitle);
       if (fetchInfo) {
+        console.log(
+          new Date(fetchInfo.lastFetched).getTime(),
+          new Date().getTime() - 1000 * 60 * 60 * 3
+        );
         // if items are not updating for 4 hrs then return false, to fetch all
         if (
           new Date(fetchInfo.lastFetched).getTime() <
-          new Date().getTime() - 1000 * 60 * 60 * 4
+          new Date().getTime() - 1000 * 60 * 60 * 3
         ) {
+          console.log("updating all as its not been updating for a while");
           return false;
         }
         return fetchInfo["firstItem"] === latestTitle;
@@ -189,7 +194,7 @@ class Worker {
                   }
                   zeroAlreadyrun = true;
                 }
-                var fi = await self.formatItem(chunk); // format chunk
+                var fi = await self.formatItem(chunk, self.feedSource); // format chunk
                 // collect the latest item only, when old item which already saved found then return the latest items
                 if (
                   self.getFetchInfo() &&
