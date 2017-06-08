@@ -1,7 +1,5 @@
 import formatItem from "./formatter";
 import { sortBy } from "underscore";
-// import { deletTable } from "../db/helper";
-
 import SaveDyno from "./saveDyno";
 const path = require("path");
 const axios = require("axios");
@@ -13,6 +11,7 @@ const through2 = require("through2");
 
 var updateTime = 5;
 var totalUpdate = 0;
+
 class Worker {
   constructor(feedSource, feedUrl, myEmitter) {
     this.feedSource = feedSource;
@@ -104,10 +103,34 @@ class Worker {
       return false;
     }
   }
+  isNewDaySaveInfo() {
+    try {
+      // save all titles in info at after 12 when creating new fetchInfo
+      let d = new Date();
+      let hours = d.getHours();
+      let min = d.getMinutes();
+      if (hours === 0 && min >= 0 && min <= updateTime + 1) {
+        return true;
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  }
   saveParsed() {
     try {
-      if (Object.keys(this.allFeeds).length < 1)
+      if (Object.keys(this.allFeeds).length < 1) {
+        if (this.isNewDaySaveInfo) {
+          fs.ensureFile(this.infoFile, (e, r) => {
+            if (!e) {
+              console.log("saved from parse", this.titleHolder.length);
+              fs.writeJsonSync(this.infoFile, {
+                saved: this.titleHolder
+              });
+            }
+          });
+        }
         return this.myEmitter.emit("info", "cancelled");
+      }
       // ensure folder before saving operation
       fs.ensureDir(this.destFolder, err => {
         if (err) this.myEmitter.emit("error", err);
@@ -131,32 +154,31 @@ class Worker {
   }
   saveFetchInfo() {
     var data = this.allFeeds;
+    var savedItem = this.getFetchInfo()["saved"];
+    var newKeys = Object.keys(data);
     let infoFile = this.destFolder + "/info.json";
-
     try {
       var sorted = sortBy(data, function(item) {
         return -new Date(item.publish).getTime();
       });
-      var sortedFirst;
       if (sorted && sorted[0] && sorted[0].title) {
-        sortedFirst = sorted[0].title;
-      } else sortedFirst = this.firstItemTitle;
-      let firstItem = this.feedSource === "jugantor" ||
-        this.feedSource === "ittefaq"
-        ? sortedFirst
-        : this.firstItemTitle ? this.firstItemTitle : sortedFirst;
-
+        var sortedFirst = sorted[0].title;
+      }
       if (sorted.length < 1) return this.myEmitter.emit("info", "cancelled");
       fs.ensureFile(infoFile, (e, r) => {
         if (e) return console.log(e);
-        let data = {
+        // at the begining of a new day we need to save the whole feed title as previous info file is outdated
+        let saved = this.isNewDaySaveInfo()
+          ? this.titleHolder
+          : this.getFetchInfo()["saved"] ? [...newKeys, ...savedItem] : newKeys;
+        let saveData = {
           lastSavedFile: this.getFileName(),
           lastFetched: this.date,
-          firstItem: firstItem
+          firstItem: sortedFirst,
+          saved: saved
         };
-
         var w = fs.createWriteStream(infoFile);
-        w.write(JSON.stringify(data));
+        w.write(JSON.stringify(saveData));
         w.on("finish", () => this.myEmitter.emit("info", 2));
         return w.end();
       });
@@ -167,9 +189,11 @@ class Worker {
   // this will pipe response stream to feedparser
   pipeToFeedParser(fetch) {
     let feedparser = new FeedParser();
+    this.titleHolder = [];
     let self = this;
-    let run = 0;
-    let zeroAlreadyrun = false;
+    let saved = this.getFetchInfo()["saved"];
+    let excluded = 0;
+    let itemCounter = 0;
     fetch
       .then(response => {
         if (response.status !== 200) {
@@ -181,27 +205,17 @@ class Worker {
             // pipe to through2
             through2.obj(async function(chunk, enc, cb) {
               try {
-                let title = chunk.title;
-                if (run === 0 && !zeroAlreadyrun) {
-                  if (!self.firstItemTitle) self.firstItemTitle = title; // save the first item for later use;
-                  // Check if there are any new news item by comparing with last saved file and continue if its true
-                  if (self.isAnyNewFeed(title)) {
-                    return self.myEmitter.emit("info", "cancelled");
-                  }
-                  zeroAlreadyrun = true;
+                var title = chunk.title;
+                self.titleHolder.push(title);
+                if (typeof saved === "object" && saved.includes(title)) {
+                  excluded++;
+                } else {
+                  var fi = await self.formatItem(chunk, self.feedSource); // format chunk
+                  // if there are new item to be processed and saved
+                  this.push(fi);
                 }
-                var fi = await self.formatItem(chunk, self.feedSource); // format chunk
-                // collect the latest item only, when old item which already saved found then return the latest items
-                if (
-                  self.getFetchInfo() &&
-                  self.getFetchInfo()["firstItem"] === title
-                ) {
-                  return self.saveParsed();
-                }
-                // if there are new item to be processed and saved
-                this.push(fi);
                 cb();
-                run++;
+                itemCounter++;
               } catch (e) {
                 self.myEmitter.emit(
                   "error",
@@ -211,10 +225,12 @@ class Worker {
             })
           )
           .on("data", data => {
-            if (data.title !== "দেশে ফিরেছেন প্রধানমন্ত্রী")
-              self.allFeeds[data.title] = data;
+            self.allFeeds[data.title] = data;
           }) // push each item to all
-          .on("finish", () => self.saveParsed()); // save json
+          .on("finish", () => {
+            console.log("excluded %s in between %s", excluded, itemCounter);
+            return self.saveParsed();
+          }); // save json
       })
       .catch(e => self.myEmitter.emit("error", e));
   }

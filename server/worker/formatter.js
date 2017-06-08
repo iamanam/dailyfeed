@@ -34,9 +34,12 @@ export default async function formatItem(item, feedSource) {
     if (item && typeof item === "object" && feedSource) {
       let scrapeIdentity = source[feedSource]["scrapeIdentity"];
       let description;
-      if (config.local.newsSetting.scrapping) {
+      if (
+        config.local.newsSetting.scrapping &&
+        process.env.NODE_ENV === "production"
+      ) {
         description = await scrapDescription(item.link, scrapeIdentity); // this is the main description fetched from main site
-      } else description = altDes(item); // this is the short descriptin comes from feed after normalize html signs
+      } else description = item.description; // this is the short descriptin comes from feed after normalize html signs
 
       // finding an image from feed is bit of problem, so needed to go through some
       // extra mechanism
