@@ -109,7 +109,8 @@ class Worker {
       let d = new Date();
       let hours = d.getHours();
       let min = d.getMinutes();
-      if (hours === 0 && min >= 0 && min <= updateTime + 1) {
+      console.log(min, hours === 0 && min >= 0 && min <= updateTime);
+      if (hours === 0 && min >= 0 && min <= updateTime) {
         return true;
       }
     } catch (e) {
@@ -119,16 +120,6 @@ class Worker {
   saveParsed() {
     try {
       if (Object.keys(this.allFeeds).length < 1) {
-        if (this.isNewDaySaveInfo) {
-          fs.ensureFile(this.infoFile, (e, r) => {
-            if (!e) {
-              console.log("saved from parse", this.titleHolder.length);
-              fs.writeJsonSync(this.infoFile, {
-                saved: this.titleHolder
-              });
-            }
-          });
-        }
         return this.myEmitter.emit("info", "cancelled");
       }
       // ensure folder before saving operation
@@ -154,8 +145,6 @@ class Worker {
   }
   saveFetchInfo() {
     var data = this.allFeeds;
-    var savedItem = this.getFetchInfo()["saved"];
-    var newKeys = Object.keys(data);
     let infoFile = this.destFolder + "/info.json";
     try {
       var sorted = sortBy(data, function(item) {
@@ -168,14 +157,11 @@ class Worker {
       fs.ensureFile(infoFile, (e, r) => {
         if (e) return console.log(e);
         // at the begining of a new day we need to save the whole feed title as previous info file is outdated
-        let saved = this.isNewDaySaveInfo()
-          ? this.titleHolder
-          : this.getFetchInfo()["saved"] ? [...newKeys, ...savedItem] : newKeys;
         let saveData = {
           lastSavedFile: this.getFileName(),
           lastFetched: this.date,
           firstItem: sortedFirst,
-          saved: saved
+          saved: this.titleHolder
         };
         var w = fs.createWriteStream(infoFile);
         w.write(JSON.stringify(saveData));
