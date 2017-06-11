@@ -6,6 +6,7 @@
   "author": "iamanam",
   "license": "MIT",
   "dependencies": {
+    "analytics-node": "^2.4.1",
     "aws-sdk": "^2.48.0",
     "axios": "^0.16.1",
     "babel-cli": "^6.24.1",
