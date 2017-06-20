@@ -6,6 +6,7 @@ const path = require("path");
 const source = process.env.NODE_ENV === "development"
   ? require("../../config/source.json")
   : require("../../config/source_pro.json");
+let interval = 1000 * 60 * 60 * 24 - 1000 * 60 * 15;
 
 function processTable() {
   dyn.listTables((e, list) => {
@@ -41,6 +42,7 @@ function processTable() {
       }
     });
   });
+  console.log("next update => %s ", new Date(new Date().getTime() + interval));
 }
 
 function deleteOldJson() {
@@ -70,4 +72,4 @@ processTable();
 setInterval(() => {
   processTable();
   deleteOldJson();
-}, 1000 * 60 * 60 * 24);
+}, interval);
