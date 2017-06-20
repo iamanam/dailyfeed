@@ -1,3 +1,4 @@
+server/worker/analytic.js
 server/worker/workstore
 build
 dev-server.js

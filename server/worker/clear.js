@@ -70,4 +70,4 @@ processTable();
 setInterval(() => {
   processTable();
   deleteOldJson();
-}, 1000 * 60 * 60 * 8);
+}, 1000 * 60 * 60 * 24);
